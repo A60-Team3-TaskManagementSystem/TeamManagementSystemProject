@@ -1,5 +1,6 @@
 package com.practice.projectone.teammanagement.models;
 
+import com.practice.projectone.teammanagement.models.contracts.Comment;
 import com.practice.projectone.teammanagement.models.contracts.Task;
 import com.practice.projectone.teammanagement.models.enums.StatusType;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
@@ -9,7 +10,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class TaskImpl implements Task {
+public abstract class TaskImpl implements Task {
 
     public static final int TITLE_LEN_MIN = 10;
     public static final int TITLE_LEN_MAX = 100;
@@ -24,7 +25,7 @@ public class TaskImpl implements Task {
             DESCRIPTION_LEN_MIN,
             DESCRIPTION_LEN_MAX);
 
-    private long id;
+    private final long id;
     private String title;
     private String description;
     private final List<Comment> comments;
@@ -89,4 +90,6 @@ public class TaskImpl implements Task {
         comments.remove(comment);
     }
 
+    protected abstract void revertStatus();
+    protected abstract void advanceStatus();
 }
