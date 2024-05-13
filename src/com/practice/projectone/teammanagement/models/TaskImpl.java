@@ -1,6 +1,7 @@
 package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.models.contracts.Comment;
+import com.practice.projectone.teammanagement.models.contracts.EventLog;
 import com.practice.projectone.teammanagement.models.contracts.Task;
 import com.practice.projectone.teammanagement.models.enums.StatusType;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
@@ -28,15 +29,24 @@ public abstract class TaskImpl implements Task {
     private final long id;
     private String title;
     private String description;
+    private StatusType statusType;
     private final List<Comment> comments;
     private final List<EventLog> activityHistory;
 
-    public TaskImpl(long id, String title, String description) {
+    protected TaskImpl(long id, String title, String description, StatusType statusType) {
         this.id = id;
         setTitle(title);
         setDescription(description);
+        this.statusType = statusType;
         comments = new ArrayList<>();
         activityHistory = new ArrayList<>();
+
+        addEventToHistory(new EventLogImpl(String.format("Item created %s",this)));
+    }
+
+    @Override
+    public long getId() {
+        return id;
     }
 
     private void setTitle(String title) {
@@ -54,20 +64,19 @@ public abstract class TaskImpl implements Task {
         this.description = description;
     }
 
-
     @Override
     public String getDescription() {
         return description;
     }
 
-    @Override
-    public long getId() {
-        return id;
-    }
 
     @Override
     public StatusType getStatus() {
         return getStatus();
+    }
+
+    protected void setStatusType(StatusType statusType){
+        this.statusType = statusType;
     }
 
     @Override
@@ -90,6 +99,18 @@ public abstract class TaskImpl implements Task {
         comments.remove(comment);
     }
 
+    protected void addEventToHistory(EventLog eventLog) {
+        activityHistory.add(eventLog);
+    }
+
     protected abstract void revertStatus();
     protected abstract void advanceStatus();
+
+    @Override
+    public String toString() {
+        return """
+                ID%d
+                Title: "%s"
+                Status:%s""".formatted(getId(), title, statusType);
+    }
 }

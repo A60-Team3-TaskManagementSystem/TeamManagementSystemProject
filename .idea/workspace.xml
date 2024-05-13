@@ -2,11 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
-      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/Content.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Assignable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Prioritizable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/MemberImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/ActivityAble.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Board.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Commentable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Member.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Team.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/Content.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/Content.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TaskImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TaskImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Assignable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Assignable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/enums/StatusType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/enums/StatusType.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +26,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>

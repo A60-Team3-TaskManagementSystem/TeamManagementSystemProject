@@ -18,6 +18,10 @@ public enum StatusType {
         this.value = value;
     }
 
+    public String getTaskType() {
+        return taskType;
+    }
+
     @Override
     public String toString() {
         return value;
