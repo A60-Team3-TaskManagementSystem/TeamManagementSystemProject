@@ -1,5 +1,6 @@
 package com.practice.projectone.teammanagement.models;
 
+import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.contracts.Comment;
 import com.practice.projectone.teammanagement.models.contracts.EventLog;
 import com.practice.projectone.teammanagement.models.contracts.Task;
@@ -37,11 +38,11 @@ public abstract class TaskImpl implements Task {
         this.id = id;
         setTitle(title);
         setDescription(description);
-        this.statusType = statusType;
+        setStatusType(statusType);
         comments = new ArrayList<>();
         activityHistory = new ArrayList<>();
 
-        addEventToHistory(new EventLogImpl(String.format("Item created %s",this)));
+        addEventToHistory(new EventLogImpl(String.format("Task created %s",this)));
     }
 
     @Override
@@ -99,12 +100,19 @@ public abstract class TaskImpl implements Task {
         comments.remove(comment);
     }
 
+    @Override
+    public void changeStatus(StatusType statusType) {
+        if (statusType.equals(getStatus())) {
+            throw new InvalidUserInputException(String.format("Can't change, task status already at %s", statusType));
+        }
+
+        setStatusType(statusType);
+        addEventToHistory(new EventLogImpl(String.format("Task status changed to %s", statusType)));
+    }
+
     protected void addEventToHistory(EventLog eventLog) {
         activityHistory.add(eventLog);
     }
-
-    protected abstract void revertStatus();
-    protected abstract void advanceStatus();
 
     @Override
     public String toString() {

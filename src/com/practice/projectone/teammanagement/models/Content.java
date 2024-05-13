@@ -27,4 +27,8 @@ public abstract class Content extends TaskImpl implements Assignable, Prioritiza
     public Priority getPriority() {
         return priority;
     }
+
+    protected void setPriority(Priority priority){
+        this.priority = priority;
+    }
 }

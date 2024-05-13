@@ -10,5 +10,6 @@ public interface Task extends Identifiable, Commentable, ActivityAble{
     StatusType getStatus();
     void addComment(Comment comment);
     void removeComment(Comment comment);
+    void changeStatus(StatusType statusType);
 
 }
