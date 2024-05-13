@@ -73,7 +73,7 @@ public abstract class TaskImpl implements Task {
 
     @Override
     public StatusType getStatus() {
-        return getStatus();
+        return statusType;
     }
 
     protected void setStatusType(StatusType statusType){
