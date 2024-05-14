@@ -26,7 +26,7 @@ public class BoardImpl implements Board {
         tasks = new ArrayList<>();
         eventLogs = new ArrayList<>();
 
-        addEventToHistory(new EventLogImpl(String.format("Employee %s joined the company", boardName)));
+        addEventToHistory(new EventLogImpl(String.format("Board %s created", boardName)));
     }
 
     private void setBoardName(String boardName) {
