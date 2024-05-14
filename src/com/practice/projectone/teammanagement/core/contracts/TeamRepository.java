@@ -13,9 +13,13 @@ public interface TeamRepository {
 
     Person createPerson(String name);
 
+    Team createTeam(String teamName);
+
     Board createBoard(String boardName);
 
     void addPerson(Person person);
+
+    void addTeam(Team team);
 
     boolean teamExist(String teamName);
 

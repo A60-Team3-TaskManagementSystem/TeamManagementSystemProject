@@ -4,6 +4,7 @@ import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.BoardImpl;
 import com.practice.projectone.teammanagement.models.PersonImpl;
+import com.practice.projectone.teammanagement.models.TeamImpl;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Nameable;
 import com.practice.projectone.teammanagement.models.contracts.Person;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class TeamRepositoryImpl implements TeamRepository {
     private final static String PERSON_ALREADY_EXIST = "Person %s already exist. Choose a different name!";
+    private final static String TEAM_ALREADY_EXIST = "Team %s already exist. Choose a different name!";
     private final List<Team> teams;
     private final List<Person> people;
 
@@ -38,6 +40,11 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
+    public Team createTeam(String teamName){
+        return new TeamImpl(teamName);
+    }
+
+    @Override
     public Board createBoard(String boardName) {
         return new BoardImpl(boardName);
     }
@@ -48,6 +55,14 @@ public class TeamRepositoryImpl implements TeamRepository {
             throw new IllegalArgumentException(String.format(PERSON_ALREADY_EXIST, person.getName()));
         }
         people.add(person);
+    }
+
+    @Override
+    public void addTeam(Team team){
+        if (teams.contains(team)){
+            throw new IllegalArgumentException(String.format(TEAM_ALREADY_EXIST, team.getName()));
+        }
+        teams.add(team);
     }
 
     @Override
