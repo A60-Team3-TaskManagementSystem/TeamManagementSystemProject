@@ -1,7 +1,6 @@
 package com.practice.projectone.teammanagement.commands;
 
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;

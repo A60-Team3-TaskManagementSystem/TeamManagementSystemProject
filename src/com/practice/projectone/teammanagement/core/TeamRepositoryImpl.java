@@ -66,6 +66,21 @@ public class TeamRepositoryImpl implements TeamRepository {
         return findElementByName(personName, people, "person") != null;
     }
 
+    @Override
+    public Team findTeamByName(String name) {
+        return findElementByName(name, teams, "team");
+    }
+
+    @Override
+    public Board findBoardByName(String name) {
+        return findElementByName(name, boards, "board");
+    }
+
+    @Override
+    public Person findPersonByName(String name) {
+        return findElementByName(name, people, "person");
+    }
+
 
     private <T extends Nameable> T findElementByName(String name, List<T> list, String lookingFor) {
         T element = list.stream()

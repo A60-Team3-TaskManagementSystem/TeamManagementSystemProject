@@ -18,4 +18,10 @@ public interface TeamRepository {
     boolean boardExist(String boardName);
 
     boolean personExist(String personName);
+
+    Team findTeamByName(String name);
+
+    Board findBoardByName(String name);
+
+    Person findPersonByName(String name);
 }
