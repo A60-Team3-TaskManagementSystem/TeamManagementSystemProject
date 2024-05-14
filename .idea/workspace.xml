@@ -2,8 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/exceptions/DuplicateEntityException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddBoardToTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddBoardToTeam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddBoardToTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/enums/CommandType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/enums/CommandType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +27,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -46,6 +53,9 @@
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\IT STUFF\TelerikProjects\TeamManagementSystemProject\src\com\practice\projectone\teammanagement" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.practice.projectone.teammanagement.exceptions" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

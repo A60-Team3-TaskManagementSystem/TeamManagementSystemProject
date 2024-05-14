@@ -2,6 +2,7 @@ package com.practice.projectone.teammanagement.core;
 
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
+import com.practice.projectone.teammanagement.models.BoardImpl;
 import com.practice.projectone.teammanagement.models.PersonImpl;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Nameable;
@@ -15,12 +16,10 @@ public class TeamRepositoryImpl implements TeamRepository {
     private final static String PERSON_ALREADY_EXIST = "Person %s already exist. Choose a different name!";
     private final List<Team> teams;
     private final List<Person> people;
-    private final List<Board> boards;
 
     public TeamRepositoryImpl() {
         teams = new ArrayList<>();
         people = new ArrayList<>();
-        boards = new ArrayList<>();
     }
 
     @Override
@@ -34,13 +33,13 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public List<Board> getBoards() {
-        return new ArrayList<>(boards);
+    public Person createPerson(String name) {
+        return new PersonImpl(name);
     }
 
     @Override
-    public Person createPerson(String name) {
-        return new PersonImpl(name);
+    public Board createBoard(String boardName) {
+        return new BoardImpl(boardName);
     }
 
     @Override
@@ -57,11 +56,6 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public boolean boardExist(String boardName) {
-        return findElementByName(boardName, boards, "board") != null;
-    }
-
-    @Override
     public boolean personExist(String personName) {
         return findElementByName(personName, people, "person") != null;
     }
@@ -69,11 +63,6 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public Team findTeamByName(String name) {
         return findElementByName(name, teams, "team");
-    }
-
-    @Override
-    public Board findBoardByName(String name) {
-        return findElementByName(name, boards, "board");
     }
 
     @Override
