@@ -36,7 +36,7 @@ public class PersonImpl implements Person {
     }
 
     @Override
-    public String getMemberName() {
+    public String getName() {
         return memberName;
     }
 
