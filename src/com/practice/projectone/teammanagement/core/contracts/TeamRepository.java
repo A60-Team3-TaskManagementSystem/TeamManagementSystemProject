@@ -21,6 +21,8 @@ public interface TeamRepository {
 
     void addTeam(Team team);
 
+    void addMemberToTeam(Person person, Team team);
+
     boolean teamExist(String teamName);
 
     boolean personExist(String personName);

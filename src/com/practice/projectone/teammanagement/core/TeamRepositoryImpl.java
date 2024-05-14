@@ -16,6 +16,7 @@ import java.util.List;
 public class TeamRepositoryImpl implements TeamRepository {
     private final static String PERSON_ALREADY_EXIST = "Person %s already exist. Choose a different name!";
     private final static String TEAM_ALREADY_EXIST = "Team %s already exist. Choose a different name!";
+    private final static String PERSON_ALREADY_MEMBER = "%s is already a member of this team!";
     private final List<Team> teams;
     private final List<Person> people;
 
@@ -63,6 +64,14 @@ public class TeamRepositoryImpl implements TeamRepository {
             throw new IllegalArgumentException(String.format(TEAM_ALREADY_EXIST, team.getName()));
         }
         teams.add(team);
+    }
+
+    @Override
+    public void addMemberToTeam(Person person, Team team){
+        if (team.getMembers().contains(person)){
+            throw new IllegalArgumentException(String.format(PERSON_ALREADY_MEMBER, person.getName()));
+        }
+        team.addMember(person);
     }
 
     @Override
