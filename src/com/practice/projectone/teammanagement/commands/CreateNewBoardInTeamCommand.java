@@ -1,17 +1,16 @@
 package com.practice.projectone.teammanagement.commands;
 
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.contracts.Team;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateNewBoardInTeam extends BaseCommand{
+public class CreateNewBoardInTeamCommand extends BaseCommand{
 
     private static final int EXPECTED_PARAMETERS_COUNT = 2;
     public static final String BOARD_CREATED_SUCCESSFULLY = "%s created successfully in %s";
 
-    public CreateNewBoardInTeam(TeamRepository teamRepository) {
+    public CreateNewBoardInTeamCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 

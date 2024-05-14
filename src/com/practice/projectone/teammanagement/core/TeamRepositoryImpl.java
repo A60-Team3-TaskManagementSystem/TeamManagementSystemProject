@@ -57,9 +57,9 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public void createTask(Board board, Task bug) {
-        board.addTask(bug);
-        tasks.add(bug);
+    public void createTask(Board board, Task task) {
+        board.addTask(task);
+        tasks.add(task);
     }
 
     @Override

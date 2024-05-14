@@ -14,10 +14,10 @@ import java.util.List;
 
 public class CreateBug extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 7;
-    public static final String BUG_CREATED_SUCCESSFULLY = "Bug created successfully in %s";
+    private static final String BUG_CREATED_SUCCESSFULLY = "Bug created successfully in %s";
 
 
-    protected CreateBug(TeamRepository teamRepository) {
+    public CreateBug(TeamRepository teamRepository) {
         super(teamRepository);
     }
 

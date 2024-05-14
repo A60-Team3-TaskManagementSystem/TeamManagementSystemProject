@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface Bug extends Task{
     List<String> getSteps();
-    void addStep(String step);
-
     Severity getSeverity();
     void changeSeverity(Severity severity);
 }

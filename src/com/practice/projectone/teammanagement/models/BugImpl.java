@@ -10,15 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BugImpl extends Content implements Bug {
-
     private static final Status INITIAL_STATUS = Status.ACTIVE;
-    private final List<String> steps;
+    private static final String SEVERITY_CHANGED = "The severity of item with ID %d switched from %s to %s";
+    private static final String SEVERITY_SAME_ERR = "Can't change, severity already at %s";
+    private static final String STEPS_EMPTY_ERR = "Please provide steps to reproduce the bug";
+    private List<String> steps;
     private Severity severity;
 
-    public BugImpl (String title, String description, Priority priority, Severity severity, String assigneeName, List<String> steps){
+    public BugImpl(String title, String description, Priority priority,
+                            Severity severity, String assigneeName, List<String> steps) {
+
         super(title, description, INITIAL_STATUS, priority, assigneeName);
         this.severity = severity;
-        this.steps = steps;
+        setSteps(steps);
     }
 
     @Override
@@ -32,28 +36,29 @@ public class BugImpl extends Content implements Bug {
     }
 
     @Override
-    public void addStep(String step) {
-        steps.add(step);
+    public void changeSeverity(Severity newSeverity) {
+        Severity oldSeverity = getSeverity();
+
+        if (newSeverity.equals(oldSeverity)) {
+            throw new InvalidUserInputException(String.format(SEVERITY_SAME_ERR, newSeverity));
+        }
+
+        this.severity = newSeverity;
+        addEventToHistory(new EventLogImpl(String.format(SEVERITY_CHANGED, getId(), oldSeverity, newSeverity)));
     }
 
     @Override
-    public void changeSeverity(Severity severity) {
-        if (severity.equals(getSeverity())) {
-            throw new InvalidUserInputException(String.format("Can't change, severity already at %s", severity));
+    protected void validateStatus(Status status) {
+        if (!status.getTaskType().equals("Bug") && !status.getTaskType().equals("All")) {
+            throw new IllegalArgumentException("Please provide valid story status");
         }
-
-        this.severity = severity;
-        addEventToHistory(new EventLogImpl(String.format("Bug severity changed to %s", severity)));
     }
 
-
-    @Override
-    public void changePriority(Priority priority) {
-        if (priority.equals(getPriority())) {
-            throw new InvalidUserInputException(String.format("Can't change, priority already at %s", priority));
+    private void setSteps(List<String> steps) {
+        if (steps.isEmpty()) {
+            throw new IllegalArgumentException(STEPS_EMPTY_ERR);
         }
 
-        setPriority(priority);
-        addEventToHistory(new EventLogImpl(String.format("Task priority changed to %s", priority)));
+        this.steps = steps;
     }
 }

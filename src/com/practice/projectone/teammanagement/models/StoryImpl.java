@@ -7,11 +7,14 @@ import com.practice.projectone.teammanagement.models.enums.Size;
 import com.practice.projectone.teammanagement.models.enums.Status;
 
 public class StoryImpl extends Content implements Story {
+    private static final String SIZE_CHANGED = "The size of item with ID %d switched from %s to %s";
+    private static final String SIZE_SAME_ERR = "Can't change, size already at %s";
+    private static final Status INITIAL_STATUS = Status.NOT_DONE;
 
     private Size size;
 
-    public StoryImpl (String title, String description, Status status, Priority priority, Size size, String assigneeName) {
-        super (title, description, status, priority, assigneeName);
+    public StoryImpl(String title, String description, Priority priority, Size size, String assigneeName) {
+        super(title, description, INITIAL_STATUS, priority, assigneeName);
         this.size = size;
     }
 
@@ -21,24 +24,21 @@ public class StoryImpl extends Content implements Story {
     }
 
     @Override
-    public void changeSize(Size size) {
-        if (size.equals(getSize())) {
-            throw new InvalidUserInputException(String.format("Can't change, size already at %s", size));
+    public void changeSize(Size newSize) {
+        Size oldSize = getSize();
+
+        if (newSize.equals(oldSize)) {
+            throw new InvalidUserInputException(String.format(SIZE_SAME_ERR, newSize));
         }
 
-        this.size = size;
-        addEventToHistory(new EventLogImpl(String.format("Task size changed to %s", size)));
+        this.size = newSize;
+        addEventToHistory(new EventLogImpl(String.format(SIZE_CHANGED, getId(), oldSize, newSize)));
     }
-
 
     @Override
-    public void changePriority(Priority priority) {
-        if (priority.equals(getPriority())) {
-            throw new InvalidUserInputException(String.format("Can't change, priority already at %s", priority));
+    protected void validateStatus(Status status) {
+        if (!status.getTaskType().equals("Story") && !status.getTaskType().equals("All") ) {
+            throw new IllegalArgumentException("Please provide valid story status");
         }
-
-        setPriority(priority);
-        addEventToHistory(new EventLogImpl(String.format("Task priority changed to %s", priority)));
     }
-
 }

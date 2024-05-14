@@ -34,5 +34,5 @@ public interface TeamRepository {
 
     void createBoard(String team, String boardName);
 
-    void createTask(Board board, Task bug);
+    void createTask(Board board, Task task);
 }
