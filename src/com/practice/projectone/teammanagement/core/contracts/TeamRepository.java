@@ -8,4 +8,6 @@ import java.util.List;
 public interface TeamRepository {
     List<Person> getMembers();
     List<Team> getTeams();
+    Person createPerson(String name);
+    void addPerson(Person person);
 }
