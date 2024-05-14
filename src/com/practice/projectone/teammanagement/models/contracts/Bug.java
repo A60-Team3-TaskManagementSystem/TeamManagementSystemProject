@@ -1,7 +1,6 @@
 package com.practice.projectone.teammanagement.models.contracts;
 
 import com.practice.projectone.teammanagement.models.enums.Severity;
-import com.practice.projectone.teammanagement.models.enums.StatusType;
 
 import java.util.List;
 

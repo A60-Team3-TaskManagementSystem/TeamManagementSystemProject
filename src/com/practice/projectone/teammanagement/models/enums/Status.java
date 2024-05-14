@@ -1,6 +1,6 @@
 package com.practice.projectone.teammanagement.models.enums;
 
-public enum StatusType {
+public enum Status {
 
     ACTIVE("Bug", "Active"),
     NOT_DONE("Story", "Not Done"),
@@ -13,7 +13,7 @@ public enum StatusType {
     private final String taskType;
     private final String value;
 
-    StatusType(String taskType, String value) {
+    Status(String taskType, String value) {
         this.taskType = taskType;
         this.value = value;
     }

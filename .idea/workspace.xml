@@ -2,14 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
-      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/exceptions/DuplicateEntityException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateBug.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddBoardToTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/enums/CommandType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/enums/CommandType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TMSEngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TMSEngineImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BugImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BugImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/Content.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/Content.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/FeedbackImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/FeedbackImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/StoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/StoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TaskImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TaskImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Assignable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Assignable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Bug.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Bug.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Prioritizable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Prioritizable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Story.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Story.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/enums/StatusType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/enums/Status.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,14 +32,13 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />

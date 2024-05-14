@@ -1,18 +1,17 @@
 package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
-import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Story;
 import com.practice.projectone.teammanagement.models.enums.Priority;
 import com.practice.projectone.teammanagement.models.enums.Size;
-import com.practice.projectone.teammanagement.models.enums.StatusType;
+import com.practice.projectone.teammanagement.models.enums.Status;
 
 public class StoryImpl extends Content implements Story {
 
     private Size size;
 
-    public StoryImpl (int id, String title, String description, StatusType status, Priority priority, Size size, Person assignee) {
-        super (id, title, description, status, priority, assignee);
+    public StoryImpl (String title, String description, Status status, Priority priority, Size size, String assigneeName) {
+        super (title, description, status, priority, assigneeName);
         this.size = size;
     }
 

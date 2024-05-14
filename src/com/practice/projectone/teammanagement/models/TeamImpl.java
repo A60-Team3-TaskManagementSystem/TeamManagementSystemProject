@@ -1,5 +1,6 @@
 package com.practice.projectone.teammanagement.models;
 
+import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Team;
@@ -7,9 +8,11 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TeamImpl implements Team {
 
+    public static final String BOARD_ALREADY_EXISTS = "Board already exists";
     public static final int TEAM_NAME_LEN_MIN = 5;
     public static final int TEAM_NAME_LEN_MAX = 15;
     private static final String TEAM_NAME_LEN_ERR = String.format(
@@ -53,8 +56,25 @@ public class TeamImpl implements Team {
     }
 
     @Override
-    public void addBoard(Board board) {
+    public void createBoard(Board board) {
+
+        if (getBoards().contains(board)) {
+            throw new DuplicateEntityException(BOARD_ALREADY_EXISTS);
+        }
+
         boards.add(board);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TeamImpl team = (TeamImpl) o;
+        return teamName.equals(team.teamName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(teamName, people, boards);
+    }
 }

@@ -1,26 +1,25 @@
 package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.models.contracts.Assignable;
-import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Prioritizable;
 import com.practice.projectone.teammanagement.models.enums.Priority;
-import com.practice.projectone.teammanagement.models.enums.StatusType;
+import com.practice.projectone.teammanagement.models.enums.Status;
 
 public abstract class Content extends TaskImpl implements Assignable, Prioritizable {
 
     private Priority priority;
-    private Person assignee;
+    private String assigneeName;
 
-    protected Content(long id, String title, String description, StatusType statusType, Priority priority, Person assignee) {
-        super(id, title, description, statusType);
+    protected Content(String title, String description, Status status, Priority priority, String assigneeName) {
+        super(title, description, status);
         this.priority = priority;
-        this.assignee = assignee;
+        this.assigneeName = assigneeName;
     }
 
 
     @Override
-    public Person getAssignee() {
-        return assignee;
+    public String getAssignee() {
+        return assigneeName;
     }
 
     @Override

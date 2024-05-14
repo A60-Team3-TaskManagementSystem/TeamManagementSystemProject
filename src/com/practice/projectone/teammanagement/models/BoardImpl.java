@@ -1,5 +1,6 @@
 package com.practice.projectone.teammanagement.models;
 
+import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.EventLog;
 import com.practice.projectone.teammanagement.models.contracts.Task;
@@ -8,6 +9,7 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.format;
 
@@ -18,6 +20,7 @@ public class BoardImpl implements Board {
             "Board name must be between %s and %s characters long!",
             NAME_LEN_MIN,
             NAME_LEN_MAX);
+    public static final String DUPLICATE_ENTRY = "Task already exists";
     private String boardName;
     private final List<Task> tasks;
     private final List<EventLog> eventLogs;
@@ -52,6 +55,10 @@ public class BoardImpl implements Board {
 
     @Override
     public void addTask(Task task) {
+        if (tasks.contains(task)) {
+            throw new DuplicateEntityException(DUPLICATE_ENTRY);
+        }
+
         tasks.add(task);
 
         addEventToHistory(new EventLogImpl(String.format("New item %s added to %s board", task, boardName)));
@@ -64,5 +71,18 @@ public class BoardImpl implements Board {
     @Override
     public String toString() {
         return boardName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BoardImpl board = (BoardImpl) o;
+        return boardName.equals(board.boardName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(boardName, tasks, eventLogs);
     }
 }

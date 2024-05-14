@@ -1,0 +1,214 @@
+Index: src/com/practice/projectone/teammanagement/models/contracts/Team.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.models.contracts;\r\n\r\nimport java.util.List;\r\n\r\npublic interface Team extends Nameable{\r\n\r\n    List<Person> getMembers();\r\n\r\n    List<Board> getBoards();\r\n\r\n    void addMember(Person person);\r\n\r\n    void addBoard(Board board);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/models/contracts/Team.java b/src/com/practice/projectone/teammanagement/models/contracts/Team.java
+--- a/src/com/practice/projectone/teammanagement/models/contracts/Team.java	(revision e73b951157154bd74b4237ecae2c42d0f0bff57d)
++++ b/src/com/practice/projectone/teammanagement/models/contracts/Team.java	(date 1715689668739)
+@@ -10,5 +10,5 @@
+ 
+     void addMember(Person person);
+ 
+-    void addBoard(Board board);
++    void createBoard(String boardName);
+ }
+Index: src/com/practice/projectone/teammanagement/models/TeamImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.models;\r\n\r\nimport com.practice.projectone.teammanagement.models.contracts.Board;\r\nimport com.practice.projectone.teammanagement.models.contracts.Person;\r\nimport com.practice.projectone.teammanagement.models.contracts.Team;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class TeamImpl implements Team {\r\n\r\n    public static final int TEAM_NAME_LEN_MIN = 5;\r\n    public static final int TEAM_NAME_LEN_MAX = 15;\r\n    private static final String TEAM_NAME_LEN_ERR = String.format(\r\n            \"Team name must be between %s and %s characters long!\",\r\n            TEAM_NAME_LEN_MIN,\r\n            TEAM_NAME_LEN_MAX);\r\n\r\n    private String teamName;\r\n    private final List<Person> people;\r\n    private final List<Board> boards;\r\n\r\n    public TeamImpl(String teamName) {\r\n        setTeamName(teamName);\r\n        people = new ArrayList<>();\r\n        boards = new ArrayList<>();\r\n    }\r\n\r\n    private void setTeamName(String teamName) {\r\n        ValidationHelpers.validateStringLength(teamName, TEAM_NAME_LEN_MIN, TEAM_NAME_LEN_MAX, TEAM_NAME_LEN_ERR);\r\n        this.teamName = teamName;\r\n    }\r\n\r\n    @Override\r\n    public String getName() {\r\n        return teamName;\r\n    }\r\n\r\n    @Override\r\n    public List<Person> getMembers() {\r\n        return new ArrayList<>(people);\r\n    }\r\n\r\n    @Override\r\n    public List<Board> getBoards() {\r\n        return new ArrayList<>(boards);\r\n    }\r\n\r\n    @Override\r\n    public void addMember(Person person) {\r\n        people.add(person);\r\n    }\r\n\r\n    @Override\r\n    public void addBoard(Board board) {\r\n        boards.add(board);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/models/TeamImpl.java b/src/com/practice/projectone/teammanagement/models/TeamImpl.java
+--- a/src/com/practice/projectone/teammanagement/models/TeamImpl.java	(revision e73b951157154bd74b4237ecae2c42d0f0bff57d)
++++ b/src/com/practice/projectone/teammanagement/models/TeamImpl.java	(date 1715690038252)
+@@ -1,5 +1,6 @@
+ package com.practice.projectone.teammanagement.models;
+ 
++import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
+ import com.practice.projectone.teammanagement.models.contracts.Board;
+ import com.practice.projectone.teammanagement.models.contracts.Person;
+ import com.practice.projectone.teammanagement.models.contracts.Team;
+@@ -7,9 +8,11 @@
+ 
+ import java.util.ArrayList;
+ import java.util.List;
++import java.util.Objects;
+ 
+ public class TeamImpl implements Team {
+ 
++    public static final String BOARD_ALREADY_EXISTS = "Board already exists";
+     public static final int TEAM_NAME_LEN_MIN = 5;
+     public static final int TEAM_NAME_LEN_MAX = 15;
+     private static final String TEAM_NAME_LEN_ERR = String.format(
+@@ -53,8 +56,26 @@
+     }
+ 
+     @Override
+-    public void addBoard(Board board) {
++    public void createBoard(String boardName) {
++        Board board = new BoardImpl(boardName);
++
++        if (getBoards().contains(board)) {
++            throw new DuplicateEntityException(BOARD_ALREADY_EXISTS);
++        }
++
+         boards.add(board);
+     }
+ 
++    @Override
++    public boolean equals(Object o) {
++        if (this == o) return true;
++        if (o == null || getClass() != o.getClass()) return false;
++        TeamImpl team = (TeamImpl) o;
++        return teamName.equals(team.teamName);
++    }
++
++    @Override
++    public int hashCode() {
++        return Objects.hash(teamName, people, boards);
++    }
+ }
+Index: src/com/practice/projectone/teammanagement/models/BoardImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.models;\r\n\r\nimport com.practice.projectone.teammanagement.models.contracts.Board;\r\nimport com.practice.projectone.teammanagement.models.contracts.EventLog;\r\nimport com.practice.projectone.teammanagement.models.contracts.Task;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.Iterator;\r\nimport java.util.List;\r\n\r\nimport static java.lang.String.format;\r\n\r\npublic class BoardImpl implements Board {\r\n    public static final int NAME_LEN_MIN = 5;\r\n    public static final int NAME_LEN_MAX = 10;\r\n    private static final String NAME_LEN_ERR = format(\r\n            \"Board name must be between %s and %s characters long!\",\r\n            NAME_LEN_MIN,\r\n            NAME_LEN_MAX);\r\n    private String boardName;\r\n    private final List<Task> tasks;\r\n    private final List<EventLog> eventLogs;\r\n\r\n    public BoardImpl(String boardName) {\r\n        setBoardName(boardName);\r\n        tasks = new ArrayList<>();\r\n        eventLogs = new ArrayList<>();\r\n\r\n        addEventToHistory(new EventLogImpl(String.format(\"Board %s created\", boardName)));\r\n    }\r\n\r\n    private void setBoardName(String boardName) {\r\n        ValidationHelpers.validateStringLength(boardName,NAME_LEN_MIN,NAME_LEN_MAX,NAME_LEN_ERR);\r\n        this.boardName = boardName;\r\n    }\r\n\r\n    @Override\r\n    public String getName() {\r\n        return boardName;\r\n    }\r\n\r\n    @Override\r\n    public List<Task> getTasks() {\r\n        return new ArrayList<>(tasks);\r\n    }\r\n\r\n    @Override\r\n    public List<EventLog> getActivityHistory() {\r\n        return new ArrayList<>(eventLogs);\r\n    }\r\n\r\n    @Override\r\n    public void addTask(Task task) {\r\n        tasks.add(task);\r\n\r\n        addEventToHistory(new EventLogImpl(String.format(\"New item %s added to %s board\", task, boardName)));\r\n    }\r\n\r\n    private void addEventToHistory(EventLog eventLog) {\r\n        eventLogs.add(eventLog);\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return boardName;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/models/BoardImpl.java b/src/com/practice/projectone/teammanagement/models/BoardImpl.java
+--- a/src/com/practice/projectone/teammanagement/models/BoardImpl.java	(revision e73b951157154bd74b4237ecae2c42d0f0bff57d)
++++ b/src/com/practice/projectone/teammanagement/models/BoardImpl.java	(date 1715690038238)
+@@ -8,6 +8,7 @@
+ import java.util.ArrayList;
+ import java.util.Iterator;
+ import java.util.List;
++import java.util.Objects;
+ 
+ import static java.lang.String.format;
+ 
+@@ -65,4 +66,17 @@
+     public String toString() {
+         return boardName;
+     }
++
++    @Override
++    public boolean equals(Object o) {
++        if (this == o) return true;
++        if (o == null || getClass() != o.getClass()) return false;
++        BoardImpl board = (BoardImpl) o;
++        return boardName.equals(board.boardName);
++    }
++
++    @Override
++    public int hashCode() {
++        return Objects.hash(boardName, tasks, eventLogs);
++    }
+ }
+Index: src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands;\r\n\r\nimport com.practice.projectone.teammanagement.core.contracts.TeamRepository;\r\nimport com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;\r\nimport com.practice.projectone.teammanagement.models.contracts.Board;\r\nimport com.practice.projectone.teammanagement.models.contracts.Team;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class CreateNewBoardInTeam extends BaseCommand{\r\n\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 2;\r\n    public static final String BOARD_ALREADY_EXISTS = \"Board already exists\";\r\n    public static final String BOARD_CREATED_SUCCESSFULLY = \"%s created successfully in %s\";\r\n\r\n    public CreateNewBoardInTeam(TeamRepository teamRepository) {\r\n        super(teamRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        String boardName = parameters.get(0);\r\n        String teamName = parameters.get(1);\r\n\r\n        return createBoard(boardName,teamName);\r\n    }\r\n\r\n    private String createBoard(String boardName, String teamName) {\r\n        Team team = getTeamRepository().findTeamByName(teamName);\r\n        Board board = getTeamRepository().createBoard(boardName);\r\n\r\n        if (team.getBoards().contains(board)) {\r\n            throw new DuplicateEntityException(BOARD_ALREADY_EXISTS);\r\n        };\r\n\r\n        team.addBoard(board);\r\n\r\n        return String.format(BOARD_CREATED_SUCCESSFULLY, boardName, teamName);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java b/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java
+--- a/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java	(revision e73b951157154bd74b4237ecae2c42d0f0bff57d)
++++ b/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java	(date 1715689668698)
+@@ -11,7 +11,6 @@
+ public class CreateNewBoardInTeam extends BaseCommand{
+ 
+     private static final int EXPECTED_PARAMETERS_COUNT = 2;
+-    public static final String BOARD_ALREADY_EXISTS = "Board already exists";
+     public static final String BOARD_CREATED_SUCCESSFULLY = "%s created successfully in %s";
+ 
+     public CreateNewBoardInTeam(TeamRepository teamRepository) {
+@@ -30,13 +29,8 @@
+ 
+     private String createBoard(String boardName, String teamName) {
+         Team team = getTeamRepository().findTeamByName(teamName);
+-        Board board = getTeamRepository().createBoard(boardName);
+ 
+-        if (team.getBoards().contains(board)) {
+-            throw new DuplicateEntityException(BOARD_ALREADY_EXISTS);
+-        };
+-
+-        team.addBoard(board);
++        team.createBoard(boardName);
+ 
+         return String.format(BOARD_CREATED_SUCCESSFULLY, boardName, teamName);
+     }
+Index: src/com/practice/projectone/teammanagement/commands/CreateTask.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/CreateTask.java b/src/com/practice/projectone/teammanagement/commands/CreateTask.java
+new file mode 100644
+--- /dev/null	(date 1715689826323)
++++ b/src/com/practice/projectone/teammanagement/commands/CreateTask.java	(date 1715689826323)
+@@ -0,0 +1,16 @@
++package com.practice.projectone.teammanagement.commands;
++
++import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
++
++import java.util.List;
++
++public class CreateTask extends BaseCommand{
++    protected CreateTask(TeamRepository teamRepository) {
++        super(teamRepository);
++    }
++
++    @Override
++    public String execute(List<String> parameters) {
++        return null;
++    }
++}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"267e4434-ea34-4c4c-9368-85a562d5c2bf\" name=\"Changes\" comment=\"add project packages\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/exceptions/DuplicateEntityException.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddBoardToTeam.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/enums/CommandType.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/enums/CommandType.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Enum\" />\r\n        <option value=\"Class\" />\r\n        <option value=\"Interface\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"UPDATE_TYPE\" value=\"REBASE\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2gP8yEDtRxiuqyRNmJDLxsHHzGf\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;D:/IT STUFF/TelerikProjects/TeamManagementSystemProject/src/com/practice/projectone/teammanagement&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CreateClassDialog.RecentsKey\">\r\n      <recent name=\"com.practice.projectone.teammanagement.commands.contracts\" />\r\n      <recent name=\"com.practice.projectone.teammanagement.core\" />\r\n      <recent name=\"com.practice.projectone.teammanagement.models\" />\r\n    </key>\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\IT STUFF\\TelerikProjects\\TeamManagementSystemProject\\src\\com\\practice\\projectone\\teammanagement\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"com.practice.projectone.teammanagement.exceptions\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"267e4434-ea34-4c4c-9368-85a562d5c2bf\" name=\"Changes\" comment=\"\" />\r\n      <created>1715588107845</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1715588107845</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"add project packages\">\r\n      <created>1715599328293</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1715599328293</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT\" value=\"false\" />\r\n    <option name=\"CHECK_NEW_TODO\" value=\"false\" />\r\n    <MESSAGE value=\"add project packages\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"add project packages\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision e73b951157154bd74b4237ecae2c42d0f0bff57d)
++++ b/.idea/workspace.xml	(date 1715690038296)
+@@ -2,14 +2,12 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
+-      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/exceptions/DuplicateEntityException.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateTask.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddBoardToTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/enums/CommandType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/enums/CommandType.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateNewBoardInTeam.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Team.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -20,14 +18,13 @@
+     <option name="RECENT_TEMPLATES">
+       <list>
+         <option value="Enum" />
+-        <option value="Class" />
+         <option value="Interface" />
++        <option value="Class" />
+       </list>
+     </option>
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+-    <option name="UPDATE_TYPE" value="REBASE" />
+   </component>
+   <component name="MarkdownSettingsMigration">
+     <option name="stateVersion" value="1" />

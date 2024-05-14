@@ -4,7 +4,7 @@ import com.practice.projectone.teammanagement.exceptions.InvalidUserInputExcepti
 import com.practice.projectone.teammanagement.models.contracts.Comment;
 import com.practice.projectone.teammanagement.models.contracts.EventLog;
 import com.practice.projectone.teammanagement.models.contracts.Task;
-import com.practice.projectone.teammanagement.models.enums.StatusType;
+import com.practice.projectone.teammanagement.models.enums.Status;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.ArrayList;
@@ -27,22 +27,24 @@ public abstract class TaskImpl implements Task {
             DESCRIPTION_LEN_MIN,
             DESCRIPTION_LEN_MAX);
 
+    private static long idCounter = 0;
+
     private final long id;
     private String title;
     private String description;
-    private StatusType statusType;
+    private Status status;
     private final List<Comment> comments;
     private final List<EventLog> activityHistory;
 
-    protected TaskImpl(long id, String title, String description, StatusType statusType) {
-        this.id = id;
+    protected TaskImpl(String title, String description, Status status) {
+        this.id = ++idCounter;
         setTitle(title);
         setDescription(description);
-        setStatusType(statusType);
+        setStatusType(status);
         comments = new ArrayList<>();
         activityHistory = new ArrayList<>();
 
-        addEventToHistory(new EventLogImpl(String.format("Task created %s",this)));
+        addEventToHistory(new EventLogImpl(String.format("Task created %s", this)));
     }
 
     @Override
@@ -72,12 +74,12 @@ public abstract class TaskImpl implements Task {
 
 
     @Override
-    public StatusType getStatus() {
-        return statusType;
+    public Status getStatus() {
+        return status;
     }
 
-    protected void setStatusType(StatusType statusType){
-        this.statusType = statusType;
+    protected void setStatusType(Status status) {
+        this.status = status;
     }
 
     @Override
@@ -101,13 +103,13 @@ public abstract class TaskImpl implements Task {
     }
 
     @Override
-    public void changeStatus(StatusType statusType) {
-        if (statusType.equals(getStatus())) {
-            throw new InvalidUserInputException(String.format("Can't change, task status already at %s", statusType));
+    public void changeStatus(Status status) {
+        if (status.equals(getStatus())) {
+            throw new InvalidUserInputException(String.format("Can't change, task status already at %s", status));
         }
 
-        setStatusType(statusType);
-        addEventToHistory(new EventLogImpl(String.format("Task status changed to %s", statusType)));
+        setStatusType(status);
+        addEventToHistory(new EventLogImpl(String.format("Task status changed to %s", status)));
     }
 
     protected void addEventToHistory(EventLog eventLog) {
@@ -119,6 +121,6 @@ public abstract class TaskImpl implements Task {
         return """
                 ID%d
                 Title: "%s"
-                Status:%s""".formatted(getId(), title, statusType);
+                Status:%s""".formatted(getId(), title, status);
     }
 }

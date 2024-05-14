@@ -10,5 +10,5 @@ public interface Team extends Nameable{
 
     void addMember(Person person);
 
-    void addBoard(Board board);
+    void createBoard(Board boardName);
 }

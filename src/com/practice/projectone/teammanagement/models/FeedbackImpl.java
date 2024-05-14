@@ -1,14 +1,14 @@
 package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.models.contracts.Feedback;
-import com.practice.projectone.teammanagement.models.enums.StatusType;
+import com.practice.projectone.teammanagement.models.enums.Status;
 
 public class FeedbackImpl extends TaskImpl implements Feedback {
 
     private int rating;
 
-    public FeedbackImpl (int id, String title, String description, StatusType status, int rating) {
-        super (id, title, description, status);
+    public FeedbackImpl (String title, String description, Status status, int rating) {
+        super (title, description, status);
         this.rating = rating;
     }
     @Override

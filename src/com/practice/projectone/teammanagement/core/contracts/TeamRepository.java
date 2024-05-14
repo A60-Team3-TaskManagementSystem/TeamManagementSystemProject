@@ -2,6 +2,7 @@ package com.practice.projectone.teammanagement.core.contracts;
 
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Person;
+import com.practice.projectone.teammanagement.models.contracts.Task;
 import com.practice.projectone.teammanagement.models.contracts.Team;
 
 import java.util.List;
@@ -14,8 +15,6 @@ public interface TeamRepository {
     Person createPerson(String name);
 
     Team createTeam(String teamName);
-
-    Board createBoard(String boardName);
 
     void addPerson(Person person);
 
@@ -30,4 +29,10 @@ public interface TeamRepository {
     Team findTeamByName(String name);
 
     Person findPersonByName(String name);
+
+    Board findBoardByName(String name);
+
+    void createBoard(String team, String boardName);
+
+    void createTask(Board board, Task bug);
 }
