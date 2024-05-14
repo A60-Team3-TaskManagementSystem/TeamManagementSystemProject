@@ -1,5 +1,6 @@
 package com.practice.projectone.teammanagement.core;
 
+import com.practice.projectone.teammanagement.commands.AddBoardToTeam;
 import com.practice.projectone.teammanagement.commands.contracts.Command;
 import com.practice.projectone.teammanagement.commands.enums.CommandType;
 import com.practice.projectone.teammanagement.core.contracts.CommandFactory;
@@ -13,7 +14,7 @@ public class CommandFactoryImpl implements CommandFactory {
         CommandType commandType = ParsingHelpers.tryParseEnum(commandTypeAsString, CommandType.class);
         switch (commandType) {
             case ADD_BOARD_TO_TEAM:
-                return new LoginCommand(vehicleDealershipRepository);
+                return new AddBoardToTeam(teamRepository);
             case LOGOUT:
                 return new LogoutCommand(vehicleDealershipRepository);
             case SHOWUSERS:

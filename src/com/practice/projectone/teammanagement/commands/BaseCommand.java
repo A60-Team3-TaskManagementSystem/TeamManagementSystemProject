@@ -2,17 +2,18 @@ package com.practice.projectone.teammanagement.commands;
 
 import com.practice.projectone.teammanagement.commands.contracts.Command;
 import com.practice.projectone.teammanagement.core.contracts.TMSEngine;
+import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 
 import java.util.List;
 
 public abstract class BaseCommand implements Command {
-    private final TMSEngine tmsEngine;
+    private final TeamRepository teamRepository;
 
-    protected BaseCommand(TMSEngine tmsEngine) {
-        this.tmsEngine = tmsEngine;
+    protected BaseCommand(TeamRepository teamRepository) {
+        this.teamRepository = teamRepository;
     }
 
-    protected TMSEngine getTmsEngine() {
-        return tmsEngine;
+    protected TeamRepository getTeamRepository() {
+        return teamRepository;
     }
 }

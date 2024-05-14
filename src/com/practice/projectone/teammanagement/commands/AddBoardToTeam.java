@@ -6,7 +6,7 @@ import java.util.List;
 
 public class AddBoardToTeam extends BaseCommand{
 
-    protected AddBoardToTeam(TMSEngine tmsEngine) {
+    public AddBoardToTeam(TMSEngine tmsEngine) {
         super(tmsEngine);
     }
 
