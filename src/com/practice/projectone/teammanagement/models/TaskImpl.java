@@ -56,7 +56,7 @@ public abstract class TaskImpl implements Task {
     }
 
     @Override
-    public String getTitle() {
+    public String getName() {
         return title;
     }
 

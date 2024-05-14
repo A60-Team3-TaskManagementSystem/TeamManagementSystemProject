@@ -2,8 +2,7 @@ package com.practice.projectone.teammanagement.models.contracts;
 
 import java.util.List;
 
-public interface Person extends ActivityAble{
-    String getMemberName();
+public interface Person extends ActivityAble, Nameable{
     List<Task> getTasks();
     void addTask(Task task);
 }

@@ -6,6 +6,7 @@ import com.practice.projectone.teammanagement.models.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -35,7 +36,7 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public String getBoardName() {
+    public String getName() {
         return boardName;
     }
 

@@ -33,7 +33,7 @@ public class TeamImpl implements Team {
     }
 
     @Override
-    public String getTeamName() {
+    public String getName() {
         return teamName;
     }
 
