@@ -2,7 +2,7 @@ package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.contracts.Bug;
-import com.practice.projectone.teammanagement.models.contracts.Member;
+import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.enums.Priority;
 import com.practice.projectone.teammanagement.models.enums.Severity;
 import com.practice.projectone.teammanagement.models.enums.StatusType;
@@ -16,7 +16,7 @@ public class BugImpl extends Content implements Bug {
     private final List<String> steps;
     private Severity severity;
 
-    public BugImpl (int id, String title, String description, Priority priority, Severity severity, Member assignee){
+    public BugImpl (int id, String title, String description, Priority priority, Severity severity, Person assignee){
         super(id, title, description, INITIAL_STATUS, priority, assignee);
         this.severity = severity;
         this.steps = new ArrayList<>();

@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.models.contracts.Board;
-import com.practice.projectone.teammanagement.models.contracts.Member;
+import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Team;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -18,12 +18,12 @@ public class TeamImpl implements Team {
             TEAM_NAME_LEN_MAX);
 
     private String teamName;
-    private final List<Member> members;
+    private final List<Person> people;
     private final List<Board> boards;
 
     public TeamImpl(String teamName) {
         setTeamName(teamName);
-        members = new ArrayList<>();
+        people = new ArrayList<>();
         boards = new ArrayList<>();
     }
 
@@ -38,8 +38,8 @@ public class TeamImpl implements Team {
     }
 
     @Override
-    public List<Member> getMembers() {
-        return new ArrayList<>(members);
+    public List<Person> getMembers() {
+        return new ArrayList<>(people);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class TeamImpl implements Team {
     }
 
     @Override
-    public void addMember(Member member) {
-        members.add(member);
+    public void addMember(Person person) {
+        people.add(person);
     }
 
     @Override

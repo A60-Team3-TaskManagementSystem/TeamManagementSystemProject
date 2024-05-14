@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface Team{
     String getTeamName();
-    List<Member> getMembers();
+    List<Person> getMembers();
     List<Board> getBoards();
-    void addMember(Member member);
+    void addMember(Person person);
     void addBoard(Board board);
 }

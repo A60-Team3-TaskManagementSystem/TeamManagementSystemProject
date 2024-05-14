@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.models.contracts.EventLog;
-import com.practice.projectone.teammanagement.models.contracts.Member;
+import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-public class MemberImpl implements Member {
+public class PersonImpl implements Person {
 
     public static final int NAME_LEN_MIN = 5;
     public static final int NAME_LEN_MAX = 15;
@@ -22,7 +22,7 @@ public class MemberImpl implements Member {
     private final List<Task> tasks;
     private final List<EventLog> eventLogs;
 
-    public MemberImpl(String memberName) {
+    public PersonImpl(String memberName) {
         setMemberName(memberName);
         tasks = new ArrayList<>();
         eventLogs = new ArrayList<>();
