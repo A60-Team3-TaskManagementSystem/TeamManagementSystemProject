@@ -1,10 +1,8 @@
-package com.practice.projectone.teammanagement.commands.contracts;
+package com.practice.projectone.teammanagement.commands;
 
-import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.StoryImpl;
 import com.practice.projectone.teammanagement.models.contracts.Board;
-import com.practice.projectone.teammanagement.models.contracts.Task;
+import com.practice.projectone.teammanagement.models.contracts.Story;
 import com.practice.projectone.teammanagement.models.enums.Priority;
 import com.practice.projectone.teammanagement.models.enums.Size;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
@@ -40,7 +38,7 @@ public class CreateStoryCommand extends BaseCommand {
     private String createStory(String title, String description, Priority priority,
                                Size size, String assigneeName, String boardName) {
 
-        Task story = new StoryImpl(title, description, priority, size, assigneeName);
+        Story story = getTeamRepository().createStory(title, description, priority, size, assigneeName);
         Board board = getTeamRepository().findBoardByName(boardName);
 
         getTeamRepository().createTask(board, story);

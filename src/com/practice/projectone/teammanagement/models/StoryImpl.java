@@ -1,8 +1,10 @@
 package com.practice.projectone.teammanagement.models;
 
+import com.practice.projectone.teammanagement.exceptions.InvalidTaskException;
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.contracts.Story;
 import com.practice.projectone.teammanagement.models.enums.Priority;
+import com.practice.projectone.teammanagement.models.enums.Severity;
 import com.practice.projectone.teammanagement.models.enums.Size;
 import com.practice.projectone.teammanagement.models.enums.Status;
 
@@ -36,8 +38,13 @@ public class StoryImpl extends Content implements Story {
     }
 
     @Override
+    public void changeSeverity(Severity severity) {
+        throw new InvalidTaskException("Bug/Story doesn't have rating");
+    }
+
+    @Override
     protected void validateStatus(Status status) {
-        if (!status.getTaskType().equals("Story") && !status.getTaskType().equals("All") ) {
+        if (!status.getTaskType().equals("Story") && !status.getTaskType().equals("All")) {
             throw new IllegalArgumentException("Please provide valid story status");
         }
     }

@@ -1,5 +1,6 @@
 package com.practice.projectone.teammanagement.models;
 
+import com.practice.projectone.teammanagement.exceptions.InvalidTaskException;
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.contracts.Assignable;
 import com.practice.projectone.teammanagement.models.contracts.Prioritizable;
@@ -40,6 +41,11 @@ public abstract class Content extends TaskImpl implements Assignable, Prioritiza
 
         setPriority(newPriority);
         addEventToHistory(new EventLogImpl(String.format(PRIORITY_CHANGED, getId(), oldPriority, newPriority)));
+    }
+
+    @Override
+    public void changeRating(double rating) {
+        throw new InvalidTaskException("Bug/Story doesn't have rating");
     }
 
     protected void setPriority(Priority priority) {

@@ -7,5 +7,4 @@ import java.util.List;
 public interface Bug extends Task{
     List<String> getSteps();
     Severity getSeverity();
-    void changeSeverity(Severity severity);
 }

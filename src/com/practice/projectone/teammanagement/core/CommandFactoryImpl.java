@@ -3,7 +3,7 @@ package com.practice.projectone.teammanagement.core;
 import com.practice.projectone.teammanagement.commands.CreateBugCommand;
 import com.practice.projectone.teammanagement.commands.CreateNewBoardInTeamCommand;
 import com.practice.projectone.teammanagement.commands.contracts.Command;
-import com.practice.projectone.teammanagement.commands.contracts.CreateStoryCommand;
+import com.practice.projectone.teammanagement.commands.CreateStoryCommand;
 import com.practice.projectone.teammanagement.commands.enums.CommandType;
 import com.practice.projectone.teammanagement.core.contracts.CommandFactory;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;

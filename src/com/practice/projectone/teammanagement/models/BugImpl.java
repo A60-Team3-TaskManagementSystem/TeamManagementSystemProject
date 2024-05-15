@@ -1,9 +1,11 @@
 package com.practice.projectone.teammanagement.models;
 
+import com.practice.projectone.teammanagement.exceptions.InvalidTaskException;
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.contracts.Bug;
 import com.practice.projectone.teammanagement.models.enums.Priority;
 import com.practice.projectone.teammanagement.models.enums.Severity;
+import com.practice.projectone.teammanagement.models.enums.Size;
 import com.practice.projectone.teammanagement.models.enums.Status;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ public class BugImpl extends Content implements Bug {
     private Severity severity;
 
     public BugImpl(String title, String description, Priority priority,
-                            Severity severity, String assigneeName, List<String> steps) {
+                   Severity severity, String assigneeName, List<String> steps) {
 
         super(title, description, INITIAL_STATUS, priority, assigneeName);
         this.severity = severity;
@@ -45,6 +47,11 @@ public class BugImpl extends Content implements Bug {
 
         this.severity = newSeverity;
         addEventToHistory(new EventLogImpl(String.format(SEVERITY_CHANGED, getId(), oldSeverity, newSeverity)));
+    }
+
+    @Override
+    public void changeSize(Size size) {
+        throw new InvalidTaskException("Bug doesn't have size");
     }
 
     @Override

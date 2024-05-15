@@ -3,7 +3,7 @@ package com.practice.projectone.teammanagement.commands;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.models.BugImpl;
 import com.practice.projectone.teammanagement.models.contracts.Board;
-import com.practice.projectone.teammanagement.models.contracts.Task;
+import com.practice.projectone.teammanagement.models.contracts.Bug;
 import com.practice.projectone.teammanagement.models.enums.Priority;
 import com.practice.projectone.teammanagement.models.enums.Severity;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
@@ -40,7 +40,7 @@ public class CreateBugCommand extends BaseCommand {
     private String createBug(String title, String description, Priority priority,
                              Severity severity, String assigneeName, List<String> steps, String boardName) {
 
-        Task bug = new BugImpl(title, description, priority, severity, assigneeName, steps);
+        Bug bug = getTeamRepository().createBug(title, description, priority, severity, assigneeName, steps);
         Board board = getTeamRepository().findBoardByName(boardName);
 
         getTeamRepository().createTask(board, bug);

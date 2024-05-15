@@ -103,7 +103,7 @@ public abstract class TaskImpl implements Task {
 
     @Override
     public String toString() {
-        return String.format("ID%d, Title: %s, Status: %s",getId(), title, status);
+        return String.format("ID%d, Title: %s, Status: %s", getId(), title, status);
     }
 
     @Override
@@ -119,11 +119,11 @@ public abstract class TaskImpl implements Task {
         return Objects.hash(id, title, description, status, comments, activityHistory);
     }
 
+    protected abstract void validateStatus(Status status);
+
     protected void addEventToHistory(EventLog eventLog) {
         activityHistory.add(eventLog);
     }
-
-    protected abstract void validateStatus(Status status);
 
     private void setTitle(String title) {
         ValidationHelpers.validateStringLength(title, TITLE_LEN_MIN, TITLE_LEN_MAX, TITLE_LEN_ERR);

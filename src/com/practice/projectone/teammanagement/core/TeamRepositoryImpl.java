@@ -3,12 +3,14 @@ package com.practice.projectone.teammanagement.core;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
-import com.practice.projectone.teammanagement.models.BoardImpl;
-import com.practice.projectone.teammanagement.models.PersonImpl;
-import com.practice.projectone.teammanagement.models.TeamImpl;
+import com.practice.projectone.teammanagement.models.*;
 import com.practice.projectone.teammanagement.models.contracts.*;
+import com.practice.projectone.teammanagement.models.enums.Priority;
+import com.practice.projectone.teammanagement.models.enums.Severity;
+import com.practice.projectone.teammanagement.models.enums.Size;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class TeamRepositoryImpl implements TeamRepository {
@@ -16,6 +18,8 @@ public class TeamRepositoryImpl implements TeamRepository {
     private final static String TEAM_ALREADY_EXIST = "Team %s already exist. Choose a different name!";
     private final static String PERSON_ALREADY_MEMBER = "%s is already a member of this team!";
     public static final String DUPLICATE_BOARD_NAME = "Board name already taken. Choose another";
+    public static final String NO_SUCH_ELEMENT = "No such %s found";
+    public static final String TASK_NOT_EXIST = "Task with ID%d does not exist.";
     private final List<Team> teams;
     private final List<Person> people;
     private final List<Board> boards;
@@ -39,6 +43,11 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
+    public List<Task> getTasks() {
+        return new ArrayList<>(tasks);
+    }
+
+    @Override
     public Person createPerson(String name) {
         return new PersonImpl(name);
     }
@@ -46,6 +55,21 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public Team createTeam(String teamName) {
         return new TeamImpl(teamName);
+    }
+
+    @Override
+    public Bug createBug(String title, String description, Priority priority, Severity severity, String assigneeName, List<String> steps) {
+        return new BugImpl(title, description, priority, severity, assigneeName, steps);
+    }
+
+    @Override
+    public Story createStory(String title, String description, Priority priority, Size size, String assigneeName) {
+        return new StoryImpl(title, description, priority, size, assigneeName);
+    }
+
+    @Override
+    public Feedback createFeedback(String title, String description, double rating) {
+        return new FeedbackImpl(title, description, rating);
     }
 
     @Override
@@ -120,14 +144,25 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public Board findBoardByName(String name) {
+
+//        getTasks().stream().filter(task -> task.getName().equals("Name"))
+//                .sorted(Comparator.comparing(Task::getName)).forEach(StringBuilder::append);
         return findElementByName(name, boards, "board");
+    }
+
+    @Override
+    public Task findTaskByID(int id) {
+        return getTasks().stream()
+                .filter(task -> task.getId() == id)
+                .findFirst()
+                .orElseThrow(() -> new ElementNotFoundException(String.format(TASK_NOT_EXIST, id)));
     }
 
     private <T extends Nameable> T findElementByName(String name, List<T> list, String lookingFor) {
         T element = list.stream()
                 .filter(e -> e.getName().equals(name))
                 .findFirst()
-                .orElseThrow(() -> new ElementNotFoundException(String.format("No such %s found", lookingFor)));
+                .orElseThrow(() -> new ElementNotFoundException(String.format(NO_SUCH_ELEMENT, lookingFor)));
         return element;
     }
 }
