@@ -4,7 +4,6 @@ import java.util.List;
 
 public interface Person extends ActivityAble, Nameable{
     List<Task> getTasks();
-    void addTask(Task task);
-
+    void assignTask(Task task);
     void removeTask(Task task);
 }

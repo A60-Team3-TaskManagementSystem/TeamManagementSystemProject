@@ -10,7 +10,6 @@ import com.practice.projectone.teammanagement.models.enums.Severity;
 import com.practice.projectone.teammanagement.models.enums.Size;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class TeamRepositoryImpl implements TeamRepository {
@@ -68,7 +67,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public Feedback createFeedback(String title, String description, double rating) {
+    public Feedback createFeedback(String title, String description, int rating) {
         return new FeedbackImpl(title, description, rating);
     }
 

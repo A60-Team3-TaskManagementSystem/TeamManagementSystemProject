@@ -44,7 +44,7 @@ public abstract class Content extends TaskImpl implements Assignable, Prioritiza
     }
 
     @Override
-    public void changeRating(double rating) {
+    public void changeRating(int rating) {
         throw new InvalidTaskException("Bug/Story doesn't have rating");
     }
 

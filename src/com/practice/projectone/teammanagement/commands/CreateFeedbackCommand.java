@@ -1,10 +1,8 @@
 package com.practice.projectone.teammanagement.commands;
 
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.FeedbackImpl;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Feedback;
-import com.practice.projectone.teammanagement.models.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -26,14 +24,14 @@ public class CreateFeedbackCommand extends BaseCommand {
 
         String title = parameters.get(0);
         String description = parameters.get(1);
-        double rating = ParsingHelpers.tryParseDouble(parameters.get(2), INVALID_RATING);
+        int rating = ParsingHelpers.tryParseInt(parameters.get(2), INVALID_RATING);
         String boardName = parameters.get(3);
 
 
         return createFeedback(title, description, rating, boardName);
     }
 
-    private String createFeedback(String title, String description, double rating, String boardName) {
+    private String createFeedback(String title, String description, int rating, String boardName) {
         Feedback feedback = getTeamRepository().createFeedback(title, description, rating);
 
         Board board = getTeamRepository().findBoardByName(boardName);

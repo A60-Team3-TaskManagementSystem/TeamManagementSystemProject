@@ -1,5 +1,6 @@
 package com.practice.projectone.teammanagement.models;
 
+import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.contracts.EventLog;
 import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Task;
@@ -18,6 +19,7 @@ public class PersonImpl implements Person {
             "Employee name must be between %s and %s characters long!",
             NAME_LEN_MIN,
             NAME_LEN_MAX);
+    public static final String WRONG_MEMBER = "The task is not assigned to %s";
     private String memberName;
     private final List<Task> tasks;
     private final List<EventLog> eventLogs;
@@ -28,11 +30,6 @@ public class PersonImpl implements Person {
         eventLogs = new ArrayList<>();
 
         addEventToHistory(new EventLogImpl(String.format("Employee %s joined the company", memberName)));
-    }
-
-    private void setMemberName(String memberName) {
-        ValidationHelpers.validateStringLength(memberName, NAME_LEN_MIN, NAME_LEN_MAX, NAME_LEN_ERR);
-        this.memberName = memberName;
     }
 
     @Override
@@ -51,20 +48,30 @@ public class PersonImpl implements Person {
     }
 
     @Override
-    public void addTask(Task task) {
+    public void assignTask(Task task) {
         tasks.add(task);
         addEventToHistory(new EventLogImpl(String.format("New task %s added to %s list.", task, memberName)));
     }
 
     @Override
-    public void removeTask(Task task){
+    public void removeTask(Task task) {
+        if (!tasks.contains(task)) {
+            throw new ElementNotFoundException(String.format(WRONG_MEMBER, memberName));
+        }
+
         tasks.remove(task);
+
         addEventToHistory(new EventLogImpl((String.format("Task ID%d removed from %s list.", task.getId(), memberName))));
     }
 
     @Override
     public String toString() {
         return memberName;
+    }
+
+    private void setMemberName(String memberName) {
+        ValidationHelpers.validateStringLength(memberName, NAME_LEN_MIN, NAME_LEN_MAX, NAME_LEN_ERR);
+        this.memberName = memberName;
     }
 
     private void addEventToHistory(EventLog eventLog) {

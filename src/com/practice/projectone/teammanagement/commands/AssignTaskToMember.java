@@ -1,20 +1,20 @@
 package com.practice.projectone.teammanagement.commands;
 
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.contracts.Comment;
+import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class AddCommentToTaskCommand extends BaseCommand {
-    private static final int EXPECTED_PARAMETERS_COUNT = 3;
+public class AssignTaskToMember extends BaseCommand{
+    private static final int EXPECTED_PARAMETERS_COUNT = 2;
     private static final String INVALID_TASK_ID = "Invalid value for taskID. Should be a number.";
-    private static final String COMMENT_ADDED = "Comment successfully added to task with ID %d";
+    public static final String TASK_ASSIGNED = "Task with ID%d assigned to %s";
 
 
-    public AddCommentToTaskCommand(TeamRepository teamRepository) {
+    protected AssignTaskToMember(TeamRepository teamRepository) {
         super(teamRepository);
     }
 
@@ -23,18 +23,17 @@ public class AddCommentToTaskCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);
 
         int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);
-        String author = parameters.get(1);
-        String description = parameters.get(2);
+        String memberName = parameters.get(1);
 
-
-        return addCommentToTask(author, description, taskID);
+        return assignTask(taskID, memberName);
     }
 
-    private String addCommentToTask(String author, String description, int taskID) {
+    private String assignTask(int taskID, String memberName){
         Task task = getTeamRepository().findTaskByID(taskID);
-        Comment comment = getTeamRepository().createComment(author, description);
+        Person person = getTeamRepository().findPersonByName(memberName);
 
-        task.addComment(comment);
-        return String.format(COMMENT_ADDED, taskID);
+        person.assignTask(task);
+
+        return String.format(TASK_ASSIGNED, taskID, memberName);
     }
 }

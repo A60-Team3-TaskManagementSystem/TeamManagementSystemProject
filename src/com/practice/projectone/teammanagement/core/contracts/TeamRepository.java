@@ -14,21 +14,27 @@ public interface TeamRepository {
 
     List<Task> getTasks();
 
-    Person createPerson(String name);
-
-    Team createTeam(String teamName);
-
     void addPerson(Person person);
 
     void addTeam(Team team);
 
     void addMemberToTeam(Person person, Team team);
 
-    boolean teamExist(String teamName);
+    Person createPerson(String name);
 
-    boolean personExist(String personName);
+    Team createTeam(String teamName);
 
-    boolean boardExists(String boardName);
+    void createBoard(String team, String boardName);
+
+    void createTask(Board board, Task task);
+
+    Bug createBug(String teamName, String description, Priority priority, Severity severity, String assigneeName, List<String> steps);
+
+    Story createStory(String title, String description, Priority priority, Size size, String assigneeName);
+
+    Feedback createFeedback(String title, String description, int rating);
+
+    Comment createComment(String author, String description);
 
     Team findTeamByName(String name);
 
@@ -36,17 +42,11 @@ public interface TeamRepository {
 
     Board findBoardByName(String name);
 
-    Bug createBug(String teamName, String description, Priority priority, Severity severity, String assigneeName, List<String> steps);
-
-    Story createStory(String title, String description, Priority priority, Size size, String assigneeName);
-
-    Feedback createFeedback(String title, String description, double rating);
-
-    void createBoard(String team, String boardName);
-
-    void createTask(Board board, Task task);
-
     Task findTaskByID(int id);
 
-    Comment createComment(String author, String description);
+    boolean teamExist(String teamName);
+
+    boolean personExist(String personName);
+
+    boolean boardExists(String boardName);
 }

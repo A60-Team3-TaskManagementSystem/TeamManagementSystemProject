@@ -13,6 +13,6 @@ public interface Task extends Identifiable, Commentable, ActivityAble, Nameable{
     void changeStatus(Status status);
     void changePriority(Priority priority);
     void changeSize(Size size);
-    void changeRating(double rating);
+    void changeRating(int rating);
     void changeSeverity(Severity severity);
 }

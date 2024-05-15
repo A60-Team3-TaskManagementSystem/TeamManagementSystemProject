@@ -11,8 +11,8 @@ import java.util.List;
 
 public class ChangeTaskAttributeCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 3;
-    public static final String INVALID_TASK_ID = "Invalid value for taskID. Should be a number.";
-    public static final String INVALID_RATING = "Invalid value for rating. Should be a number.";
+    private static final String INVALID_TASK_ID = "Invalid value for taskID. Should be a number.";
+    private static final String INVALID_RATING = "Invalid value for rating. Should be a number.";
 
     private Task task;
 
@@ -28,20 +28,19 @@ public class ChangeTaskAttributeCommand extends BaseCommand {
         TaskAttribute taskAttribute = ParsingHelpers.tryParseEnum(parameters.get(1), TaskAttribute.class);
         String newTaskAttributeValue = parameters.get(2);
 
-
-        return changeAttribute(taskID, taskAttribute, newTaskAttributeValue);
-    }
-
-    private String changeAttribute(int taskID, TaskAttribute taskAttribute, String newTaskAttributeValue) {
         this.task = getTeamRepository().findTaskByID(taskID);
 
+        return changeAttribute(taskAttribute, newTaskAttributeValue);
+    }
+
+    private String changeAttribute(TaskAttribute taskAttribute, String newTaskAttributeValue) {
         switch (taskAttribute) {
             case SIZE -> {
                 Size size = ParsingHelpers.tryParseEnum(newTaskAttributeValue, Size.class);
                 changeSize(size);
             }
             case RATING -> {
-                double rating = ParsingHelpers.tryParseDouble(newTaskAttributeValue, INVALID_RATING);
+                int rating = ParsingHelpers.tryParseInt(newTaskAttributeValue, INVALID_RATING);
                 changeRating(rating);
             }
             case STATUS -> {
@@ -77,7 +76,7 @@ public class ChangeTaskAttributeCommand extends BaseCommand {
         task.changePriority(priority);
     }
 
-    private void changeRating(double rating) {
+    private void changeRating(int rating) {
         task.changeRating(rating);
     }
 }

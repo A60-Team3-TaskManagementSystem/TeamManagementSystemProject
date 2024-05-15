@@ -15,9 +15,9 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
     public static final String INVALID_RATING_ERR = String.format("Story rating must be between %d and %d",
             RATING_MIN_VALUE,
             RATING_MAX_VALUE);
-    private double rating;
+    private int rating;
 
-    public FeedbackImpl(String title, String description, double rating) {
+    public FeedbackImpl(String title, String description, int rating) {
         super(title, description, INITIAL_STATUS);
         setRating(rating);
     }
@@ -43,7 +43,7 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
     }
 
     @Override
-    public void changeRating(double rating) {
+    public void changeRating(int rating) {
         setRating(rating);
     }
 
@@ -54,7 +54,7 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
         }
     }
 
-    private void setRating(double rating) {
+    private void setRating(int rating) {
         ValidationHelpers.validateDecimalRange(rating, RATING_MIN_VALUE, RATING_MAX_VALUE, INVALID_RATING_ERR);
 
         this.rating = rating;
