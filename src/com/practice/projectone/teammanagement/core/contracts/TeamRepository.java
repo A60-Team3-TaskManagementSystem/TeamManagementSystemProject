@@ -47,4 +47,6 @@ public interface TeamRepository {
     void createTask(Board board, Task task);
 
     Task findTaskByID(int id);
+
+    Comment createComment(String author, String description);
 }

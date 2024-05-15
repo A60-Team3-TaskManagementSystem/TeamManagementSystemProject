@@ -73,6 +73,11 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
+    public Comment createComment(String author, String description) {
+        return new CommentImpl(author, description);
+    }
+
+    @Override
     public void createBoard(String teamName, String boardName) {
         Team team = findTeamByName(teamName);
 
@@ -144,9 +149,6 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public Board findBoardByName(String name) {
-
-//        getTasks().stream().filter(task -> task.getName().equals("Name"))
-//                .sorted(Comparator.comparing(Task::getName)).forEach(StringBuilder::append);
         return findElementByName(name, boards, "board");
     }
 
