@@ -7,18 +7,17 @@ import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Task;
 import com.practice.projectone.teammanagement.models.enums.Priority;
 import com.practice.projectone.teammanagement.models.enums.Size;
-import com.practice.projectone.teammanagement.models.enums.Status;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateStory extends BaseCommand {
+public class CreateStoryCommand extends BaseCommand {
 
     private static final int EXPECTED_PARAMETERS_COUNT = 6;
     private static final String STORY_CREATED_SUCCESSFULLY = "Story created successfully in %s";
 
-    public CreateStory(TeamRepository teamRepository) {
+    public CreateStoryCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 

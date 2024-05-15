@@ -1,2 +1,51 @@
-package com.practice.projectone.teammanagement.commands;public class ShowAllTeamBoardsCommand {
+package com.practice.projectone.teammanagement.commands;
+
+import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.models.contracts.Team;
+import com.practice.projectone.teammanagement.utils.ValidationHelpers;
+
+import java.util.List;
+
+public class ShowAllTeamBoardsCommand extends BaseCommand {
+    private static final int EXPECTED_PARAMETERS_COUNT = 1;
+    private static final String NO_TEAMS = "There are no teams.";
+    private static final String NO_BOARDS = "There are no boards.";
+
+    public ShowAllTeamBoardsCommand(TeamRepository teamRepository) {
+        super(teamRepository);
+    }
+
+    @Override
+    public String execute(List<String> parameters) {
+        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);
+
+        String teamName = parameters.get(0);
+
+        return showAllTeamBoards(teamName);
+    }
+
+    private String showAllTeamBoards(String teamName) {
+        Team team = getTeamRepository().findTeamByName(teamName);
+
+        StringBuilder sb = new StringBuilder();
+
+        if (getTeamRepository().getTeams().isEmpty()) {
+            sb.append(NO_TEAMS);
+        } else {
+            sb.append(String.format("--TEAM %s--", team.getName()));
+
+            if (team.getBoards().isEmpty()) {
+                sb.append(NO_BOARDS);
+            }
+
+            for (int i = 0; i < team.getBoards().size(); i++) {
+                sb.append(System.lineSeparator());
+                sb.append(i + 1);
+                sb.append(". ");
+                sb.append(team.getBoards().get(i).toString());
+            }
+        }
+
+        return sb.toString().trim();
+    }
 }

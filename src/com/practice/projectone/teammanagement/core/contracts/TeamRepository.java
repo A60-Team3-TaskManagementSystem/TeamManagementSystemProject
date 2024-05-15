@@ -26,6 +26,8 @@ public interface TeamRepository {
 
     boolean personExist(String personName);
 
+    boolean boardExists(String boardName);
+
     Team findTeamByName(String name);
 
     Person findPersonByName(String name);

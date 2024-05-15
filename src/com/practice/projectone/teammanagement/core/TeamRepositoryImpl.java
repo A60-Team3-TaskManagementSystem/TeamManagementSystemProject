@@ -1,6 +1,7 @@
 package com.practice.projectone.teammanagement.core;
 
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.BoardImpl;
 import com.practice.projectone.teammanagement.models.PersonImpl;
@@ -14,6 +15,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     private final static String PERSON_ALREADY_EXIST = "Person %s already exist. Choose a different name!";
     private final static String TEAM_ALREADY_EXIST = "Team %s already exist. Choose a different name!";
     private final static String PERSON_ALREADY_MEMBER = "%s is already a member of this team!";
+    public static final String DUPLICATE_BOARD_NAME = "Board name already taken. Choose another";
     private final List<Team> teams;
     private final List<Person> people;
     private final List<Board> boards;
@@ -49,7 +51,12 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public void createBoard(String teamName, String boardName) {
         Team team = findTeamByName(teamName);
+
         Board board = new BoardImpl(boardName);
+
+        if (boards.contains(board)) {
+            throw new DuplicateEntityException(DUPLICATE_BOARD_NAME);
+        }
 
         team.createBoard(board);
 
@@ -94,6 +101,11 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public boolean personExist(String personName) {
         return findElementByName(personName, people, "person") != null;
+    }
+
+    @Override
+    public boolean boardExists(String boardName) {
+        return findElementByName(boardName, boards, "board") != null;
     }
 
     @Override

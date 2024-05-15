@@ -7,7 +7,6 @@ import com.practice.projectone.teammanagement.models.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,6 +61,12 @@ public class BoardImpl implements Board {
         tasks.add(task);
 
         addEventToHistory(new EventLogImpl(String.format("New task %s added to board %s", task, boardName)));
+    }
+
+    @Override
+    public void removeTask(Task task){
+        tasks.remove(task);
+        addEventToHistory(new EventLogImpl((String.format("Task ID%d removed from board %s.", task.getId(), boardName))));
     }
 
     private void addEventToHistory(EventLog eventLog) {

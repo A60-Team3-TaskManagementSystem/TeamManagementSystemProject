@@ -53,15 +53,21 @@ public class PersonImpl implements Person {
     @Override
     public void addTask(Task task) {
         tasks.add(task);
-        addEventToHistory(new EventLogImpl(String.format("New item %s added to %s list", task, memberName)));
+        addEventToHistory(new EventLogImpl(String.format("New task %s added to %s list.", task, memberName)));
     }
 
-    private void addEventToHistory(EventLog eventLog) {
-        eventLogs.add(eventLog);
+    @Override
+    public void removeTask(Task task){
+        tasks.remove(task);
+        addEventToHistory(new EventLogImpl((String.format("Task ID%d removed from %s list.", task.getId(), memberName))));
     }
 
     @Override
     public String toString() {
         return memberName;
+    }
+
+    private void addEventToHistory(EventLog eventLog) {
+        eventLogs.add(eventLog);
     }
 }

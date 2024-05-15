@@ -4,19 +4,18 @@ import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.models.FeedbackImpl;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Task;
-import com.practice.projectone.teammanagement.models.enums.Status;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateFeedback extends BaseCommand{
+public class CreateFeedbackCommand extends BaseCommand{
     private static final int EXPECTED_PARAMETERS_COUNT = 4;
     private static final String STORY_CREATED_SUCCESSFULLY = "Story created successfully in %s";
     public static final String INVALID_RATING = "Invalid value for rating. Should be a number.";
 
 
-    public CreateFeedback(TeamRepository teamRepository) {
+    public CreateFeedbackCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 
