@@ -2,8 +2,8 @@ package com.practice.projectone.teammanagement.commands.listing;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.contracts.Bug;
-import com.practice.projectone.teammanagement.models.enums.Status;
+import com.practice.projectone.teammanagement.models.tasks.contracts.Bug;
+import com.practice.projectone.teammanagement.models.tasks.enums.Status;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.Comparator;
@@ -32,7 +32,7 @@ public class ListBugsCommand extends BaseCommand {
         if (sort.equalsIgnoreCase("nosort")) {
             if (filter1.equalsIgnoreCase("nofilter")) {
                 if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().forEach(builder::append);
+                    bugs.forEach(builder::append);
                 } else {
                     bugs.stream().filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
                 }

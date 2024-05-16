@@ -2,9 +2,8 @@ package com.practice.projectone.teammanagement.commands.listing;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.contracts.Bug;
-import com.practice.projectone.teammanagement.models.contracts.Story;
-import com.practice.projectone.teammanagement.models.enums.Status;
+import com.practice.projectone.teammanagement.models.tasks.contracts.Story;
+import com.practice.projectone.teammanagement.models.tasks.enums.Status;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.Comparator;

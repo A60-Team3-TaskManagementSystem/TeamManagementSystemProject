@@ -3,7 +3,7 @@ package com.practice.projectone.teammanagement.models;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.contracts.EventLog;
 import com.practice.projectone.teammanagement.models.contracts.Person;
-import com.practice.projectone.teammanagement.models.contracts.Task;
+import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class PersonImpl implements Person {
             "Employee name must be between %s and %s characters long!",
             NAME_LEN_MIN,
             NAME_LEN_MAX);
-    public static final String WRONG_MEMBER = "The task is not assigned to %s";
+    public static final String WRONG_MEMBER = "This task is not assigned to %s";
     private String memberName;
     private final List<Task> tasks;
     private final List<EventLog> eventLogs;
@@ -54,7 +54,7 @@ public class PersonImpl implements Person {
     }
 
     @Override
-    public void removeTask(Task task) {
+    public void unassignTask(Task task) {
         if (!tasks.contains(task)) {
             throw new ElementNotFoundException(String.format(WRONG_MEMBER, memberName));
         }

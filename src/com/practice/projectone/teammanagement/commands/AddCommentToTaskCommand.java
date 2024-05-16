@@ -2,7 +2,7 @@ package com.practice.projectone.teammanagement.commands;
 
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.models.contracts.Comment;
-import com.practice.projectone.teammanagement.models.contracts.Task;
+import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -12,7 +12,6 @@ public class AddCommentToTaskCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 3;
     private static final String INVALID_TASK_ID = "Invalid value for taskID. Should be a number.";
     private static final String COMMENT_ADDED = "Comment successfully added to task with ID %d";
-
 
     public AddCommentToTaskCommand(TeamRepository teamRepository) {
         super(teamRepository);

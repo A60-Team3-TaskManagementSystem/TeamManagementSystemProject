@@ -1,9 +1,9 @@
 package com.practice.projectone.teammanagement.core;
 
-import com.practice.projectone.teammanagement.commands.CreateBugToBoardCommand;
-import com.practice.projectone.teammanagement.commands.CreateNewBoardInTeamCommand;
 import com.practice.projectone.teammanagement.commands.contracts.Command;
-import com.practice.projectone.teammanagement.commands.CreateStoryToBoardCommand;
+import com.practice.projectone.teammanagement.commands.createcommands.CreateBugToBoardCommand;
+import com.practice.projectone.teammanagement.commands.createcommands.CreateNewBoardInTeamCommand;
+import com.practice.projectone.teammanagement.commands.createcommands.CreateStoryToBoardCommand;
 import com.practice.projectone.teammanagement.commands.enums.CommandType;
 import com.practice.projectone.teammanagement.core.contracts.CommandFactory;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;

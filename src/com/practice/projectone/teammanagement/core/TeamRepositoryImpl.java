@@ -3,11 +3,18 @@ package com.practice.projectone.teammanagement.core;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
-import com.practice.projectone.teammanagement.models.*;
+import com.practice.projectone.teammanagement.models.BoardImpl;
+import com.practice.projectone.teammanagement.models.CommentImpl;
+import com.practice.projectone.teammanagement.models.PersonImpl;
+import com.practice.projectone.teammanagement.models.TeamImpl;
 import com.practice.projectone.teammanagement.models.contracts.*;
-import com.practice.projectone.teammanagement.models.enums.Priority;
-import com.practice.projectone.teammanagement.models.enums.Severity;
-import com.practice.projectone.teammanagement.models.enums.Size;
+import com.practice.projectone.teammanagement.models.tasks.BugImpl;
+import com.practice.projectone.teammanagement.models.tasks.FeedbackImpl;
+import com.practice.projectone.teammanagement.models.tasks.StoryImpl;
+import com.practice.projectone.teammanagement.models.tasks.contracts.*;
+import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
+import com.practice.projectone.teammanagement.models.tasks.enums.Severity;
+import com.practice.projectone.teammanagement.models.tasks.enums.Size;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,14 +52,17 @@ public class TeamRepositoryImpl implements TeamRepository {
     public List<Person> getMembers() {
         return new ArrayList<>(people);
     }
+
     @Override
     public List<Bug> getBugs() {
         return new ArrayList<>(bugs);
     }
+
     @Override
     public List<Story> getStories() {
         return new ArrayList<>(stories);
     }
+
     @Override
     public List<Feedback> getFeedbacks() {
         return new ArrayList<>(feedbacks);
@@ -65,6 +75,22 @@ public class TeamRepositoryImpl implements TeamRepository {
         tasks.addAll(feedbacks);
 
         return tasks;
+    }
+
+    @Override
+    public List<AssigneeAble> getAssigneeAble() {
+        List<AssigneeAble> assigneeAbles = new ArrayList<>(bugs);
+        assigneeAbles.addAll(stories);
+
+        return assigneeAbles;
+    }
+
+    @Override
+    public List<PrioritizeAble> getPrioritizeAble() {
+        List<PrioritizeAble> prioritizeAbles = new ArrayList<>(bugs);
+        prioritizeAbles.addAll(stories);
+
+        return prioritizeAbles;
     }
 
     @Override
@@ -151,21 +177,6 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public boolean teamExist(Team team) {
-        return teams.contains(team);
-    }
-
-    @Override
-    public boolean personExist(Person person) {
-        return people.contains(person);
-    }
-
-    @Override
-    public boolean boardExists(Board board) {
-        return boards.contains(board);
-    }
-
-    @Override
     public Team findTeamByName(String name) {
         return findElementByName(name, teams, "team");
     }
@@ -182,17 +193,45 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public Task findTaskByID(int id) {
-        return getTasks().stream()
-                .filter(task -> task.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new ElementNotFoundException(String.format(TASK_NOT_EXIST, id)));
+        return findElementByID(id, getTasks(), "task");
+    }
+
+    @Override
+    public Bug findBugByID(int id) {
+        return findElementByID(id, getBugs(), "bug");
+    }
+
+    @Override
+    public Story findStoryByID(int id) {
+        return findElementByID(id, getStories(), "story");
+    }
+
+    @Override
+    public Feedback findFeedbackById(int id) {
+        return findElementByID(id, getFeedbacks(), "feedback");
+    }
+
+    @Override
+    public AssigneeAble findAssigneeAble(int id) {
+        return findElementByID(id, getAssigneeAble(), "task");
+    }
+
+    @Override
+    public PrioritizeAble findPriorityAbleById(int id) {
+        return findElementByID(id, getPrioritizeAble(), "task");
     }
 
     private <T extends Nameable> T findElementByName(String name, List<T> list, String lookingFor) {
-        T element = list.stream()
+        return list.stream()
                 .filter(e -> e.getName().equals(name))
                 .findFirst()
                 .orElseThrow(() -> new ElementNotFoundException(String.format(NO_SUCH_ELEMENT, lookingFor)));
-        return element;
+    }
+
+    private <T extends Identifiable> T findElementByID(int ID, List<T> list, String lookingFor) {
+        return list.stream()
+                .filter(e -> e.getId() == ID)
+                .findFirst()
+                .orElseThrow(() -> new ElementNotFoundException(String.format(NO_SUCH_ELEMENT, lookingFor)));
     }
 }

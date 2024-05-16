@@ -1,9 +1,13 @@
 package com.practice.projectone.teammanagement.core.contracts;
 
-import com.practice.projectone.teammanagement.models.contracts.*;
-import com.practice.projectone.teammanagement.models.enums.Priority;
-import com.practice.projectone.teammanagement.models.enums.Severity;
-import com.practice.projectone.teammanagement.models.enums.Size;
+import com.practice.projectone.teammanagement.models.contracts.Board;
+import com.practice.projectone.teammanagement.models.contracts.Comment;
+import com.practice.projectone.teammanagement.models.contracts.Person;
+import com.practice.projectone.teammanagement.models.contracts.Team;
+import com.practice.projectone.teammanagement.models.tasks.contracts.*;
+import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
+import com.practice.projectone.teammanagement.models.tasks.enums.Severity;
+import com.practice.projectone.teammanagement.models.tasks.enums.Size;
 
 import java.util.List;
 
@@ -19,6 +23,10 @@ public interface TeamRepository {
     List<Feedback> getFeedbacks();
 
     List<Task> getTasks();
+
+    List<AssigneeAble> getAssigneeAble();
+
+    List<PrioritizeAble> getPrioritizeAble();
 
     void addPerson(Person person);
 
@@ -50,9 +58,13 @@ public interface TeamRepository {
 
     Task findTaskByID(int id);
 
-    boolean teamExist(Team team);
+    Bug findBugByID(int id);
 
-    boolean personExist(Person person);
+    Story findStoryByID(int id);
 
-    boolean boardExists(Board board);
+    Feedback findFeedbackById(int id);
+
+    AssigneeAble findAssigneeAble(int id);
+
+    PrioritizeAble findPriorityAbleById(int id);
 }

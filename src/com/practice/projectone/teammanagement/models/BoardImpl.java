@@ -1,9 +1,10 @@
 package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
+import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.EventLog;
-import com.practice.projectone.teammanagement.models.contracts.Task;
+import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class BoardImpl implements Board {
             NAME_LEN_MIN,
             NAME_LEN_MAX);
     public static final String DUPLICATE_ENTRY = "Task already exists";
+    public static final String TASK_NOT_FOUND = "Task ID%d not found in board %s";
     private String boardName;
     private final List<Task> tasks;
     private final List<EventLog> eventLogs;
@@ -33,7 +35,7 @@ public class BoardImpl implements Board {
     }
 
     private void setBoardName(String boardName) {
-        ValidationHelpers.validateStringLength(boardName,NAME_LEN_MIN,NAME_LEN_MAX,NAME_LEN_ERR);
+        ValidationHelpers.validateStringLength(boardName, NAME_LEN_MIN, NAME_LEN_MAX, NAME_LEN_ERR);
         this.boardName = boardName;
     }
 
@@ -64,8 +66,11 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public void removeTask(Task task){
-        tasks.remove(task);
+    public void removeTask(Task task) {
+        if (!tasks.remove(task)) {
+            throw new ElementNotFoundException(String.format(TASK_NOT_FOUND, task.getId(), boardName));
+        }
+
         addEventToHistory(new EventLogImpl((String.format("Task ID%d removed from board %s.", task.getId(), boardName))));
     }
 

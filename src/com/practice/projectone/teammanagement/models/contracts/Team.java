@@ -2,7 +2,7 @@ package com.practice.projectone.teammanagement.models.contracts;
 
 import java.util.List;
 
-public interface Team extends Nameable{
+public interface Team extends Nameable {
 
     List<Person> getMembers();
 
