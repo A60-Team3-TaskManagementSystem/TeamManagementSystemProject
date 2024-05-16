@@ -1,9 +1,9 @@
 package com.practice.projectone.teammanagement.core;
 
-import com.practice.projectone.teammanagement.commands.CreateBugCommand;
+import com.practice.projectone.teammanagement.commands.CreateBugToBoardCommand;
 import com.practice.projectone.teammanagement.commands.CreateNewBoardInTeamCommand;
 import com.practice.projectone.teammanagement.commands.contracts.Command;
-import com.practice.projectone.teammanagement.commands.CreateStoryCommand;
+import com.practice.projectone.teammanagement.commands.CreateStoryToBoardCommand;
 import com.practice.projectone.teammanagement.commands.enums.CommandType;
 import com.practice.projectone.teammanagement.core.contracts.CommandFactory;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
@@ -18,9 +18,9 @@ public class CommandFactoryImpl implements CommandFactory {
             case CREATENEWBOARDINTEAM:
                 return new CreateNewBoardInTeamCommand(teamRepository);
             case CREATEBUG:
-                return new CreateBugCommand(teamRepository);
+                return new CreateBugToBoardCommand(teamRepository);
             case CREATESTORY:
-                return new CreateStoryCommand(teamRepository);
+                return new CreateStoryToBoardCommand(teamRepository);
             case ADDCOMMENT:
                 return new AddCommentCommand(vehicleDealershipRepository);
             case ADDVEHICLE:

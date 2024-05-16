@@ -39,7 +39,7 @@ public class StoryImpl extends Content implements Story {
 
     @Override
     public void changeSeverity(Severity severity) {
-        throw new InvalidTaskException("Bug/Story doesn't have rating");
+        throw new InvalidTaskException("Bug/Story doesn't have severity");
     }
 
     @Override

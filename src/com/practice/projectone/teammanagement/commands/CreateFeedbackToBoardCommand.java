@@ -8,13 +8,13 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateFeedbackCommand extends BaseCommand {
+public class CreateFeedbackToBoardCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 4;
     private static final String STORY_CREATED_SUCCESSFULLY = "Story created successfully in %s";
     public static final String INVALID_RATING = "Invalid value for rating. Should be a number.";
 
 
-    public CreateFeedbackCommand(TeamRepository teamRepository) {
+    public CreateFeedbackToBoardCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 
@@ -32,11 +32,11 @@ public class CreateFeedbackCommand extends BaseCommand {
     }
 
     private String createFeedback(String title, String description, int rating, String boardName) {
-        Feedback feedback = getTeamRepository().createFeedback(title, description, rating);
 
         Board board = getTeamRepository().findBoardByName(boardName);
+        Feedback feedback = getTeamRepository().createFeedback(title, description, rating);
 
-        getTeamRepository().createTask(board, feedback);
+        getTeamRepository().addTaskToBoard(board, feedback);
 
         return String.format(STORY_CREATED_SUCCESSFULLY, boardName);
     }

@@ -37,46 +37,26 @@ public class ChangeTaskAttributeCommand extends BaseCommand {
         switch (taskAttribute) {
             case SIZE -> {
                 Size size = ParsingHelpers.tryParseEnum(newTaskAttributeValue, Size.class);
-                changeSize(size);
+                task.changeSize(size);
             }
             case RATING -> {
                 int rating = ParsingHelpers.tryParseInt(newTaskAttributeValue, INVALID_RATING);
-                changeRating(rating);
+                task.changeRating(rating);
             }
             case STATUS -> {
                 Status status = ParsingHelpers.tryParseEnum(newTaskAttributeValue, Status.class);
-                changeStatus(status);
+                task.changeStatus(status);
             }
             case PRIORITY -> {
                 Priority priority = ParsingHelpers.tryParseEnum(newTaskAttributeValue, Priority.class);
-                changePriority(priority);
+                task.changePriority(priority);
             }
             case SEVERITY -> {
                 Severity severity = ParsingHelpers.tryParseEnum(newTaskAttributeValue, Severity.class);
-                changeSeverity(severity);
+                task.changeSeverity(severity);
             }
         }
 
         return String.format("Task %s successfully changed to %s", taskAttribute, newTaskAttributeValue);
-    }
-
-    private void changeSeverity(Severity severity) {
-        task.changeSeverity(severity);
-    }
-
-    private void changeStatus(Status status) {
-        task.changeStatus(status);
-    }
-
-    private void changeSize(Size size) {
-        task.changeSize(size);
-    }
-
-    private void changePriority(Priority priority) {
-        task.changePriority(priority);
-    }
-
-    private void changeRating(int rating) {
-        task.changeRating(rating);
     }
 }

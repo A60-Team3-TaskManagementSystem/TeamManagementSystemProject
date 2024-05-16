@@ -28,7 +28,9 @@ public class ListTasksCommand extends BaseCommand {
     private String listTasks(String sort, String filter) {
         StringBuilder builder = new StringBuilder();
         List<Team> teams = getTeamRepository().getTeams();
-        List<Board> boards = teams.stream().flatMap(team -> team.getBoards().stream()).toList();
+        List<Board> boards = teams.stream()
+                .flatMap(team -> team.getBoards().stream())
+                .toList();
         if (sort.equalsIgnoreCase("nosort") && filter.equalsIgnoreCase("nofilter")){
             boards
                     .stream()

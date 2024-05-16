@@ -12,6 +12,12 @@ public interface TeamRepository {
 
     List<Team> getTeams();
 
+    List<Bug> getBugs();
+
+    List<Story> getStories();
+
+    List<Feedback> getFeedbacks();
+
     List<Task> getTasks();
 
     void addPerson(Person person);
@@ -26,7 +32,7 @@ public interface TeamRepository {
 
     void createBoard(String team, String boardName);
 
-    void createTask(Board board, Task task);
+    void addTaskToBoard(Board board, Task task);
 
     Bug createBug(String teamName, String description, Priority priority, Severity severity, String assigneeName, List<String> steps);
 
@@ -44,9 +50,9 @@ public interface TeamRepository {
 
     Task findTaskByID(int id);
 
-    boolean teamExist(String teamName);
+    boolean teamExist(Team team);
 
-    boolean personExist(String personName);
+    boolean personExist(Person person);
 
-    boolean boardExists(String boardName);
+    boolean boardExists(Board board);
 }

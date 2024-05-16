@@ -10,12 +10,12 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateStoryCommand extends BaseCommand {
+public class CreateStoryToBoardCommand extends BaseCommand {
 
     private static final int EXPECTED_PARAMETERS_COUNT = 6;
     private static final String STORY_CREATED_SUCCESSFULLY = "Story created successfully in %s";
 
-    public CreateStoryCommand(TeamRepository teamRepository) {
+    public CreateStoryToBoardCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 
@@ -38,10 +38,10 @@ public class CreateStoryCommand extends BaseCommand {
     private String createStory(String title, String description, Priority priority,
                                Size size, String assigneeName, String boardName) {
 
-        Story story = getTeamRepository().createStory(title, description, priority, size, assigneeName);
         Board board = getTeamRepository().findBoardByName(boardName);
+        Story story = getTeamRepository().createStory(title, description, priority, size, assigneeName);
 
-        getTeamRepository().createTask(board, story);
+        getTeamRepository().addTaskToBoard(board, story);
 
         return String.format(STORY_CREATED_SUCCESSFULLY, boardName);
     }

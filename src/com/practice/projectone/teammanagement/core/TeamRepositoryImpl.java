@@ -22,13 +22,18 @@ public class TeamRepositoryImpl implements TeamRepository {
     private final List<Team> teams;
     private final List<Person> people;
     private final List<Board> boards;
-    private final List<Task> tasks;
+    private final List<Bug> bugs;
+    private final List<Story> stories;
+    private final List<Feedback> feedbacks;
+
 
     public TeamRepositoryImpl() {
         teams = new ArrayList<>();
         people = new ArrayList<>();
         boards = new ArrayList<>();
-        tasks = new ArrayList<>();
+        bugs = new ArrayList<>();
+        stories = new ArrayList<>();
+        feedbacks = new ArrayList<>();
     }
 
     @Override
@@ -40,10 +45,26 @@ public class TeamRepositoryImpl implements TeamRepository {
     public List<Person> getMembers() {
         return new ArrayList<>(people);
     }
+    @Override
+    public List<Bug> getBugs() {
+        return new ArrayList<>(bugs);
+    }
+    @Override
+    public List<Story> getStories() {
+        return new ArrayList<>(stories);
+    }
+    @Override
+    public List<Feedback> getFeedbacks() {
+        return new ArrayList<>(feedbacks);
+    }
 
     @Override
     public List<Task> getTasks() {
-        return new ArrayList<>(tasks);
+        List<Task> tasks = new ArrayList<>(bugs);
+        tasks.addAll(stories);
+        tasks.addAll(feedbacks);
+
+        return tasks;
     }
 
     @Override
@@ -58,17 +79,26 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public Bug createBug(String title, String description, Priority priority, Severity severity, String assigneeName, List<String> steps) {
-        return new BugImpl(title, description, priority, severity, assigneeName, steps);
+        Bug bug = new BugImpl(title, description, priority, severity, assigneeName, steps);
+        bugs.add(bug);
+
+        return bug;
     }
 
     @Override
     public Story createStory(String title, String description, Priority priority, Size size, String assigneeName) {
-        return new StoryImpl(title, description, priority, size, assigneeName);
+        Story story = new StoryImpl(title, description, priority, size, assigneeName);
+        stories.add(story);
+
+        return story;
     }
 
     @Override
     public Feedback createFeedback(String title, String description, int rating) {
-        return new FeedbackImpl(title, description, rating);
+        Feedback feedback = new FeedbackImpl(title, description, rating);
+        feedbacks.add(feedback);
+
+        return feedback;
     }
 
     @Override
@@ -92,9 +122,8 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public void createTask(Board board, Task task) {
+    public void addTaskToBoard(Board board, Task task) {
         board.addTask(task);
-        tasks.add(task);
     }
 
     @Override
@@ -122,18 +151,18 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public boolean teamExist(String teamName) {
-        return findElementByName(teamName, teams, "team") != null;
+    public boolean teamExist(Team team) {
+        return teams.contains(team);
     }
 
     @Override
-    public boolean personExist(String personName) {
-        return findElementByName(personName, people, "person") != null;
+    public boolean personExist(Person person) {
+        return people.contains(person);
     }
 
     @Override
-    public boolean boardExists(String boardName) {
-        return findElementByName(boardName, boards, "board") != null;
+    public boolean boardExists(Board board) {
+        return boards.contains(board);
     }
 
     @Override

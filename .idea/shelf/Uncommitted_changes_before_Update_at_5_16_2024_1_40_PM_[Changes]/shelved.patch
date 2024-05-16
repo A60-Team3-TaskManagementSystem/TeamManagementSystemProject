@@ -1,0 +1,192 @@
+Index: src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.listing;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TeamRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Board;\r\nimport com.practice.projectone.teammanagement.models.contracts.Task;\r\nimport com.practice.projectone.teammanagement.models.contracts.Team;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.Comparator;\r\nimport java.util.List;\r\n\r\npublic class ListTasksCommand extends BaseCommand {\r\n\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;\r\n    public ListTasksCommand(TeamRepository teamRepository) {\r\n        super(teamRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n        String sort = parameters.get(0);\r\n        String filter = parameters.get(1);\r\n        return listTasks(sort, filter);\r\n    }\r\n\r\n    private String listTasks(String sort, String filter) {\r\n        StringBuilder builder = new StringBuilder();\r\n        List<Team> teams = getTeamRepository().getTeams();\r\n        List<Board> boards = teams.stream().flatMap(team -> team.getBoards().stream()).toList();\r\n        if (sort.equalsIgnoreCase(\"nosort\") && filter.equalsIgnoreCase(\"nofilter\")){\r\n            boards\r\n                    .stream()\r\n                    .flatMap(board -> board.getTasks().stream())\r\n                    .forEach(builder::append);\r\n        } else if (sort.equalsIgnoreCase(\"title\") && filter.equalsIgnoreCase(\"nofilter\")){\r\n            boards\r\n                    .stream()\r\n                    .flatMap(board -> board.getTasks().stream())\r\n                    .sorted(Comparator.comparing(Task::getName))\r\n                    .forEach(builder::append);\r\n        } else if (sort.equalsIgnoreCase(\"title\") && !filter.equalsIgnoreCase(\"nofilter\")){\r\n            boards\r\n                    .stream()\r\n                    .flatMap(board -> board.getTasks().stream())\r\n                    .filter(task -> task.getName().equals(filter))\r\n                    .sorted(Comparator.comparing(Task::getName))\r\n                    .forEach(builder::append);\r\n        } else {\r\n            boards\r\n                    .stream()\r\n                    .flatMap(board -> board.getTasks().stream())\r\n                    .filter(task -> task.getName().equals(filter))\r\n                    .forEach(builder::append);\r\n        }\r\n        return builder.toString();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java b/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java	(revision 2f4b5d84dd824854ef734908ce9d6707f77dcbc2)
++++ b/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java	(date 1715854858959)
+@@ -28,7 +28,9 @@
+     private String listTasks(String sort, String filter) {
+         StringBuilder builder = new StringBuilder();
+         List<Team> teams = getTeamRepository().getTeams();
+-        List<Board> boards = teams.stream().flatMap(team -> team.getBoards().stream()).toList();
++        List<Board> boards = teams.stream()
++                .flatMap(team -> team.getBoards().stream())
++                .toList();
+         if (sort.equalsIgnoreCase("nosort") && filter.equalsIgnoreCase("nofilter")){
+             boards
+                     .stream()
+Index: src/com/practice/projectone/teammanagement/models/StoryImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.models;\r\n\r\nimport com.practice.projectone.teammanagement.exceptions.InvalidTaskException;\r\nimport com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;\r\nimport com.practice.projectone.teammanagement.models.contracts.Story;\r\nimport com.practice.projectone.teammanagement.models.enums.Priority;\r\nimport com.practice.projectone.teammanagement.models.enums.Severity;\r\nimport com.practice.projectone.teammanagement.models.enums.Size;\r\nimport com.practice.projectone.teammanagement.models.enums.Status;\r\n\r\npublic class StoryImpl extends Content implements Story {\r\n    private static final String SIZE_CHANGED = \"The size of item with ID %d switched from %s to %s\";\r\n    private static final String SIZE_SAME_ERR = \"Can't change, size already at %s\";\r\n    private static final Status INITIAL_STATUS = Status.NOT_DONE;\r\n\r\n    private Size size;\r\n\r\n    public StoryImpl(String title, String description, Priority priority, Size size, String assigneeName) {\r\n        super(title, description, INITIAL_STATUS, priority, assigneeName);\r\n        this.size = size;\r\n    }\r\n\r\n    @Override\r\n    public Size getSize() {\r\n        return size;\r\n    }\r\n\r\n    @Override\r\n    public void changeSize(Size newSize) {\r\n        Size oldSize = getSize();\r\n\r\n        if (newSize.equals(oldSize)) {\r\n            throw new InvalidUserInputException(String.format(SIZE_SAME_ERR, newSize));\r\n        }\r\n\r\n        this.size = newSize;\r\n        addEventToHistory(new EventLogImpl(String.format(SIZE_CHANGED, getId(), oldSize, newSize)));\r\n    }\r\n\r\n    @Override\r\n    public void changeSeverity(Severity severity) {\r\n        throw new InvalidTaskException(\"Bug/Story doesn't have rating\");\r\n    }\r\n\r\n    @Override\r\n    protected void validateStatus(Status status) {\r\n        if (!status.getTaskType().equals(\"Story\") && !status.getTaskType().equals(\"All\")) {\r\n            throw new IllegalArgumentException(\"Please provide valid story status\");\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/models/StoryImpl.java b/src/com/practice/projectone/teammanagement/models/StoryImpl.java
+--- a/src/com/practice/projectone/teammanagement/models/StoryImpl.java	(revision 2f4b5d84dd824854ef734908ce9d6707f77dcbc2)
++++ b/src/com/practice/projectone/teammanagement/models/StoryImpl.java	(date 1715855564178)
+@@ -39,7 +39,7 @@
+ 
+     @Override
+     public void changeSeverity(Severity severity) {
+-        throw new InvalidTaskException("Bug/Story doesn't have rating");
++        throw new InvalidTaskException("Bug/Story doesn't have severity");
+     }
+ 
+     @Override
+Index: src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.core;\r\n\r\nimport com.practice.projectone.teammanagement.core.contracts.TeamRepository;\r\nimport com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;\r\nimport com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;\r\nimport com.practice.projectone.teammanagement.models.*;\r\nimport com.practice.projectone.teammanagement.models.contracts.*;\r\nimport com.practice.projectone.teammanagement.models.enums.Priority;\r\nimport com.practice.projectone.teammanagement.models.enums.Severity;\r\nimport com.practice.projectone.teammanagement.models.enums.Size;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class TeamRepositoryImpl implements TeamRepository {\r\n    private final static String PERSON_ALREADY_EXIST = \"Person %s already exist. Choose a different name!\";\r\n    private final static String TEAM_ALREADY_EXIST = \"Team %s already exist. Choose a different name!\";\r\n    private final static String PERSON_ALREADY_MEMBER = \"%s is already a member of this team!\";\r\n    public static final String DUPLICATE_BOARD_NAME = \"Board name already taken. Choose another\";\r\n    public static final String NO_SUCH_ELEMENT = \"No such %s found\";\r\n    public static final String TASK_NOT_EXIST = \"Task with ID%d does not exist.\";\r\n    private final List<Team> teams;\r\n    private final List<Person> people;\r\n    private final List<Board> boards;\r\n    private final List<Task> tasks;\r\n\r\n    public TeamRepositoryImpl() {\r\n        teams = new ArrayList<>();\r\n        people = new ArrayList<>();\r\n        boards = new ArrayList<>();\r\n        tasks = new ArrayList<>();\r\n    }\r\n\r\n    @Override\r\n    public List<Team> getTeams() {\r\n        return new ArrayList<>(teams);\r\n    }\r\n\r\n    @Override\r\n    public List<Person> getMembers() {\r\n        return new ArrayList<>(people);\r\n    }\r\n\r\n    @Override\r\n    public List<Task> getTasks() {\r\n        return new ArrayList<>(tasks);\r\n    }\r\n\r\n    @Override\r\n    public Person createPerson(String name) {\r\n        return new PersonImpl(name);\r\n    }\r\n\r\n    @Override\r\n    public Team createTeam(String teamName) {\r\n        return new TeamImpl(teamName);\r\n    }\r\n\r\n    @Override\r\n    public Bug createBug(String title, String description, Priority priority, Severity severity, String assigneeName, List<String> steps) {\r\n        return new BugImpl(title, description, priority, severity, assigneeName, steps);\r\n    }\r\n\r\n    @Override\r\n    public Story createStory(String title, String description, Priority priority, Size size, String assigneeName) {\r\n        return new StoryImpl(title, description, priority, size, assigneeName);\r\n    }\r\n\r\n    @Override\r\n    public Feedback createFeedback(String title, String description, int rating) {\r\n        return new FeedbackImpl(title, description, rating);\r\n    }\r\n\r\n    @Override\r\n    public Comment createComment(String author, String description) {\r\n        return new CommentImpl(author, description);\r\n    }\r\n\r\n    @Override\r\n    public void createBoard(String teamName, String boardName) {\r\n        Team team = findTeamByName(teamName);\r\n\r\n        Board board = new BoardImpl(boardName);\r\n\r\n        if (boards.contains(board)) {\r\n            throw new DuplicateEntityException(DUPLICATE_BOARD_NAME);\r\n        }\r\n\r\n        team.createBoard(board);\r\n\r\n        boards.add(board);\r\n    }\r\n\r\n    @Override\r\n    public void createTask(Board board, Task task) {\r\n        board.addTask(task);\r\n        tasks.add(task);\r\n    }\r\n\r\n    @Override\r\n    public void addPerson(Person person) {\r\n        if (people.contains(person)) {\r\n            throw new IllegalArgumentException(String.format(PERSON_ALREADY_EXIST, person.getName()));\r\n        }\r\n        people.add(person);\r\n    }\r\n\r\n    @Override\r\n    public void addTeam(Team team) {\r\n        if (teams.contains(team)) {\r\n            throw new IllegalArgumentException(String.format(TEAM_ALREADY_EXIST, team.getName()));\r\n        }\r\n        teams.add(team);\r\n    }\r\n\r\n    @Override\r\n    public void addMemberToTeam(Person person, Team team) {\r\n        if (team.getMembers().contains(person)) {\r\n            throw new IllegalArgumentException(String.format(PERSON_ALREADY_MEMBER, person.getName()));\r\n        }\r\n        team.addMember(person);\r\n    }\r\n\r\n    @Override\r\n    public boolean teamExist(String teamName) {\r\n        return findElementByName(teamName, teams, \"team\") != null;\r\n    }\r\n\r\n    @Override\r\n    public boolean personExist(String personName) {\r\n        return findElementByName(personName, people, \"person\") != null;\r\n    }\r\n\r\n    @Override\r\n    public boolean boardExists(String boardName) {\r\n        return findElementByName(boardName, boards, \"board\") != null;\r\n    }\r\n\r\n    @Override\r\n    public Team findTeamByName(String name) {\r\n        return findElementByName(name, teams, \"team\");\r\n    }\r\n\r\n    @Override\r\n    public Person findPersonByName(String name) {\r\n        return findElementByName(name, people, \"person\");\r\n    }\r\n\r\n    @Override\r\n    public Board findBoardByName(String name) {\r\n        return findElementByName(name, boards, \"board\");\r\n    }\r\n\r\n    @Override\r\n    public Task findTaskByID(int id) {\r\n        return getTasks().stream()\r\n                .filter(task -> task.getId() == id)\r\n                .findFirst()\r\n                .orElseThrow(() -> new ElementNotFoundException(String.format(TASK_NOT_EXIST, id)));\r\n    }\r\n\r\n    private <T extends Nameable> T findElementByName(String name, List<T> list, String lookingFor) {\r\n        T element = list.stream()\r\n                .filter(e -> e.getName().equals(name))\r\n                .findFirst()\r\n                .orElseThrow(() -> new ElementNotFoundException(String.format(NO_SUCH_ELEMENT, lookingFor)));\r\n        return element;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java b/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java
+--- a/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java	(revision 2f4b5d84dd824854ef734908ce9d6707f77dcbc2)
++++ b/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java	(date 1715855861600)
+@@ -22,13 +22,18 @@
+     private final List<Team> teams;
+     private final List<Person> people;
+     private final List<Board> boards;
+-    private final List<Task> tasks;
++    private final List<Bug> bugs;
++    private final List<Story> stories;
++    private final List<Feedback> feedbacks;
++
+ 
+     public TeamRepositoryImpl() {
+         teams = new ArrayList<>();
+         people = new ArrayList<>();
+         boards = new ArrayList<>();
+-        tasks = new ArrayList<>();
++        bugs = new ArrayList<>();
++        stories = new ArrayList<>();
++        feedbacks = new ArrayList<>();
+     }
+ 
+     @Override
+@@ -40,10 +45,26 @@
+     public List<Person> getMembers() {
+         return new ArrayList<>(people);
+     }
++    @Override
++    public List<Bug> getBugs() {
++        return new ArrayList<>(bugs);
++    }
++    @Override
++    public List<Story> getStories() {
++        return new ArrayList<>(stories);
++    }
++    @Override
++    public List<Feedback> getFeedbacks() {
++        return new ArrayList<>(feedbacks);
++    }
+ 
+     @Override
+     public List<Task> getTasks() {
+-        return new ArrayList<>(tasks);
++        List<Task> tasks = new ArrayList<>(bugs);
++        tasks.addAll(stories);
++        tasks.addAll(feedbacks);
++
++        return tasks;
+     }
+ 
+     @Override
+@@ -122,18 +143,18 @@
+     }
+ 
+     @Override
+-    public boolean teamExist(String teamName) {
+-        return findElementByName(teamName, teams, "team") != null;
++    public boolean teamExist(Team team) {
++        return teams.contains(team);
+     }
+ 
+     @Override
+-    public boolean personExist(String personName) {
+-        return findElementByName(personName, people, "person") != null;
++    public boolean personExist(Person person) {
++        return people.contains(person);
+     }
+ 
+     @Override
+-    public boolean boardExists(String boardName) {
+-        return findElementByName(boardName, boards, "board") != null;
++    public boolean boardExists(Board board) {
++        return boards.contains(board);
+     }
+ 
+     @Override
+Index: src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.core.contracts;\r\n\r\nimport com.practice.projectone.teammanagement.models.contracts.*;\r\nimport com.practice.projectone.teammanagement.models.enums.Priority;\r\nimport com.practice.projectone.teammanagement.models.enums.Severity;\r\nimport com.practice.projectone.teammanagement.models.enums.Size;\r\n\r\nimport java.util.List;\r\n\r\npublic interface TeamRepository {\r\n    List<Person> getMembers();\r\n\r\n    List<Team> getTeams();\r\n\r\n    List<Task> getTasks();\r\n\r\n    void addPerson(Person person);\r\n\r\n    void addTeam(Team team);\r\n\r\n    void addMemberToTeam(Person person, Team team);\r\n\r\n    Person createPerson(String name);\r\n\r\n    Team createTeam(String teamName);\r\n\r\n    void createBoard(String team, String boardName);\r\n\r\n    void createTask(Board board, Task task);\r\n\r\n    Bug createBug(String teamName, String description, Priority priority, Severity severity, String assigneeName, List<String> steps);\r\n\r\n    Story createStory(String title, String description, Priority priority, Size size, String assigneeName);\r\n\r\n    Feedback createFeedback(String title, String description, int rating);\r\n\r\n    Comment createComment(String author, String description);\r\n\r\n    Team findTeamByName(String name);\r\n\r\n    Person findPersonByName(String name);\r\n\r\n    Board findBoardByName(String name);\r\n\r\n    Task findTaskByID(int id);\r\n\r\n    boolean teamExist(String teamName);\r\n\r\n    boolean personExist(String personName);\r\n\r\n    boolean boardExists(String boardName);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java b/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java
+--- a/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java	(revision 2f4b5d84dd824854ef734908ce9d6707f77dcbc2)
++++ b/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java	(date 1715855861977)
+@@ -12,6 +12,12 @@
+ 
+     List<Team> getTeams();
+ 
++    List<Bug> getBugs();
++
++    List<Story> getStories();
++
++    List<Feedback> getFeedbacks();
++
+     List<Task> getTasks();
+ 
+     void addPerson(Person person);
+@@ -44,9 +50,9 @@
+ 
+     Task findTaskByID(int id);
+ 
+-    boolean teamExist(String teamName);
++    boolean teamExist(Team team);
+ 
+-    boolean personExist(String personName);
++    boolean personExist(Person person);
+ 
+-    boolean boardExists(String boardName);
++    boolean boardExists(Board board);
+ }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"267e4434-ea34-4c4c-9368-85a562d5c2bf\" name=\"Changes\" comment=\"add project packages\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMember.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMember.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/ChangeTaskAttributeCommand.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/ChangeTaskAttributeCommand.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateFeedbackCommand.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateFeedbackCommand.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/Content.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/Content.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/FeedbackImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/FeedbackImpl.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/PersonImpl.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/PersonImpl.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Person.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Person.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Task.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Task.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Enum\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2gP8yEDtRxiuqyRNmJDLxsHHzGf\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"last_opened_file_path\": \"D:/IT STUFF/TelerikProjects/TeamManagementSystemProject/src/com/practice/projectone/teammanagement\",\r\n    \"settings.editor.selected.configurable\": \"inlay.hints\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CreateClassDialog.RecentsKey\">\r\n      <recent name=\"com.practice.projectone.teammanagement.commands.contracts\" />\r\n      <recent name=\"com.practice.projectone.teammanagement.core\" />\r\n      <recent name=\"com.practice.projectone.teammanagement.models\" />\r\n    </key>\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\IT STUFF\\TelerikProjects\\TeamManagementSystemProject\\src\\com\\practice\\projectone\\teammanagement\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"com.practice.projectone.teammanagement.exceptions\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"267e4434-ea34-4c4c-9368-85a562d5c2bf\" name=\"Changes\" comment=\"\" />\r\n      <created>1715588107845</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1715588107845</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"add project packages\">\r\n      <created>1715599328293</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1715599328293</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT\" value=\"false\" />\r\n    <option name=\"CHECK_NEW_TODO\" value=\"false\" />\r\n    <MESSAGE value=\"add project packages\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"add project packages\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 2f4b5d84dd824854ef734908ce9d6707f77dcbc2)
++++ b/.idea/workspace.xml	(date 1715855862538)
+@@ -2,19 +2,11 @@
+ <project version="4">
+   <component name="ChangeListManager">
+     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
+-      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMember.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMember.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/ChangeTaskAttributeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/ChangeTaskAttributeCommand.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateFeedbackCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/CreateFeedbackCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TeamRepositoryImpl.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TeamRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/Content.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/Content.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/FeedbackImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/FeedbackImpl.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/PersonImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/PersonImpl.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Person.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Task.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/StoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/StoryImpl.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />

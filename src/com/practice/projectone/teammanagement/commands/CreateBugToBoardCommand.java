@@ -1,7 +1,6 @@
 package com.practice.projectone.teammanagement.commands;
 
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.BugImpl;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Bug;
 import com.practice.projectone.teammanagement.models.enums.Priority;
@@ -12,12 +11,12 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 import java.util.Arrays;
 import java.util.List;
 
-public class CreateBugCommand extends BaseCommand {
+public class CreateBugToBoardCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 7;
     private static final String BUG_CREATED_SUCCESSFULLY = "Bug created successfully in %s";
 
 
-    public CreateBugCommand(TeamRepository teamRepository) {
+    public CreateBugToBoardCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 
@@ -40,10 +39,10 @@ public class CreateBugCommand extends BaseCommand {
     private String createBug(String title, String description, Priority priority,
                              Severity severity, String assigneeName, List<String> steps, String boardName) {
 
-        Bug bug = getTeamRepository().createBug(title, description, priority, severity, assigneeName, steps);
         Board board = getTeamRepository().findBoardByName(boardName);
+        Bug bug = getTeamRepository().createBug(title, description, priority, severity, assigneeName, steps);
 
-        getTeamRepository().createTask(board, bug);
+        getTeamRepository().addTaskToBoard(board, bug);
 
         return String.format(BUG_CREATED_SUCCESSFULLY, boardName);
     }
