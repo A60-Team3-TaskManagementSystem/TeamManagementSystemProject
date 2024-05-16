@@ -32,6 +32,7 @@ public class AssignTaskToMember extends BaseCommand{
         Task task = getTeamRepository().findTaskByID(taskID);
         Person person = getTeamRepository().findPersonByName(memberName);
 
+        task.changeAssignee(memberName);
         person.assignTask(task);
 
         return String.format(TASK_ASSIGNED, taskID, memberName);

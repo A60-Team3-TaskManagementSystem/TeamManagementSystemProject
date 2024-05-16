@@ -20,9 +20,9 @@ public class BugImpl extends Content implements Bug {
     private Severity severity;
 
     public BugImpl(String title, String description, Priority priority,
-                   Severity severity, String assigneeName, List<String> steps) {
+                   Severity severity, List<String> steps) {
 
-        super(title, description, INITIAL_STATUS, priority, assigneeName);
+        super(title, description, INITIAL_STATUS, priority);
         this.severity = severity;
         setSteps(steps);
     }

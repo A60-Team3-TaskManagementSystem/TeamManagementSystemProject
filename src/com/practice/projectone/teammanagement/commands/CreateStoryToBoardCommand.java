@@ -12,7 +12,7 @@ import java.util.List;
 
 public class CreateStoryToBoardCommand extends BaseCommand {
 
-    private static final int EXPECTED_PARAMETERS_COUNT = 6;
+    private static final int EXPECTED_PARAMETERS_COUNT = 5;
     private static final String STORY_CREATED_SUCCESSFULLY = "Story created successfully in %s";
 
     public CreateStoryToBoardCommand(TeamRepository teamRepository) {
@@ -27,19 +27,18 @@ public class CreateStoryToBoardCommand extends BaseCommand {
         String description = parameters.get(1);
         Priority priority = ParsingHelpers.tryParseEnum(parameters.get(2), Priority.class);
         Size size = ParsingHelpers.tryParseEnum(parameters.get(3), Size.class);
-        String assigneeName = parameters.get(4);
-        String boardName = parameters.get(5);
+        String boardName = parameters.get(4);
 
 
 
-        return createStory(title, description, priority, size, assigneeName, boardName);
+        return createStory(title, description, priority, size, boardName);
     }
 
     private String createStory(String title, String description, Priority priority,
-                               Size size, String assigneeName, String boardName) {
+                               Size size, String boardName) {
 
         Board board = getTeamRepository().findBoardByName(boardName);
-        Story story = getTeamRepository().createStory(title, description, priority, size, assigneeName);
+        Story story = getTeamRepository().createStory(title, description, priority, size);
 
         getTeamRepository().addTaskToBoard(board, story);
 

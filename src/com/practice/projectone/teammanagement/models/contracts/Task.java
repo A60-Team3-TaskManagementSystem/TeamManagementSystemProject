@@ -15,4 +15,5 @@ public interface Task extends Identifiable, Commentable, ActivityAble, Nameable{
     void changeSize(Size size);
     void changeRating(int rating);
     void changeSeverity(Severity severity);
+    void changeAssignee(String assigneeName);
 }

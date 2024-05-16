@@ -34,9 +34,9 @@ public interface TeamRepository {
 
     void addTaskToBoard(Board board, Task task);
 
-    Bug createBug(String teamName, String description, Priority priority, Severity severity, String assigneeName, List<String> steps);
+    Bug createBug(String teamName, String description, Priority priority, Severity severity, List<String> steps);
 
-    Story createStory(String title, String description, Priority priority, Size size, String assigneeName);
+    Story createStory(String title, String description, Priority priority, Size size);
 
     Feedback createFeedback(String title, String description, int rating);
 

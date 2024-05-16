@@ -34,6 +34,7 @@ public class UnassignTaskToMember extends BaseCommand{
         Person person = getTeamRepository().findPersonByName(memberName);
 
         person.removeTask(task);
+        task.changeAssignee(null);
 
         return String.format(TASK_UNASSIGNED, taskID, memberName);
     }

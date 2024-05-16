@@ -15,8 +15,8 @@ public class StoryImpl extends Content implements Story {
 
     private Size size;
 
-    public StoryImpl(String title, String description, Priority priority, Size size, String assigneeName) {
-        super(title, description, INITIAL_STATUS, priority, assigneeName);
+    public StoryImpl(String title, String description, Priority priority, Size size) {
+        super(title, description, INITIAL_STATUS, priority);
         this.size = size;
     }
 

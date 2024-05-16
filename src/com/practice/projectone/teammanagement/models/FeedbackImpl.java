@@ -43,6 +43,11 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
     }
 
     @Override
+    public void changeAssignee(String assigneeName) {
+        throw new InvalidTaskException("Feedback doesn't have assignee");
+    }
+
+    @Override
     public void changeRating(int rating) {
         setRating(rating);
     }

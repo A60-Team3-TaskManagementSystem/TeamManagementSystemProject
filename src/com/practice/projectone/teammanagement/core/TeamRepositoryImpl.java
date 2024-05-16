@@ -78,16 +78,16 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public Bug createBug(String title, String description, Priority priority, Severity severity, String assigneeName, List<String> steps) {
-        Bug bug = new BugImpl(title, description, priority, severity, assigneeName, steps);
+    public Bug createBug(String title, String description, Priority priority, Severity severity, List<String> steps) {
+        Bug bug = new BugImpl(title, description, priority, severity, steps);
         bugs.add(bug);
 
         return bug;
     }
 
     @Override
-    public Story createStory(String title, String description, Priority priority, Size size, String assigneeName) {
-        Story story = new StoryImpl(title, description, priority, size, assigneeName);
+    public Story createStory(String title, String description, Priority priority, Size size) {
+        Story story = new StoryImpl(title, description, priority, size);
         stories.add(story);
 
         return story;
