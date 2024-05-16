@@ -47,12 +47,14 @@ public class ListTasksCommand extends BaseCommand {
                     .filter(task -> task.getName().equals(filter))
                     .sorted(Comparator.comparing(Task::getName))
                     .forEach(builder::append);
-        } else {
+        } else if (sort.equalsIgnoreCase("nosort") && !filter.equalsIgnoreCase("nofilter")){
             boards
                     .stream()
                     .flatMap(board -> board.getTasks().stream())
                     .filter(task -> task.getName().equals(filter))
                     .forEach(builder::append);
+        } else {
+            throw new IllegalArgumentException("Invalid sorting parameter: should be \"title\" or \"nosort\"");
         }
         return builder.toString();
     }
