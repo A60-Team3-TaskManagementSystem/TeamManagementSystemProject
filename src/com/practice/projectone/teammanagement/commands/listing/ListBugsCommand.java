@@ -3,15 +3,14 @@ package com.practice.projectone.teammanagement.commands.listing;
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Bug;
-import com.practice.projectone.teammanagement.models.tasks.enums.Status;
-import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListBugsCommand extends BaseCommand {
 
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 3;
+    public static final String INVALID_SORT_PARAMETER = "Invalid sorting parameter: should be \"title\", \"priority\", \"severity\" or \"nosort\"!";
 
     public ListBugsCommand(TeamRepository teamRepository) {
         super(teamRepository);
@@ -19,99 +18,145 @@ public class ListBugsCommand extends BaseCommand {
 
     @Override
     public String execute(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String sort = parameters.get(0);
-        String filter1 = parameters.get(1);
-        String filter2 = parameters.get(2);
-        return listBugs(sort, filter1, filter2);
+        if (parameters.size() > 3){
+            throw new IllegalArgumentException("Argument count should be 3 or fewer!");
+        }
+        if (parameters.size() == 1){
+            String sort = parameters.get(0);
+            return listBugs(sort);
+        } else if (parameters.size() == 2) {
+            String sort = parameters.get(0);
+            String filter1 = parameters.get(1);
+            return listBugs(sort, filter1);
+        } else if (parameters.size() == 3) {
+            String sort = parameters.get(0);
+            String filter1 = parameters.get(1);
+            String filter2 = parameters.get(2);
+            return listBugs(sort, filter1, filter2);
+        }
+        return listAllBugs();
+    }
+
+    private String listBugs(String sort) {
+        String result;
+        switch (sort) {
+            case "title":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .sorted(Comparator.comparing(Bug::getName))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "priority":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .sorted(Comparator.comparing(Bug::getPriority))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "severity":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .sorted(Comparator.comparing(Bug::getSeverity))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "nosort":
+                return listAllBugs();
+            default:
+                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
+        }
+        return result;
+    }
+
+    private String listBugs(String sort, String filter1) {
+        String result;
+        switch (sort) {
+            case "title":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .filter(bug -> bug.getAssignee().equals(filter1) || bug.getStatus().toString().equals(filter1))
+                        .sorted(Comparator.comparing(Bug::getName))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "priority":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .filter(bug -> bug.getAssignee().equals(filter1) || bug.getStatus().toString().equals(filter1))
+                        .sorted(Comparator.comparing(Bug::getPriority))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "severity":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .filter(bug -> bug.getAssignee().equals(filter1) || bug.getStatus().toString().equals(filter1))
+                        .sorted(Comparator.comparing(Bug::getSeverity))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "nosort":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .filter(bug -> bug.getAssignee().equals(filter1) || bug.getStatus().toString().equals(filter1))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            default:
+                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
+        }
+        return result;
     }
 
     private String listBugs(String sort, String filter1, String filter2) {
-        StringBuilder builder = new StringBuilder();
-        List<Bug> bugs = getTeamRepository().getBugs();
-        if (sort.equalsIgnoreCase("nosort")) {
-            if (filter1.equalsIgnoreCase("nofilter")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
-                }
-            } else if (filter1.equalsIgnoreCase("active")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.ACTIVE).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.ACTIVE).filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
-                }
-            } else if (filter1.equalsIgnoreCase("done")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.DONE).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.DONE).filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
-                }
-            }
-        } else if (sort.equalsIgnoreCase("title")) {
-            if (filter1.equalsIgnoreCase("nofilter")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().sorted(Comparator.comparing(Bug::getName)).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getAssignee().equals(filter2)).sorted(Comparator.comparing(Bug::getName)).forEach(builder::append);
-                }
-            } else if (filter1.equalsIgnoreCase("active")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.ACTIVE).sorted(Comparator.comparing(Bug::getName)).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.ACTIVE).sorted(Comparator.comparing(Bug::getName)).filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
-                }
-            } else if (filter1.equalsIgnoreCase("done")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.DONE).sorted(Comparator.comparing(Bug::getName)).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.DONE).sorted(Comparator.comparing(Bug::getName)).filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
-                }
-            }
-        } else if (sort.equalsIgnoreCase("priority")) {
-            if (filter1.equalsIgnoreCase("nofilter")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().sorted(Comparator.comparing(Bug::getPriority)).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getAssignee().equals(filter2)).sorted(Comparator.comparing(Bug::getPriority)).forEach(builder::append);
-                }
-            } else if (filter1.equalsIgnoreCase("active")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.ACTIVE).sorted(Comparator.comparing(Bug::getPriority)).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.ACTIVE).sorted(Comparator.comparing(Bug::getPriority)).filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
-                }
-            } else if (filter1.equalsIgnoreCase("done")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.DONE).sorted(Comparator.comparing(Bug::getPriority)).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.DONE).sorted(Comparator.comparing(Bug::getPriority)).filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
-                }
-            }
-        } else if (sort.equalsIgnoreCase("severity")) {
-            if (filter1.equalsIgnoreCase("nofilter")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().sorted(Comparator.comparing(Bug::getSeverity)).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getAssignee().equals(filter2)).sorted(Comparator.comparing(Bug::getSeverity)).forEach(builder::append);
-                }
-            } else if (filter1.equalsIgnoreCase("active")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.ACTIVE).sorted(Comparator.comparing(Bug::getSeverity)).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.ACTIVE).sorted(Comparator.comparing(Bug::getSeverity)).filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
-                }
-            } else if (filter1.equalsIgnoreCase("done")) {
-                if (filter2.equalsIgnoreCase("nofilter")) {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.DONE).sorted(Comparator.comparing(Bug::getSeverity)).forEach(builder::append);
-                } else {
-                    bugs.stream().filter(bug -> bug.getStatus() == Status.DONE).sorted(Comparator.comparing(Bug::getSeverity)).filter(bug -> bug.getAssignee().equals(filter2)).forEach(builder::append);
-                }
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid sorting parameter: should be \"title\", \"priority\", \"severity\" or \"nosort\"");
+        String result;
+        switch (sort) {
+            case "title":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .filter(bug -> bug.getAssignee().equals(filter1))
+                        .filter(bug -> bug.getStatus().toString().equals(filter2))
+                        .sorted(Comparator.comparing(Bug::getName))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "priority":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .filter(bug -> bug.getAssignee().equals(filter1))
+                        .filter(bug -> bug.getStatus().toString().equals(filter2))
+                        .sorted(Comparator.comparing(Bug::getPriority))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "severity":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .filter(bug -> bug.getAssignee().equals(filter1))
+                        .filter(bug -> bug.getStatus().toString().equals(filter2))
+                        .sorted(Comparator.comparing(Bug::getSeverity))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "nosort":
+                result = getTeamRepository().getBugs()
+                        .stream()
+                        .filter(bug -> bug.getAssignee().equals(filter1))
+                        .filter(bug -> bug.getStatus().toString().equals(filter2))
+                        .map(Bug::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            default:
+                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
         }
-        return builder.toString();
+        return result;
+    }
+
+    private String listAllBugs() {
+        return getTeamRepository().getBugs()
+                .stream()
+                .map(Bug::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }
