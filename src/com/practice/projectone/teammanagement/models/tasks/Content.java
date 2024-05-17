@@ -11,9 +11,10 @@ public abstract class Content extends TaskImpl implements AssigneeAble, Prioriti
 
     private static final String PRIORITY_CHANGED = "The priority of item with ID %d switched from %s to %s";
     private static final String PRIORITY_SAME_ERR = "Can't change, priority already at %s";
-    public static final String TASK_ALREADY_ASSIGNED = "Task is already assigned to %s";
     public static final String ASSIGNEE_TRANSFERRED = "Task assignee was transferred";
     public static final String NEW_ASSIGNEE_ARRIVED = "Task given to %s";
+    public static final String ASSIGNEE_REPLACED = "Task transferred from %s to %s";
+    public static final String TASK_NOT_YET_ASSIGNED = "Task not yet assigned";
     private Priority priority;
     private String assigneeName;
 
@@ -25,14 +26,15 @@ public abstract class Content extends TaskImpl implements AssigneeAble, Prioriti
 
     @Override
     public String getAssignee() {
-        if (!assigneeIsValid()) {
-            throw new IllegalArgumentException("Task not yet assigned");
-        }
         return assigneeName;
     }
 
     @Override
     public void changeAssignee(String assigneeName) {
+        if (assigneeName == null && !assigneeIsValid()) {
+            throw new IllegalArgumentException(TASK_NOT_YET_ASSIGNED);
+        }
+
         setAssignee(assigneeName);
     }
 
@@ -54,17 +56,13 @@ public abstract class Content extends TaskImpl implements AssigneeAble, Prioriti
     }
 
     private void setAssignee(String assigneeName) {
-        if (assigneeName != null) {
-            if (assigneeIsValid()) {
-                throw new IllegalArgumentException(String.format(TASK_ALREADY_ASSIGNED, this.assigneeName));
-            }
-        }
-
         String eventTitle;
+
         if (assigneeName == null) {
             eventTitle = ASSIGNEE_TRANSFERRED;
         } else {
-            eventTitle = String.format(NEW_ASSIGNEE_ARRIVED, assigneeName);
+            eventTitle = assigneeIsValid() ? String.format(ASSIGNEE_REPLACED, getAssignee(), assigneeName)
+                                            : String.format(NEW_ASSIGNEE_ARRIVED, assigneeName);
         }
 
         this.assigneeName = assigneeName;

@@ -2,7 +2,9 @@ package com.practice.projectone.teammanagement.models.tasks;
 
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.EventLogImpl;
+import com.practice.projectone.teammanagement.models.tasks.contracts.AssigneeAble;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Bug;
+import com.practice.projectone.teammanagement.models.tasks.contracts.PrioritizeAble;
 import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
 import com.practice.projectone.teammanagement.models.tasks.enums.Severity;
 import com.practice.projectone.teammanagement.models.tasks.enums.Status;
@@ -10,7 +12,7 @@ import com.practice.projectone.teammanagement.models.tasks.enums.Status;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BugImpl extends Content implements Bug {
+public class BugImpl extends Content implements Bug, AssigneeAble, PrioritizeAble {
     private static final Status INITIAL_STATUS = Status.ACTIVE;
     private static final String SEVERITY_CHANGED = "The severity of item with ID %d switched from %s to %s";
     private static final String SEVERITY_SAME_ERR = "Can't change, severity already at %s";
