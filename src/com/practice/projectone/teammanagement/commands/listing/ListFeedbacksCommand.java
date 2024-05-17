@@ -3,15 +3,14 @@ package com.practice.projectone.teammanagement.commands.listing;
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;
-import com.practice.projectone.teammanagement.models.tasks.enums.Status;
-import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ListFeedbacksCommand extends BaseCommand {
 
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
+    public static final String INVALID_SORT_PARAMETER = "Invalid sorting parameter: should be \"title\", \"rating\" or \"nosort\"!";
 
     public ListFeedbacksCommand(TeamRepository teamRepository) {
         super(teamRepository);
@@ -19,54 +18,81 @@ public class ListFeedbacksCommand extends BaseCommand {
 
     @Override
     public String execute(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String sort = parameters.get(0);
-        String filter = parameters.get(1);
-        return listFeedbacks(sort, filter);
+        if (parameters.size() > 2){
+            throw new IllegalArgumentException("Argument count should be 2 or fewer!");
+        }
+        if (parameters.size() == 1){
+            String sort = parameters.get(0);
+            return listFeedbacks(sort);
+        } else if (parameters.size() == 2) {
+            String sort = parameters.get(0);
+            String filter = parameters.get(1);
+            return listFeedbacks(sort, filter);
+        }
+        return listAllFeedbacks();
+    }
+
+    private String listFeedbacks(String sort) {
+        String result;
+        switch (sort) {
+            case "title":
+                result = getTeamRepository().getFeedbacks()
+                        .stream()
+                        .sorted(Comparator.comparing(Feedback::getName))
+                        .map(Feedback::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "rating":
+                result = getTeamRepository().getFeedbacks()
+                        .stream()
+                        .sorted(Comparator.comparing(Feedback::getRating))
+                        .map(Feedback::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "nosort":
+                return listAllFeedbacks();
+            default:
+                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
+        }
+        return result;
     }
 
     private String listFeedbacks(String sort, String filter) {
-        StringBuilder builder = new StringBuilder();
-        List<Feedback> feedbacks = getTeamRepository().getFeedbacks();
-        if (sort.equalsIgnoreCase("nosort")){
-            if (filter.equalsIgnoreCase("nofilter")){
-                feedbacks.stream().forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("new")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.NEW).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("unscheduled")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.UNSCHEDULED).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("scheduled")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.SCHEDULED).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("done")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.DONE).forEach(builder::append);
-            }
-        } else if (sort.equalsIgnoreCase("title")){
-            if (filter.equalsIgnoreCase("nofilter")){
-                feedbacks.stream().sorted(Comparator.comparing(Feedback::getName)).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("new")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.NEW).sorted(Comparator.comparing(Feedback::getName)).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("unscheduled")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.UNSCHEDULED).sorted(Comparator.comparing(Feedback::getName)).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("scheduled")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.SCHEDULED).sorted(Comparator.comparing(Feedback::getName)).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("done")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.DONE).sorted(Comparator.comparing(Feedback::getName)).forEach(builder::append);
-            }
-        } else if (sort.equalsIgnoreCase("rating")){
-            if (filter.equalsIgnoreCase("nofilter")){
-                feedbacks.stream().sorted(Comparator.comparing(Feedback::getRating)).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("new")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.NEW).sorted(Comparator.comparing(Feedback::getRating)).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("unscheduled")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.UNSCHEDULED).sorted(Comparator.comparing(Feedback::getRating)).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("scheduled")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.SCHEDULED).sorted(Comparator.comparing(Feedback::getRating)).forEach(builder::append);
-            } else if (filter.equalsIgnoreCase("done")){
-                feedbacks.stream().filter(feedback -> feedback.getStatus() == Status.DONE).sorted(Comparator.comparing(Feedback::getRating)).forEach(builder::append);
-            }
-        } else {
-            throw new IllegalArgumentException("Invalid sorting parameter: should be \"title\", \"rating\" or \"nosort\"");
+        String result;
+        switch (sort) {
+            case "title":
+                result = getTeamRepository().getFeedbacks()
+                        .stream()
+                        .filter(feedback -> feedback.getStatus().toString().equals(filter))
+                        .sorted(Comparator.comparing(Feedback::getName))
+                        .map(Feedback::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "rating":
+                result = getTeamRepository().getFeedbacks()
+                        .stream()
+                        .filter(feedback -> feedback.getStatus().toString().equals(filter))
+                        .sorted(Comparator.comparing(Feedback::getRating))
+                        .map(Feedback::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            case "nosort":
+                result = getTeamRepository().getFeedbacks()
+                        .stream()
+                        .filter(feedback -> feedback.getStatus().toString().equals(filter))
+                        .map(Feedback::toString)
+                        .collect(Collectors.joining(System.lineSeparator()));
+                break;
+            default:
+                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
         }
-        return builder.toString();
+        return result;
+    }
+
+    private String listAllFeedbacks() {
+        return getTeamRepository().getFeedbacks()
+                .stream()
+                .map(Feedback::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }
