@@ -13,7 +13,7 @@ public class AssignTaskToMember extends BaseCommand {
     private static final String INVALID_TASK_ID = "Invalid value for taskID. Should be a number.";
     public static final String TASK_ASSIGNED = "Task with ID%d assigned to %s";
 
-    protected AssignTaskToMember(TeamRepository teamRepository) {
+    public AssignTaskToMember(TeamRepository teamRepository) {
         super(teamRepository);
     }
 

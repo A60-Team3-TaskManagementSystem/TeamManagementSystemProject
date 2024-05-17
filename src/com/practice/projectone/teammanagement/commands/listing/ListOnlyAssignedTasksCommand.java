@@ -14,7 +14,7 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    protected ListOnlyAssignedTasksCommand(TeamRepository teamRepository) {
+    public ListOnlyAssignedTasksCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 

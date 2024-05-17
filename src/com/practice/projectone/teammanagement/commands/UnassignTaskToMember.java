@@ -15,7 +15,7 @@ public class UnassignTaskToMember extends BaseCommand {
     public static final String TASK_UNASSIGNED = "Task with ID%d removed from %s";
 
 
-    protected UnassignTaskToMember(TeamRepository teamRepository) {
+    public UnassignTaskToMember(TeamRepository teamRepository) {
         super(teamRepository);
     }
 
