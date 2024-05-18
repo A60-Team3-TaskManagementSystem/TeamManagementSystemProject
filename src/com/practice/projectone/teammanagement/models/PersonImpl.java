@@ -50,7 +50,7 @@ public class PersonImpl implements Person {
     @Override
     public void assignTask(Task task) {
         tasks.add(task);
-        addEventToHistory(new EventLogImpl(String.format("New task %s added to %s list.", task, memberName)));
+        addEventToHistory(new EventLogImpl(String.format("New task %s assigned to %s.", task, memberName)));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class PersonImpl implements Person {
 
         tasks.remove(task);
 
-        addEventToHistory(new EventLogImpl((String.format("Task ID%d removed from %s list.", task.getId(), memberName))));
+        addEventToHistory(new EventLogImpl((String.format("Task ID%d removed from %s list of assigned tasks.", task.getId(), memberName))));
     }
 
     @Override

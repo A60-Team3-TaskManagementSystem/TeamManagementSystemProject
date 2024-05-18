@@ -2,7 +2,7 @@ package com.practice.projectone.teammanagement.commands;
 
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
 import com.practice.projectone.teammanagement.models.contracts.Person;
-import com.practice.projectone.teammanagement.models.tasks.contracts.AssigneeAble;
+import com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -30,7 +30,7 @@ public class UnassignTaskToMember extends BaseCommand {
     }
 
     private String removeTask(int taskID, String memberName) {
-        AssigneeAble task = getTeamRepository().findAssigneeAble(taskID);
+        SpecificTask task = getTeamRepository().findSpecificTask(taskID);
         Person person = getTeamRepository().findPersonByName(memberName);
 
         person.unassignTask(task);

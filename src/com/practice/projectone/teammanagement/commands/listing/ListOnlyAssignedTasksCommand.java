@@ -2,7 +2,7 @@ package com.practice.projectone.teammanagement.commands.listing;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.tasks.contracts.AssigneeAble;
+import com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -23,8 +23,8 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         String filter = parameters.get(0);
-        List<AssigneeAble> assignedTasks = getTeamRepository()
-                .getAssigneeAble()
+        List<SpecificTask> assignedTasks = getTeamRepository()
+                .getSpecificTasks()
                 .stream()
                 .filter(task -> task.getAssignee() != null)
                 .collect(Collectors.toList());
@@ -39,8 +39,8 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
         return listTasks(assignedTasks, filter);
     }
 
-    private String listTasks(List<AssigneeAble> assignedTasks, String filter) {
-        List<String> result = assignedTasks.stream()
+    private String listTasks(List<SpecificTask> specificTasks, String filter) {
+        List<String> result = specificTasks.stream()
                 .filter(task -> task.getAssignee().equals(filter) || task.getStatus().toString().equals(filter))
                 .map(Task::toString)
                 .collect(Collectors.toList());
@@ -48,8 +48,8 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
         return String.join(System.lineSeparator(), result).trim();
     }
 
-    private String listTasks(List<AssigneeAble> assignedTasks, String status, String assigneeName) {
-        List<String> result = assignedTasks
+    private String listTasks(List<SpecificTask> specificTasks, String status, String assigneeName) {
+        List<String> result = specificTasks
                 .stream()
                 .filter(task -> task.getStatus().toString().equals(status))
                 .filter(task -> task.getAssignee().equals(assigneeName))

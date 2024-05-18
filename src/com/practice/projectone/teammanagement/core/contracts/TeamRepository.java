@@ -24,9 +24,7 @@ public interface TeamRepository {
 
     List<Task> getTasks();
 
-    List<AssigneeAble> getAssigneeAble();
-
-    List<PrioritizeAble> getPrioritizeAble();
+    List<SpecificTask> getSpecificTasks();
 
     void addPerson(Person person);
 
@@ -64,7 +62,5 @@ public interface TeamRepository {
 
     Feedback findFeedbackById(int id);
 
-    AssigneeAble findAssigneeAble(int id);
-
-    PrioritizeAble findPriorityAbleById(int id);
+    SpecificTask findSpecificTask(int id);
 }

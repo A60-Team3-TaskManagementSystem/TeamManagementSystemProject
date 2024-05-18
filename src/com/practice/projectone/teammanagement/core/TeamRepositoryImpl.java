@@ -78,19 +78,11 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public List<AssigneeAble> getAssigneeAble() {
-        List<AssigneeAble> assigneeAbles = new ArrayList<>(bugs);
-        assigneeAbles.addAll(stories);
+    public List<SpecificTask> getSpecificTasks() {
+        List<SpecificTask> specificTasks = new ArrayList<>(bugs);
+        specificTasks.addAll(stories);
 
-        return assigneeAbles;
-    }
-
-    @Override
-    public List<PrioritizeAble> getPrioritizeAble() {
-        List<PrioritizeAble> prioritizeAbles = new ArrayList<>(bugs);
-        prioritizeAbles.addAll(stories);
-
-        return prioritizeAbles;
+        return specificTasks;
     }
 
     @Override
@@ -197,6 +189,11 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
+    public SpecificTask findSpecificTask(int id) {
+        return findElementByID(id, getSpecificTasks(), "task");
+    }
+
+    @Override
     public Bug findBugByID(int id) {
         return findElementByID(id, getBugs(), "bug");
     }
@@ -209,16 +206,6 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public Feedback findFeedbackById(int id) {
         return findElementByID(id, getFeedbacks(), "feedback");
-    }
-
-    @Override
-    public AssigneeAble findAssigneeAble(int id) {
-        return findElementByID(id, getAssigneeAble(), "task");
-    }
-
-    @Override
-    public PrioritizeAble findPriorityAbleById(int id) {
-        return findElementByID(id, getPrioritizeAble(), "task");
     }
 
     private <T extends Nameable> T findElementByName(String name, List<T> list, String lookingFor) {

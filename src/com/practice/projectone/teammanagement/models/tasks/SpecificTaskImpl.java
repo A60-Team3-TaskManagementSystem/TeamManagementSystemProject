@@ -2,12 +2,11 @@ package com.practice.projectone.teammanagement.models.tasks;
 
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.EventLogImpl;
-import com.practice.projectone.teammanagement.models.tasks.contracts.AssigneeAble;
-import com.practice.projectone.teammanagement.models.tasks.contracts.PrioritizeAble;
+import com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;
 import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
 import com.practice.projectone.teammanagement.models.tasks.enums.Status;
 
-public abstract class Content extends TaskImpl implements AssigneeAble, PrioritizeAble {
+public abstract class SpecificTaskImpl extends TaskImpl implements SpecificTask {
 
     private static final String PRIORITY_CHANGED = "The priority of item with ID %d switched from %s to %s";
     private static final String PRIORITY_SAME_ERR = "Can't change, priority already at %s";
@@ -18,7 +17,7 @@ public abstract class Content extends TaskImpl implements AssigneeAble, Prioriti
     private Priority priority;
     private String assigneeName;
 
-    protected Content(String title, String description, Status status, Priority priority) {
+    protected SpecificTaskImpl(String title, String description, Status status, Priority priority) {
         super(title, description, status);
         this.priority = priority;
     }
@@ -33,6 +32,10 @@ public abstract class Content extends TaskImpl implements AssigneeAble, Prioriti
     public void changeAssignee(String assigneeName) {
         if (assigneeName == null && !assigneeIsValid()) {
             throw new IllegalArgumentException(TASK_NOT_YET_ASSIGNED);
+        }
+
+        if (this.assigneeName != null && this.assigneeName.equals(assigneeName)) {
+            throw new IllegalArgumentException(String.format("Task %s already assigned to %s", super.getName(), assigneeName));
         }
 
         setAssignee(assigneeName);

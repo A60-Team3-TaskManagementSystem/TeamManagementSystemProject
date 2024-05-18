@@ -30,8 +30,6 @@ public class CommandFactoryImpl implements CommandFactory {
                 return new AddCommentToTaskCommand(teamRepository);
             case CREATEFEEDBACK:
                 return new CreateFeedbackToBoardCommand(teamRepository);
-            case CREATETASK:
-                return new CreateTaskCommand(teamRepository);
             case CREATEPERSON:
                 return new CreatePerson(teamRepository);
             case CREATETEAM:

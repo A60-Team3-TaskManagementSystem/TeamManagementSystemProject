@@ -7,7 +7,7 @@ import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
 import com.practice.projectone.teammanagement.models.tasks.enums.Size;
 import com.practice.projectone.teammanagement.models.tasks.enums.Status;
 
-public class StoryImpl extends Content implements Story {
+public class StoryImpl extends SpecificTaskImpl implements Story {
     private static final String SIZE_CHANGED = "The size of item with ID %d switched from %s to %s";
     private static final String SIZE_SAME_ERR = "Can't change, size already at %s";
     private static final Status INITIAL_STATUS = Status.NOT_DONE;

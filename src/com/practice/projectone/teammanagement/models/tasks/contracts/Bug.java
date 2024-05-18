@@ -4,7 +4,7 @@ import com.practice.projectone.teammanagement.models.tasks.enums.Severity;
 
 import java.util.List;
 
-public interface Bug extends Task, AssigneeAble, PrioritizeAble {
+public interface Bug extends Task, SpecificTask {
     List<String> getSteps();
 
     Severity getSeverity();

@@ -2,7 +2,7 @@ package com.practice.projectone.teammanagement.commands.changecommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.tasks.contracts.PrioritizeAble;
+import com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;
 import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
@@ -31,7 +31,7 @@ public class ChangePriorityCommand extends BaseCommand {
 
     private String changePriority(int taskID, Priority priority) {
 
-        PrioritizeAble task = getTeamRepository().findPriorityAbleById(taskID);
+        SpecificTask task = getTeamRepository().findSpecificTask(taskID);
         task.changePriority(priority);
 
         return String.format(PRIORITY_CHANGED, priority);
