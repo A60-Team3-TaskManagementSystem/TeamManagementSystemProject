@@ -75,7 +75,7 @@ public class ListStoriesCommand extends BaseCommand {
             case "title":
                 result = getTeamRepository().getStories()
                         .stream()
-                        .filter(story -> story.getAssignee().equals(filter1) || story.getStatus().toString().equals(filter1))
+                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
                         .sorted(Comparator.comparing(Story::getName))
                         .map(Story::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
@@ -83,7 +83,7 @@ public class ListStoriesCommand extends BaseCommand {
             case "priority":
                 result = getTeamRepository().getStories()
                         .stream()
-                        .filter(story -> story.getAssignee().equals(filter1) || story.getStatus().toString().equals(filter1))
+                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
                         .sorted(Comparator.comparing(Story::getPriority))
                         .map(Story::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
@@ -91,7 +91,7 @@ public class ListStoriesCommand extends BaseCommand {
             case "size":
                 result = getTeamRepository().getStories()
                         .stream()
-                        .filter(story -> story.getAssignee().equals(filter1) || story.getStatus().toString().equals(filter1))
+                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
                         .sorted(Comparator.comparing(Story::getSize))
                         .map(Story::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
@@ -99,7 +99,7 @@ public class ListStoriesCommand extends BaseCommand {
             case "nosort":
                 result = getTeamRepository().getStories()
                         .stream()
-                        .filter(story -> story.getAssignee().equals(filter1) || story.getStatus().toString().equals(filter1))
+                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
                         .map(Story::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
                 break;
@@ -115,7 +115,7 @@ public class ListStoriesCommand extends BaseCommand {
             case "title":
                 result = getTeamRepository().getStories()
                         .stream()
-                        .filter(story -> story.getAssignee().equals(filter1))
+                        .filter(story -> filter1.equals(story.getAssignee()))
                         .filter(story -> story.getStatus().toString().equals(filter2))
                         .sorted(Comparator.comparing(Story::getName))
                         .map(Story::toString)
@@ -124,7 +124,7 @@ public class ListStoriesCommand extends BaseCommand {
             case "priority":
                 result = getTeamRepository().getStories()
                         .stream()
-                        .filter(story -> story.getAssignee().equals(filter1))
+                        .filter(story -> filter1.equals(story.getAssignee()))
                         .filter(story -> story.getStatus().toString().equals(filter2))
                         .sorted(Comparator.comparing(Story::getPriority))
                         .map(Story::toString)
@@ -133,7 +133,7 @@ public class ListStoriesCommand extends BaseCommand {
             case "size":
                 result = getTeamRepository().getStories()
                         .stream()
-                        .filter(story -> story.getAssignee().equals(filter1))
+                        .filter(story -> filter1.equals(story.getAssignee()))
                         .filter(story -> story.getStatus().toString().equals(filter2))
                         .sorted(Comparator.comparing(Story::getSize))
                         .map(Story::toString)
@@ -142,7 +142,7 @@ public class ListStoriesCommand extends BaseCommand {
             case "nosort":
                 result = getTeamRepository().getStories()
                         .stream()
-                        .filter(story -> story.getAssignee().equals(filter1))
+                        .filter(story -> filter1.equals(story.getAssignee()))
                         .filter(story -> story.getStatus().toString().equals(filter2))
                         .map(Story::toString)
                         .collect(Collectors.joining(System.lineSeparator()));

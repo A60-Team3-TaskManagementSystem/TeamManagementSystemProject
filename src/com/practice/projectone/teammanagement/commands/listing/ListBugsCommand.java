@@ -75,7 +75,7 @@ public class ListBugsCommand extends BaseCommand {
             case "title":
                 result = getTeamRepository().getBugs()
                         .stream()
-                        .filter(bug -> bug.getAssignee().equals(filter1) || bug.getStatus().toString().equals(filter1))
+                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
                         .sorted(Comparator.comparing(Bug::getName))
                         .map(Bug::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
@@ -83,7 +83,7 @@ public class ListBugsCommand extends BaseCommand {
             case "priority":
                 result = getTeamRepository().getBugs()
                         .stream()
-                        .filter(bug -> bug.getAssignee().equals(filter1) || bug.getStatus().toString().equals(filter1))
+                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
                         .sorted(Comparator.comparing(Bug::getPriority))
                         .map(Bug::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
@@ -91,7 +91,7 @@ public class ListBugsCommand extends BaseCommand {
             case "severity":
                 result = getTeamRepository().getBugs()
                         .stream()
-                        .filter(bug -> bug.getAssignee().equals(filter1) || bug.getStatus().toString().equals(filter1))
+                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
                         .sorted(Comparator.comparing(Bug::getSeverity))
                         .map(Bug::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
@@ -99,7 +99,7 @@ public class ListBugsCommand extends BaseCommand {
             case "nosort":
                 result = getTeamRepository().getBugs()
                         .stream()
-                        .filter(bug -> bug.getAssignee().equals(filter1) || bug.getStatus().toString().equals(filter1))
+                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
                         .map(Bug::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
                 break;
@@ -115,7 +115,7 @@ public class ListBugsCommand extends BaseCommand {
             case "title":
                 result = getTeamRepository().getBugs()
                         .stream()
-                        .filter(bug -> bug.getAssignee().equals(filter1))
+                        .filter(bug -> filter1.equals(bug.getAssignee()))
                         .filter(bug -> bug.getStatus().toString().equals(filter2))
                         .sorted(Comparator.comparing(Bug::getName))
                         .map(Bug::toString)
@@ -124,7 +124,7 @@ public class ListBugsCommand extends BaseCommand {
             case "priority":
                 result = getTeamRepository().getBugs()
                         .stream()
-                        .filter(bug -> bug.getAssignee().equals(filter1))
+                        .filter(bug -> filter1.equals(bug.getAssignee()))
                         .filter(bug -> bug.getStatus().toString().equals(filter2))
                         .sorted(Comparator.comparing(Bug::getPriority))
                         .map(Bug::toString)
@@ -133,7 +133,7 @@ public class ListBugsCommand extends BaseCommand {
             case "severity":
                 result = getTeamRepository().getBugs()
                         .stream()
-                        .filter(bug -> bug.getAssignee().equals(filter1))
+                        .filter(bug -> filter1.equals(bug.getAssignee()))
                         .filter(bug -> bug.getStatus().toString().equals(filter2))
                         .sorted(Comparator.comparing(Bug::getSeverity))
                         .map(Bug::toString)
@@ -142,7 +142,7 @@ public class ListBugsCommand extends BaseCommand {
             case "nosort":
                 result = getTeamRepository().getBugs()
                         .stream()
-                        .filter(bug -> bug.getAssignee().equals(filter1))
+                        .filter(bug -> filter1.equals(bug.getAssignee()))
                         .filter(bug -> bug.getStatus().toString().equals(filter2))
                         .map(Bug::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
