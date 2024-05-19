@@ -2,16 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
+      <change afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/TaskAssignable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddTeamMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddTeamMemberCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignSpecificTaskToMember.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMemberCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreatePerson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreatePersonCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateTeamCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TMSEngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TMSEngineImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/PersonImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/PersonImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/ActivityAble.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/ActivityAble.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/BugImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/BugImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/FeedbackImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/FeedbackImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/SpecificTaskImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/SpecificTaskImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/StoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/StoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/TaskImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/TaskImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,15 +128,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="add project packages" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TMSEngineImpl.java</url>
-          <line>99</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
         <watch expression="pattern" />

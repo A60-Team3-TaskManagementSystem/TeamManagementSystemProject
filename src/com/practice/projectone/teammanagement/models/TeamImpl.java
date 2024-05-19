@@ -1,6 +1,7 @@
 package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
+import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Team;
@@ -19,6 +20,7 @@ public class TeamImpl implements Team {
             "Team name must be between %s and %s characters long!",
             TEAM_NAME_LEN_MIN,
             TEAM_NAME_LEN_MAX);
+    public static final String EMPLOYEE_NOT_FOUND = "Employee %s not in this team";
 
     private String teamName;
     private final List<Person> people;
@@ -46,13 +48,20 @@ public class TeamImpl implements Team {
     }
 
     @Override
-    public List<Board> getBoards() {
-        return new ArrayList<>(boards);
+    public void addMember(Person person) {
+        people.add(person);
     }
 
     @Override
-    public void addMember(Person person) {
-        people.add(person);
+    public void removeMember(Person person) {
+        if (!people.remove(person)) {
+            throw new ElementNotFoundException(String.format(EMPLOYEE_NOT_FOUND, person.getName()));
+        }
+    }
+
+    @Override
+    public List<Board> getBoards() {
+        return new ArrayList<>(boards);
     }
 
     @Override
@@ -63,6 +72,18 @@ public class TeamImpl implements Team {
         }
 
         boards.add(board);
+    }
+
+    @Override
+    public void removeBoard(Board board) {
+        if (!boards.remove(board)) {
+            throw new ElementNotFoundException(String.format("Board %s does not exist in %s boards list", board.getName(), teamName));
+        }
+    }
+
+    @Override
+    public String toString() {
+        return teamName;
     }
 
     @Override

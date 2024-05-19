@@ -29,7 +29,11 @@ public class ShowBoardActivityCommand extends BaseCommand {
         StringBuilder sb = new StringBuilder();
 
         sb.append(String.format("--BOARD %s ACTIVITY--", board.getName()));
-        board.getActivityHistory().forEach(sb::append);
+        if (board.getActivityHistory().isEmpty()) {
+            sb.append("--NO RECENT ACTIVITY--");
+        } else {
+            sb.append(board.viewActivity());
+        }
 
         return sb.toString().trim();
     }

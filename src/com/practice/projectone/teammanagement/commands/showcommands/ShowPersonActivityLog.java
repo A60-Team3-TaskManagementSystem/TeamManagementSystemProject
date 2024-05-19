@@ -2,7 +2,6 @@ package com.practice.projectone.teammanagement.commands.showcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
-import com.practice.projectone.teammanagement.models.contracts.EventLog;
 import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -24,12 +23,17 @@ public class ShowPersonActivityLog extends BaseCommand {
     }
 
     private String showPersonActivityLog(String name) {
-
         Person person = getTeamRepository().findPersonByName(name);
-        StringBuilder builder = new StringBuilder();
-        for (EventLog event : person.getActivityHistory()) {
-            builder.append(event).append(System.lineSeparator());
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(String.format("--%s ACTIVITY", name));
+        if (person.getActivityHistory().isEmpty()) {
+            sb.append("NO RECENT ACTIVITY").append(System.lineSeparator());
+        } else {
+            sb.append(person.viewActivity());
         }
-        return builder.toString();
+
+        return sb.toString().trim();
     }
 }

@@ -24,9 +24,9 @@ public class CreateBugToBoardCommand extends BaseCommand {
     public String execute(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);
 
-        List<String> steps = Arrays.asList(parameters.get(0).split("; "));
-        String title = parameters.get(1);
-        String description = parameters.get(2);
+        String title = parameters.get(0);
+        String description = parameters.get(1);
+        List<String> steps = Arrays.asList(parameters.get(2).split("; "));
         Priority priority = ParsingHelpers.tryParseEnum(parameters.get(3), Priority.class);
         Severity severity = ParsingHelpers.tryParseEnum(parameters.get(4), Severity.class);
         String boardName = parameters.get(5);

@@ -58,6 +58,11 @@ public abstract class SpecificTaskImpl extends TaskImpl implements SpecificTask 
         addEventToHistory(new EventLogImpl(String.format(PRIORITY_CHANGED, getId(), oldPriority, newPriority)));
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s  #Priority: %s%n  #AssignedTo: %s%n", super.toString(), priority, assigneeName);
+    }
+
     private void setAssignee(String assigneeName) {
         String eventTitle;
 

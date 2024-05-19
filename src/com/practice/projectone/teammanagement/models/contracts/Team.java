@@ -6,9 +6,13 @@ public interface Team extends Nameable {
 
     List<Person> getMembers();
 
-    List<Board> getBoards();
-
     void addMember(Person person);
 
+    void removeMember(Person person);
+
+    List<Board> getBoards();
+
     void createBoard(Board boardName);
+
+    void removeBoard(Board board);
 }

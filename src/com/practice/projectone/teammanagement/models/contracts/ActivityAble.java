@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface ActivityAble {
     List<EventLog> getActivityHistory();
+
+    String viewActivity();
 }

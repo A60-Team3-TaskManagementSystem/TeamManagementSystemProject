@@ -18,8 +18,6 @@ public class TMSEngineImpl implements TMSEngine {
     private static final String LONG_INPUT_OPEN_SYMBOL = "{{";
     private static final String LONG_INPUT_CLOSE_SYMBOL = "}}";
     private static final String REPORT_SEPARATOR = "####################";
-    private static final String LONG_INPUT_PATTERN_REGEX = "\\{\\{.+(?=}})}}";
-
     private final CommandFactory commandFactory;
     private final TeamRepository teamRepository;
 

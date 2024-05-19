@@ -29,10 +29,20 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
     }
 
     @Override
+    public String toString() {
+        return String.format("%s  #Rating: %d", super.toString(), rating);
+    }
+
+    @Override
     protected void validateStatus(Status status) {
         if (!status.getTaskType().equals("Feedback") && !status.getTaskType().equals("All")) {
             throw new IllegalArgumentException("Please provide valid story status");
         }
+    }
+
+    @Override
+    protected String getTaskType() {
+        return getClass().getTypeName().substring(0, getClass().getSimpleName().length() - 4);
     }
 
     private void setRating(int rating) {

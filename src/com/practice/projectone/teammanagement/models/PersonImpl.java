@@ -8,6 +8,7 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -43,8 +44,18 @@ public class PersonImpl implements Person {
     }
 
     @Override
+    public String viewTasks() {
+        return getTasks().stream().map(Task::toString).collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    @Override
     public List<EventLog> getActivityHistory() {
         return new ArrayList<>(eventLogs);
+    }
+
+    @Override
+    public String viewActivity() {
+        return getActivityHistory().stream().map(EventLog::toString).collect(Collectors.joining(System.lineSeparator()));
     }
 
     @Override
@@ -61,7 +72,7 @@ public class PersonImpl implements Person {
 
         tasks.remove(task);
 
-        addEventToHistory(new EventLogImpl((String.format("Task ID%d removed from %s list of assigned tasks.", task.getId(), memberName))));
+        addEventToHistory(new EventLogImpl((String.format("Task ID%d removed from %s's list of assigned tasks.", task.getId(), memberName))));
     }
 
     @Override

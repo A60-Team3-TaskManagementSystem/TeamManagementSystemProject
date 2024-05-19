@@ -37,9 +37,18 @@ public class StoryImpl extends SpecificTaskImpl implements Story {
     }
 
     @Override
+    public String toString() {
+        return String.format("%s  #Size: %s%n", super.toString(), size);
+    }
+
+    @Override
     protected void validateStatus(Status status) {
         if (!status.getTaskType().equals("Story") && !status.getTaskType().equals("All")) {
             throw new IllegalArgumentException("Please provide valid story status");
         }
+    }
+    @Override
+    protected String getTaskType() {
+        return getClass().getTypeName().substring(0, getClass().getSimpleName().length() - 4);
     }
 }

@@ -11,6 +11,7 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -70,21 +71,6 @@ public abstract class TaskImpl implements Task {
     }
 
     @Override
-    public List<Comment> getComments() {
-        return new ArrayList<>(comments);
-    }
-
-    @Override
-    public List<EventLog> getActivityHistory() {
-        return new ArrayList<>(activityHistory);
-    }
-
-    @Override
-    public void addComment(Comment comment) {
-        comments.add(comment);
-    }
-
-    @Override
     public void changeStatus(Status newStatus) {
         Status oldStatus = getStatus();
 
@@ -97,8 +83,30 @@ public abstract class TaskImpl implements Task {
     }
 
     @Override
+    public List<EventLog> getActivityHistory() {
+        return new ArrayList<>(activityHistory);
+    }
+
+    @Override
+    public String viewActivity() {
+        return getActivityHistory().stream().map(EventLog::toString).collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    @Override
+    public List<Comment> getComments() {
+        return new ArrayList<>(comments);
+    }
+
+    @Override
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    @Override
     public String toString() {
-        return String.format("ID%d, Title: %s, Status: %s", getId(), title, status);
+        String taskType = getTaskType();
+        return String.format("Task ID%d%n  #Type: %s%n  #Title: %s%n  #Status: %s%n",
+                                    getId(), taskType, title, status);
     }
 
     @Override
@@ -113,6 +121,8 @@ public abstract class TaskImpl implements Task {
     public int hashCode() {
         return Objects.hash(id, title, description, status, comments, activityHistory);
     }
+
+    protected abstract String getTaskType();
 
     protected abstract void validateStatus(Status status);
 
