@@ -24,6 +24,8 @@ public class BugImpl extends SpecificTaskImpl implements Bug {
         super(title, description, INITIAL_STATUS, priority);
         this.severity = severity;
         setSteps(steps);
+
+        addEventToHistory(new EventLogImpl(String.format("Task %s with ID%d created", title, getId())));
     }
 
     @Override
@@ -53,7 +55,7 @@ public class BugImpl extends SpecificTaskImpl implements Bug {
         return String.format("%s  #Severity: %s%n  #StepsToReproduce:%n    %s%n",
                 super.toString(),
                 severity,
-                String.join(System.lineSeparator(), getSteps()));
+                String.join(System.lineSeparator() + "  ", getSteps())).trim();
     }
 
     @Override
@@ -65,7 +67,7 @@ public class BugImpl extends SpecificTaskImpl implements Bug {
 
     @Override
     protected String getTaskType() {
-        return getClass().getTypeName().substring(0, getClass().getSimpleName().length() - 4);
+        return getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 4);
     }
 
     private void setSteps(List<String> steps) {

@@ -17,6 +17,8 @@ public class StoryImpl extends SpecificTaskImpl implements Story {
     public StoryImpl(String title, String description, Priority priority, Size size) {
         super(title, description, INITIAL_STATUS, priority);
         this.size = size;
+
+        addEventToHistory(new EventLogImpl(String.format("Task %s with ID%d created", title, getId())));
     }
 
     @Override
@@ -49,6 +51,6 @@ public class StoryImpl extends SpecificTaskImpl implements Story {
     }
     @Override
     protected String getTaskType() {
-        return getClass().getTypeName().substring(0, getClass().getSimpleName().length() - 4);
+        return getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 4);
     }
 }

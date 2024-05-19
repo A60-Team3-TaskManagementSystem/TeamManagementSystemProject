@@ -40,14 +40,12 @@ public abstract class TaskImpl implements Task {
     private final List<EventLog> activityHistory;
 
     protected TaskImpl(String title, String description, Status status) {
-        this.id = ++idCounter;
         setTitle(title);
         setDescription(description);
         setStatus(status);
         comments = new ArrayList<>();
         activityHistory = new ArrayList<>();
-
-        addEventToHistory(new EventLogImpl(String.format("Task created %s", this)));
+        this.id = ++idCounter;
     }
 
     @Override

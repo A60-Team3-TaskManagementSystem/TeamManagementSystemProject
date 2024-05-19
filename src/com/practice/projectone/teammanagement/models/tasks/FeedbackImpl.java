@@ -1,5 +1,6 @@
 package com.practice.projectone.teammanagement.models.tasks;
 
+import com.practice.projectone.teammanagement.models.EventLogImpl;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;
 import com.practice.projectone.teammanagement.models.tasks.enums.Status;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
@@ -16,6 +17,8 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
     public FeedbackImpl(String title, String description, int rating) {
         super(title, description, INITIAL_STATUS);
         setRating(rating);
+
+        addEventToHistory(new EventLogImpl(String.format("Task %s with ID%d created", title, getId())));
     }
 
     @Override
@@ -42,7 +45,7 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
 
     @Override
     protected String getTaskType() {
-        return getClass().getTypeName().substring(0, getClass().getSimpleName().length() - 4);
+        return getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 4);
     }
 
     private void setRating(int rating) {
