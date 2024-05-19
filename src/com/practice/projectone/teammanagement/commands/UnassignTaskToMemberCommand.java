@@ -8,14 +8,14 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class UnassignTaskToMember extends BaseCommand {
+public class UnassignTaskToMemberCommand extends BaseCommand {
 
     private static final int EXPECTED_PARAMETERS_COUNT = 2;
     private static final String INVALID_TASK_ID = "Invalid value for taskID. Should be a number.";
     public static final String TASK_UNASSIGNED = "Task with ID%d removed from %s";
 
 
-    public UnassignTaskToMember(TeamRepository teamRepository) {
+    public UnassignTaskToMemberCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 

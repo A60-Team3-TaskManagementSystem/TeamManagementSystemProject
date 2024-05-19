@@ -15,9 +15,10 @@ public class TMSEngineImpl implements TMSEngine {
     private static final String TERMINATION_COMMAND = "Exit";
     private static final String EMPTY_COMMAND_ERROR = "Command cannot be empty.";
     private static final String MAIN_SPLIT_SYMBOL = " ";
-    private static final String COMMENT_OPEN_SYMBOL = "\"";
-    private static final String COMMENT_CLOSE_SYMBOL = "\"";
+    private static final String LONG_INPUT_OPEN_SYMBOL = "{{";
+    private static final String LONG_INPUT_CLOSE_SYMBOL = "}}";
     private static final String REPORT_SEPARATOR = "####################";
+    private static final String LONG_INPUT_PATTERN_REGEX = "\\{\\{.+(?=}})}}";
 
     private final CommandFactory commandFactory;
     private final TeamRepository teamRepository;
@@ -78,7 +79,7 @@ public class TMSEngineImpl implements TMSEngine {
      * @return A list of the parameters needed to execute the command
      */
     private List<String> extractCommandParameters(String inputLine) {
-        if (inputLine.contains(COMMENT_OPEN_SYMBOL)) {
+        if (inputLine.contains(LONG_INPUT_OPEN_SYMBOL)) {
             return extractCommentParameters(inputLine);
         }
         String[] commandParts = inputLine.split(" ");
@@ -91,12 +92,20 @@ public class TMSEngineImpl implements TMSEngine {
 
     public List<String> extractCommentParameters(String fullCommand) {
         int indexOfFirstSeparator = fullCommand.indexOf(MAIN_SPLIT_SYMBOL);
-        int indexOfOpenComment = fullCommand.indexOf(COMMENT_OPEN_SYMBOL);
-        int indexOfCloseComment = fullCommand.lastIndexOf(COMMENT_CLOSE_SYMBOL);
+        int indexOfOpenComment = fullCommand.indexOf(LONG_INPUT_OPEN_SYMBOL);
+        int indexOfCloseComment = fullCommand.indexOf(LONG_INPUT_CLOSE_SYMBOL);
+
         List<String> parameters = new ArrayList<>();
-        if (indexOfOpenComment >= 0) {
-            parameters.add(fullCommand.substring(indexOfOpenComment + COMMENT_OPEN_SYMBOL.length(), indexOfCloseComment));
-            fullCommand = fullCommand.replaceAll("\\\".+(?=\\\")\\\"", "");
+
+        while (indexOfOpenComment != -1) {
+            String parameter = fullCommand
+                    .substring(indexOfOpenComment + LONG_INPUT_OPEN_SYMBOL.length(), indexOfCloseComment);
+            parameters.add(parameter);
+            fullCommand = fullCommand
+                    .replace(String.format("%s%s%s", LONG_INPUT_OPEN_SYMBOL, parameter, LONG_INPUT_CLOSE_SYMBOL), "");
+
+            indexOfOpenComment = fullCommand.indexOf(LONG_INPUT_OPEN_SYMBOL);
+            indexOfCloseComment = fullCommand.indexOf(LONG_INPUT_CLOSE_SYMBOL);
         }
 
         List<String> result = new ArrayList<>(Arrays.asList(fullCommand.substring(indexOfFirstSeparator + 1).split(MAIN_SPLIT_SYMBOL)));

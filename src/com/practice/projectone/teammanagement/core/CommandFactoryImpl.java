@@ -1,9 +1,9 @@
 package com.practice.projectone.teammanagement.core;
 
 import com.practice.projectone.teammanagement.commands.AddCommentToTaskCommand;
-import com.practice.projectone.teammanagement.commands.AddTeamMember;
-import com.practice.projectone.teammanagement.commands.AssignTaskToMember;
-import com.practice.projectone.teammanagement.commands.UnassignTaskToMember;
+import com.practice.projectone.teammanagement.commands.AddTeamMemberCommand;
+import com.practice.projectone.teammanagement.commands.AssignTaskToMemberCommand;
+import com.practice.projectone.teammanagement.commands.UnassignTaskToMemberCommand;
 import com.practice.projectone.teammanagement.commands.changecommands.*;
 import com.practice.projectone.teammanagement.commands.contracts.Command;
 import com.practice.projectone.teammanagement.commands.createcommands.*;
@@ -31,15 +31,15 @@ public class CommandFactoryImpl implements CommandFactory {
             case CREATEFEEDBACK:
                 return new CreateFeedbackToBoardCommand(teamRepository);
             case CREATEPERSON:
-                return new CreatePerson(teamRepository);
+                return new CreatePersonCommand(teamRepository);
             case CREATETEAM:
-                return new CreateTeam(teamRepository);
+                return new CreateTeamCommand(teamRepository);
             case ADDTEAMMEMBER:
-                return new AddTeamMember(teamRepository);
+                return new AddTeamMemberCommand(teamRepository);
             case ASSIGNTASK:
-                return new AssignTaskToMember(teamRepository);
+                return new AssignTaskToMemberCommand(teamRepository);
             case UNASSIGNTASK:
-                return new UnassignTaskToMember(teamRepository);
+                return new UnassignTaskToMemberCommand(teamRepository);
             case SHOWBOARDS:
                 return new ShowAllTeamBoardsCommand(teamRepository);
             case SHOWBOARDACTIVITY:

@@ -7,12 +7,12 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreateTeam extends BaseCommand {
+public class CreateTeamCommand extends BaseCommand {
 
     private final static String TEAM_CREATED = "Team %s created successfully!";
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public CreateTeam(TeamRepository teamRepository) {
+    public CreateTeamCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 

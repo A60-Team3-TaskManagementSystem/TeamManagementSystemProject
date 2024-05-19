@@ -7,12 +7,12 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
 
-public class CreatePerson extends BaseCommand {
+public class CreatePersonCommand extends BaseCommand {
 
     private final static String PERSON_CREATED = "Person %s created successfully!";
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public CreatePerson(TeamRepository teamRepository) {
+    public CreatePersonCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 

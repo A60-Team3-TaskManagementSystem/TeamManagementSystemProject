@@ -21,10 +21,9 @@ public class AddCommentToTaskCommand extends BaseCommand {
     public String execute(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);
 
-        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);
+        String description = parameters.get(0);
         String author = parameters.get(1);
-        String description = parameters.get(2);
-
+        int taskID = ParsingHelpers.tryParseInt(parameters.get(2), INVALID_TASK_ID);
 
         return addCommentToTask(author, description, taskID);
     }

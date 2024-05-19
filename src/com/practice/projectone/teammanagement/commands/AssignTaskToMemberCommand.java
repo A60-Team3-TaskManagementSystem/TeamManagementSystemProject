@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AssignTaskToMember extends BaseCommand {
+public class AssignTaskToMemberCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 2;
     private static final String INVALID_TASK_ID = "Invalid value for taskID. Should be a number.";
     public static final String TASK_ASSIGNED = "Task with ID%d assigned to %s";
@@ -23,7 +23,7 @@ public class AssignTaskToMember extends BaseCommand {
     public static final String INVALID_CONDITIONS = "No task satisfy given condition";
     public static final String INVALID_TASK = "Feedback";
 
-    public AssignTaskToMember(TeamRepository teamRepository) {
+    public AssignTaskToMemberCommand(TeamRepository teamRepository) {
         super(teamRepository);
     }
 
