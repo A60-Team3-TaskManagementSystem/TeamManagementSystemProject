@@ -21,140 +21,59 @@ public class ListStoriesCommand extends BaseCommand {
         if (parameters.size() > 3){
             throw new IllegalArgumentException("Argument count should be 3 or fewer!");
         }
-        if (parameters.size() == 1){
-            String sort = parameters.get(0);
-            return listStories(sort);
-        } else if (parameters.size() == 2) {
-            String sort = parameters.get(0);
-            String filter1 = parameters.get(1);
-            return listStories(sort, filter1);
-        } else if (parameters.size() == 3) {
-            String sort = parameters.get(0);
-            String filter1 = parameters.get(1);
-            String filter2 = parameters.get(2);
-            return listStories(sort, filter1, filter2);
+
+        List<Story> stories = getTMSRepository().getStories();
+
+        if (!parameters.isEmpty()) {
+            String sortArgument = parameters.get(0);
+            if (parameters.size() == 2) {
+                String filter1 = parameters.get(1);
+                stories = filterStories(stories, filter1);
+            } else if (parameters.size() == 3) {
+                String filter1 = parameters.get(1);
+                String filter2 = parameters.get(2);
+                stories = filterStories(stories, filter1, filter2);
+            }
+            sortStories(stories, sortArgument);
         }
-        return listAllStories();
+
+        return getResult(stories);
     }
 
-    private String listStories(String sort) {
-        String result;
-        switch (sort) {
-            case "title":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .sorted(Comparator.comparing(Story::getName))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "priority":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .sorted(Comparator.comparing(Story::getPriority))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "size":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .sorted(Comparator.comparing(Story::getSize))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "nosort":
-                return listAllStories();
-            default:
-                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
-        }
-        return result;
+    private List<Story> filterStories(List<Story> stories, String filter1) {
+        return stories
+                .stream()
+                .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
+                .collect(Collectors.toList());
     }
 
-    private String listStories(String sort, String filter1) {
-        String result;
-        switch (sort) {
+    private List<Story> filterStories(List<Story> stories, String filter1, String filter2) {
+        return stories
+                .stream()
+                .filter(story -> filter1.equals(story.getAssignee()) && story.getStatus().toString().equals(filter2))
+                .collect(Collectors.toList());
+    }
+
+    private void sortStories(List<Story> stories, String sort) {
+        switch(sort) {
             case "title":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
-                        .sorted(Comparator.comparing(Story::getName))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                stories.sort(Comparator.comparing(Story::getName));
                 break;
             case "priority":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
-                        .sorted(Comparator.comparing(Story::getPriority))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                stories.sort(Comparator.comparing(Story::getPriority));
                 break;
             case "size":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
-                        .sorted(Comparator.comparing(Story::getSize))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                stories.sort(Comparator.comparing(Story::getSize));
                 break;
             case "nosort":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
                 break;
             default:
                 throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
         }
-        return result;
     }
 
-    private String listStories(String sort, String filter1, String filter2) {
-        String result;
-        switch (sort) {
-            case "title":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .filter(story -> filter1.equals(story.getAssignee()))
-                        .filter(story -> story.getStatus().toString().equals(filter2))
-                        .sorted(Comparator.comparing(Story::getName))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "priority":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .filter(story -> filter1.equals(story.getAssignee()))
-                        .filter(story -> story.getStatus().toString().equals(filter2))
-                        .sorted(Comparator.comparing(Story::getPriority))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "size":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .filter(story -> filter1.equals(story.getAssignee()))
-                        .filter(story -> story.getStatus().toString().equals(filter2))
-                        .sorted(Comparator.comparing(Story::getSize))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "nosort":
-                result = getTMSRepository().getStories()
-                        .stream()
-                        .filter(story -> filter1.equals(story.getAssignee()))
-                        .filter(story -> story.getStatus().toString().equals(filter2))
-                        .map(Story::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            default:
-                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
-        }
-        return result;
-    }
-
-    private String listAllStories() {
-        return getTMSRepository().getStories()
+    private String getResult(List<Story> stories) {
+        return stories
                 .stream()
                 .map(Story::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
