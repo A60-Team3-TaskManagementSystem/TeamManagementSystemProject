@@ -8,6 +8,7 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.String.format;
 
@@ -69,8 +70,6 @@ public class PersonImpl implements Person {
         return String.format("Member: %s", memberName);
     }
 
-
-
     private void setMemberName(String memberName) {
         ValidationHelpers.validateStringLength(memberName, NAME_LEN_MIN, NAME_LEN_MAX, NAME_LEN_ERR);
         this.memberName = memberName;
@@ -78,5 +77,18 @@ public class PersonImpl implements Person {
 
     private void addEventToHistory(EventLog eventLog) {
         eventLogs.add(eventLog);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonImpl person = (PersonImpl) o;
+        return memberName.equals(person.memberName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(memberName);
     }
 }
