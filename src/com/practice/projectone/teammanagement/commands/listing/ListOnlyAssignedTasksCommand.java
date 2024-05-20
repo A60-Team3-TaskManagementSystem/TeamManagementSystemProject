@@ -23,7 +23,7 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         String filter = parameters.get(0);
-        List<SpecificTask> assignedTasks = getTeamRepository()
+        List<SpecificTask> assignedTasks = getTMSRepository()
                 .getSpecificTasks()
                 .stream()
                 .filter(task -> task.getAssignee() != null)

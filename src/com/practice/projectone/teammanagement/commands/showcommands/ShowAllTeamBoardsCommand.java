@@ -26,11 +26,11 @@ public class ShowAllTeamBoardsCommand extends BaseCommand {
     }
 
     private String showAllTeamBoards(String teamName) {
-        Team team = getTeamRepository().findTeamByName(teamName);
+        Team team = getTMSRepository().findTeamByName(teamName);
 
         StringBuilder sb = new StringBuilder();
 
-        if (getTeamRepository().getTeams().isEmpty()) {
+        if (getTMSRepository().getTeams().isEmpty()) {
             sb.append(NO_TEAMS);
         } else {
             sb.append(String.format("****TEAM %s****", team.getName()));

@@ -29,8 +29,8 @@ public class AddCommentToTaskCommand extends BaseCommand {
     }
 
     private String addCommentToTask(String author, String description, int taskID) {
-        Task task = getTeamRepository().findTaskByID(taskID);
-        Comment comment = getTeamRepository().createComment(author, description);
+        Task task = getTMSRepository().findTaskByID(taskID);
+        Comment comment = getTMSRepository().createComment(author, description);
 
         task.addComment(comment);
         return String.format(COMMENT_ADDED, taskID);

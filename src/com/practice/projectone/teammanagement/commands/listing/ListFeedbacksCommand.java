@@ -36,14 +36,14 @@ public class ListFeedbacksCommand extends BaseCommand {
         String result;
         switch (sort) {
             case "title":
-                result = getTeamRepository().getFeedbacks()
+                result = getTMSRepository().getFeedbacks()
                         .stream()
                         .sorted(Comparator.comparing(Feedback::getName))
                         .map(Feedback::toString)
                         .collect(Collectors.joining(System.lineSeparator()));
                 break;
             case "rating":
-                result = getTeamRepository().getFeedbacks()
+                result = getTMSRepository().getFeedbacks()
                         .stream()
                         .sorted(Comparator.comparing(Feedback::getRating))
                         .map(Feedback::toString)
@@ -61,7 +61,7 @@ public class ListFeedbacksCommand extends BaseCommand {
         String result;
         switch (sort) {
             case "title":
-                result = getTeamRepository().getFeedbacks()
+                result = getTMSRepository().getFeedbacks()
                         .stream()
                         .filter(feedback -> feedback.getStatus().toString().equals(filter))
                         .sorted(Comparator.comparing(Feedback::getName))
@@ -69,7 +69,7 @@ public class ListFeedbacksCommand extends BaseCommand {
                         .collect(Collectors.joining(System.lineSeparator()));
                 break;
             case "rating":
-                result = getTeamRepository().getFeedbacks()
+                result = getTMSRepository().getFeedbacks()
                         .stream()
                         .filter(feedback -> feedback.getStatus().toString().equals(filter))
                         .sorted(Comparator.comparing(Feedback::getRating))
@@ -77,7 +77,7 @@ public class ListFeedbacksCommand extends BaseCommand {
                         .collect(Collectors.joining(System.lineSeparator()));
                 break;
             case "nosort":
-                result = getTeamRepository().getFeedbacks()
+                result = getTMSRepository().getFeedbacks()
                         .stream()
                         .filter(feedback -> feedback.getStatus().toString().equals(filter))
                         .map(Feedback::toString)
@@ -90,7 +90,7 @@ public class ListFeedbacksCommand extends BaseCommand {
     }
 
     private String listAllFeedbacks() {
-        return getTeamRepository().getFeedbacks()
+        return getTMSRepository().getFeedbacks()
                 .stream()
                 .map(Feedback::toString)
                 .collect(Collectors.joining(System.lineSeparator()));

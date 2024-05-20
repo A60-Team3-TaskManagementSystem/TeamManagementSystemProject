@@ -32,10 +32,10 @@ public class CreateFeedbackToBoardCommand extends BaseCommand {
 
     private String createFeedback(String title, String description, int rating, String boardName) {
 
-        Board board = getTeamRepository().findBoardByName(boardName);
-        Feedback feedback = getTeamRepository().createFeedback(title, description, rating);
+        Board board = getTMSRepository().findBoardByName(boardName);
+        Feedback feedback = getTMSRepository().createFeedback(title, description, rating);
 
-        getTeamRepository().addTaskToBoard(board, feedback);
+        getTMSRepository().addTaskToBoard(board, feedback);
 
         return String.format(STORY_CREATED_SUCCESSFULLY, boardName);
     }

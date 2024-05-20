@@ -30,8 +30,8 @@ public class UnassignTaskToMemberCommand extends BaseCommand {
     }
 
     private String removeTask(int taskID, String memberName) {
-        SpecificTask task = getTeamRepository().findSpecificTask(taskID);
-        Person person = getTeamRepository().findPersonByName(memberName);
+        SpecificTask task = getTMSRepository().findSpecificTask(taskID);
+        Person person = getTMSRepository().findPersonByName(memberName);
 
         person.unassignTask(task);
         task.changeAssignee(null);

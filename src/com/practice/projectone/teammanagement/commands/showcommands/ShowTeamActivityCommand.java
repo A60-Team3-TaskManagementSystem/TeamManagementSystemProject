@@ -27,7 +27,7 @@ public class ShowTeamActivityCommand extends BaseCommand {
     }
 
     private String showTeamActivity(String teamName) {
-        Team team = getTeamRepository().findTeamByName(teamName);
+        Team team = getTMSRepository().findTeamByName(teamName);
 
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("****TEAM %s ACTIVITY****", teamName)).append(System.lineSeparator());

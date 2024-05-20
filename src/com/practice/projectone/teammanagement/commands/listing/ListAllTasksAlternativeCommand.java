@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class ListAllTasksAlternativeCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 0;
     public static final String LISTING_FACTOR_INVALID = "Listing mechanism incorrect. Please try again";
-    private String taskTitle;
+    private String taskTitleSection;
 
     public ListAllTasksAlternativeCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
         super(taskManagementSystemRepository);
@@ -25,30 +25,31 @@ public class ListAllTasksAlternativeCommand extends BaseCommand {
 
         if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 1) {
 
-            taskTitle = parameters.get(0);
-            return filterTasks(taskTitle);
+            taskTitleSection = parameters.get(0);
+            return filterAndSortTasks(taskTitleSection);
 
         } else if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 2) {
 
             String action = parameters.get(1);
-            return filterOrSortTasks(taskTitle, action);
+            return filterOrSortTasks(taskTitleSection, action);
         }
 
         return listAllTask();
     }
 
     private String listAllTask() {
-        return getTeamRepository().getTasks()
+        return getTMSRepository().getTasks()
                 .stream()
                 .map(Task::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
-    private String filterTasks(String taskTitle) {
-        return getTeamRepository()
+    private String filterAndSortTasks(String taskTitle) {
+        return getTMSRepository()
                 .getTasks()
                 .stream()
-                .filter(task -> task.getName().equals(taskTitle))
+                .filter(task -> task.getName().contains(taskTitle))
+                .sorted(Comparator.comparing(Task::getName))
                 .map(Task::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
     }
@@ -57,12 +58,17 @@ public class ListAllTasksAlternativeCommand extends BaseCommand {
         String result;
 
         switch (action) {
-            case "sort" -> result = getTeamRepository().getTasks()
+            case "sort" -> result = getTMSRepository().getTasks()
                     .stream()
                     .sorted(Comparator.comparing(Task::getName))
                     .map(Task::toString)
                     .collect(Collectors.joining(System.lineSeparator()));
-            case "filter" -> result = filterTasks(taskTitle);
+            case "filter" -> result = getTMSRepository()
+                    .getTasks()
+                    .stream()
+                    .filter(task -> task.getName().contains(taskTitle))
+                    .map(Task::toString)
+                    .collect(Collectors.joining(System.lineSeparator()));
             default -> {
                 throw new InvalidUserInputException(LISTING_FACTOR_INVALID);
             }

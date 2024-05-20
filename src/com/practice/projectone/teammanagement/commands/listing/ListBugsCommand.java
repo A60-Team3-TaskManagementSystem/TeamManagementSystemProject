@@ -18,144 +18,65 @@ public class ListBugsCommand extends BaseCommand {
 
     @Override
     public String execute(List<String> parameters) {
-        if (parameters.size() > 3){
+        if (parameters.size() > 3) {
             throw new IllegalArgumentException("Argument count should be 3 or fewer!");
         }
-        if (parameters.size() == 1){
-            String sort = parameters.get(0);
-            return listBugs(sort);
-        } else if (parameters.size() == 2) {
-            String sort = parameters.get(0);
-            String filter1 = parameters.get(1);
-            return listBugs(sort, filter1);
-        } else if (parameters.size() == 3) {
-            String sort = parameters.get(0);
-            String filter1 = parameters.get(1);
-            String filter2 = parameters.get(2);
-            return listBugs(sort, filter1, filter2);
+
+        List<Bug> bugs = getTMSRepository().getBugs();
+
+        if (!parameters.isEmpty()) {
+            String sortArgument = parameters.get(0);
+
+            if (parameters.size() == 2) {
+                String filter1 = parameters.get(1);
+
+                bugs = filterBugs(bugs, filter1);
+
+            } else if (parameters.size() == 3) {
+                String filter1 = parameters.get(1);
+                String filter2 = parameters.get(2);
+
+                bugs = filterBugs(bugs, filter1, filter2);
+            }
+
+            sortBugs(bugs, sortArgument);
         }
-        return listAllBugs();
+
+        return getResult(bugs);
     }
 
-    private String listBugs(String sort) {
-        String result;
-        switch (sort) {
-            case "title":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .sorted(Comparator.comparing(Bug::getName))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "priority":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .sorted(Comparator.comparing(Bug::getPriority))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "severity":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .sorted(Comparator.comparing(Bug::getSeverity))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "nosort":
-                return listAllBugs();
-            default:
-                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
-        }
-        return result;
+    private List<Bug> filterBugs(List<Bug> bugs, String filter1) {
+        return bugs.stream()
+                .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
+                .collect(Collectors.toList());
     }
 
-    private String listBugs(String sort, String filter1) {
-        String result;
+    private List<Bug> filterBugs(List<Bug> bugs, String filter1, String filter2) {
+        return bugs.stream()
+                .filter(bug -> filter1.equals(bug.getAssignee()) && bug.getStatus().toString().equals(filter2))
+                .collect(Collectors.toList());
+    }
+
+    private void sortBugs(List<Bug> bugs, String sort) {
         switch (sort) {
             case "title":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
-                        .sorted(Comparator.comparing(Bug::getName))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                bugs.sort(Comparator.comparing(Bug::getName));
                 break;
             case "priority":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
-                        .sorted(Comparator.comparing(Bug::getPriority))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                bugs.sort(Comparator.comparing(Bug::getPriority));
                 break;
             case "severity":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
-                        .sorted(Comparator.comparing(Bug::getSeverity))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                bugs.sort(Comparator.comparing(Bug::getSeverity));
                 break;
             case "nosort":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
                 break;
             default:
                 throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
         }
-        return result;
     }
 
-    private String listBugs(String sort, String filter1, String filter2) {
-        String result;
-        switch (sort) {
-            case "title":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .filter(bug -> filter1.equals(bug.getAssignee()))
-                        .filter(bug -> bug.getStatus().toString().equals(filter2))
-                        .sorted(Comparator.comparing(Bug::getName))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "priority":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .filter(bug -> filter1.equals(bug.getAssignee()))
-                        .filter(bug -> bug.getStatus().toString().equals(filter2))
-                        .sorted(Comparator.comparing(Bug::getPriority))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "severity":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .filter(bug -> filter1.equals(bug.getAssignee()))
-                        .filter(bug -> bug.getStatus().toString().equals(filter2))
-                        .sorted(Comparator.comparing(Bug::getSeverity))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "nosort":
-                result = getTeamRepository().getBugs()
-                        .stream()
-                        .filter(bug -> filter1.equals(bug.getAssignee()))
-                        .filter(bug -> bug.getStatus().toString().equals(filter2))
-                        .map(Bug::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            default:
-                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
-        }
-        return result;
-    }
-
-    private String listAllBugs() {
-        return getTeamRepository().getBugs()
-                .stream()
+    private String getResult(List<Bug> bugs) {
+        return bugs.stream()
                 .map(Bug::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
     }

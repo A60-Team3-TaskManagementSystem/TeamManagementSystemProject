@@ -22,6 +22,6 @@ public class ShowPersonActivityLog extends BaseCommand {
     }
 
     private String showPersonActivityLog(String name) {
-        return getTeamRepository().findPersonByName(name).viewActivity();
+        return getTMSRepository().findPersonByName(name).viewActivity();
     }
 }

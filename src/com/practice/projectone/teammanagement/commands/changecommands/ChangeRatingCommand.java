@@ -29,7 +29,7 @@ public class ChangeRatingCommand extends BaseCommand {
 
     private String changeRating(int taskID, int rating) {
 
-        Feedback feedback = getTeamRepository().findFeedbackById(taskID);
+        Feedback feedback = getTMSRepository().findFeedbackById(taskID);
         feedback.changeRating(rating);
 
         return String.format(SIZE_CHANGED, rating);

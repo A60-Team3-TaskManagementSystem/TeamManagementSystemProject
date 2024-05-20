@@ -23,6 +23,6 @@ public class ShowBoardActivityCommand extends BaseCommand {
     }
 
     private String showBoardActivity(String boardName) {
-        return getTeamRepository().findBoardByName(boardName).viewActivity();
+        return getTMSRepository().findBoardByName(boardName).viewActivity();
     }
 }

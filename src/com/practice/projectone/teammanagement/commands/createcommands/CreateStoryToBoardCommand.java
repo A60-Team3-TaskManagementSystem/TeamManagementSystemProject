@@ -36,10 +36,10 @@ public class CreateStoryToBoardCommand extends BaseCommand {
     private String createStory(String title, String description, Priority priority,
                                Size size, String boardName) {
 
-        Board board = getTeamRepository().findBoardByName(boardName);
-        Story story = getTeamRepository().createStory(title, description, priority, size);
+        Board board = getTMSRepository().findBoardByName(boardName);
+        Story story = getTMSRepository().createStory(title, description, priority, size);
 
-        getTeamRepository().addTaskToBoard(board, story);
+        getTMSRepository().addTaskToBoard(board, story);
 
         return String.format(STORY_CREATED_SUCCESSFULLY, boardName);
     }

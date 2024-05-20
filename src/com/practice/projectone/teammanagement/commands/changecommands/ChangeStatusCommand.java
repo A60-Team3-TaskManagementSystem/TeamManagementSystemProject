@@ -31,7 +31,7 @@ public class ChangeStatusCommand extends BaseCommand {
 
     private String changeStatus(int taskID, Status status) {
 
-        Task task = getTeamRepository().findTaskByID(taskID);
+        Task task = getTMSRepository().findTaskByID(taskID);
         task.changeStatus(status);
 
         return String.format(STATUS_CHANGED, status);

@@ -25,8 +25,8 @@ public class CreatePersonCommand extends BaseCommand {
     }
 
     private String createPerson(String name) {
-        Person person = getTeamRepository().createPerson(name);
-        getTeamRepository().addPerson(person);
+        Person person = getTMSRepository().createPerson(name);
+        getTMSRepository().addPerson(person);
 
         return String.format(PERSON_CREATED, name);
     }

@@ -28,7 +28,7 @@ public class ListTasksCommand extends BaseCommand {
 
     private String listTasks(String sort, String filter) {
         StringBuilder builder = new StringBuilder();
-        List<Team> teams = getTeamRepository().getTeams();
+        List<Team> teams = getTMSRepository().getTeams();
         List<Board> boards = teams.stream()
                 .flatMap(team -> team.getBoards().stream())
                 .toList();

@@ -31,7 +31,7 @@ public class ChangeSizeCommand extends BaseCommand {
 
     private String changeSeverity(int taskID, Size size) {
 
-        Story story = getTeamRepository().findStoryByID(taskID);
+        Story story = getTMSRepository().findStoryByID(taskID);
         story.changeSize(size);
 
         return String.format(SIZE_CHANGED, size);

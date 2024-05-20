@@ -26,10 +26,10 @@ public class AddTeamMemberCommand extends BaseCommand {
     }
 
     private String addTeamMember(String name, String teamName) {
-        Person person = getTeamRepository().findPersonByName(name);
-        Team team = getTeamRepository().findTeamByName(teamName);
+        Person person = getTMSRepository().findPersonByName(name);
+        Team team = getTMSRepository().findTeamByName(teamName);
 
-        getTeamRepository().addMemberToTeam(person, team);
+        getTMSRepository().addMemberToTeam(person, team);
         return String.format(ADDED_MEMBER_TO_TEAM, person.getName(), team.getName());
     }
 

@@ -51,37 +51,37 @@ public class AssignTaskToMemberCommand extends BaseCommand {
     }
 
     private String assignTask(int taskID, String memberName) {
-        SpecificTask task = getTeamRepository().findSpecificTask(taskID);
-        Person person = getTeamRepository().findPersonByName(memberName);
+        SpecificTask task = getTMSRepository().findSpecificTask(taskID);
+        Person person = getTMSRepository().findPersonByName(memberName);
 
         return assign(task, person);
     }
 
     private String assignSpecificTasks(String memberName, String taskType, String taskAttribute, String attributeCondition) {
-        Person person = getTeamRepository().findPersonByName(memberName);
+        Person person = getTMSRepository().findPersonByName(memberName);
         String result;
 
         switch (taskAttribute) {
             case "Status":
-                List<SpecificTask> tasks = getTeamRepository().getSpecificTasks();
+                List<SpecificTask> tasks = getTMSRepository().getSpecificTasks();
                 Status status = ParsingHelpers.tryParseEnum(attributeCondition, Status.class);
 
                 result = assignStatusTasks(tasks, taskType, status, person);
                 break;
             case "Priority":
-                List<SpecificTask> specificTasks = getTeamRepository().getSpecificTasks();
+                List<SpecificTask> specificTasks = getTMSRepository().getSpecificTasks();
                 Priority priority = ParsingHelpers.tryParseEnum(attributeCondition, Priority.class);
 
                 result = assignPriorityTasks(specificTasks, taskType, priority, person);
                 break;
             case "Size":
-                List<Story> stories = getTeamRepository().getStories();
+                List<Story> stories = getTMSRepository().getStories();
                 Size size = ParsingHelpers.tryParseEnum(attributeCondition, Size.class);
 
                 result = assignSizeTasks(stories, taskType, size, person);
                 break;
             case "Severity":
-                List<Bug> bugs = getTeamRepository().getBugs();
+                List<Bug> bugs = getTMSRepository().getBugs();
                 Severity severity = ParsingHelpers.tryParseEnum(attributeCondition, Severity.class);
 
                 result = assignSeverityTasks(bugs, taskType, severity, person);
@@ -137,7 +137,7 @@ public class AssignTaskToMemberCommand extends BaseCommand {
         List<String> result = new ArrayList<>();
         filteredTasks.forEach(task -> {
 
-            Person taskAssignee = getTeamRepository().findPersonByName(task.getAssignee());
+            Person taskAssignee = getTMSRepository().findPersonByName(task.getAssignee());
 
             taskAssignee.unassignTask(task);
             result.add(assign(task, person));

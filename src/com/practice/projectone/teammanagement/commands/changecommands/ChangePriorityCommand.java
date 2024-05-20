@@ -31,7 +31,7 @@ public class ChangePriorityCommand extends BaseCommand {
 
     private String changePriority(int taskID, Priority priority) {
 
-        SpecificTask task = getTeamRepository().findSpecificTask(taskID);
+        SpecificTask task = getTMSRepository().findSpecificTask(taskID);
         task.changePriority(priority);
 
         return String.format(PRIORITY_CHANGED, priority);

@@ -31,7 +31,7 @@ public class ChangeSeverityCommand extends BaseCommand {
 
     private String changeSeverity(int taskID, Severity severity) {
 
-        Bug bug = getTeamRepository().findBugByID(taskID);
+        Bug bug = getTMSRepository().findBugByID(taskID);
         bug.changeSeverity(severity);
 
         return String.format(SEVERITY_CHANGED, severity);

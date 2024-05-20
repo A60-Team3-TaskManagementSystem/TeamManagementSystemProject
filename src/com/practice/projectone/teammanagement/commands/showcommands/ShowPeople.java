@@ -20,15 +20,15 @@ public class ShowPeople extends BaseCommand {
 
     private String showPeople() {
         StringBuilder builder = new StringBuilder();
-        if (getTeamRepository().getMembers().isEmpty()) {
+        if (getTMSRepository().getMembers().isEmpty()) {
             builder.append(NO_PEOPLE);
         } else {
             builder.append("--PEOPLE--");
-            for (int i = 0; i < getTeamRepository().getMembers().size(); i++) {
+            for (int i = 0; i < getTMSRepository().getMembers().size(); i++) {
                 builder.append(System.lineSeparator());
                 builder.append(i + 1);
                 builder.append(". ");
-                builder.append(getTeamRepository().getMembers().get(i).toString());
+                builder.append(getTMSRepository().getMembers().get(i).toString());
             }
         }
         return builder.toString();

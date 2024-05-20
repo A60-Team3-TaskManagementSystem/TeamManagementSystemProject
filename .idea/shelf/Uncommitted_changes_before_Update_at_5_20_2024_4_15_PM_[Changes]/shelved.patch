@@ -1,0 +1,999 @@
+Index: src/com/practice/projectone/teammanagement/commands/BaseCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.contracts.Command;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\n\r\npublic abstract class BaseCommand implements Command {\r\n    private final TaskManagementSystemRepository taskManagementSystemRepository;\r\n\r\n    protected BaseCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        this.taskManagementSystemRepository = taskManagementSystemRepository;\r\n    }\r\n\r\n    protected TaskManagementSystemRepository getTeamRepository() {\r\n        return taskManagementSystemRepository;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/BaseCommand.java b/src/com/practice/projectone/teammanagement/commands/BaseCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/BaseCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/BaseCommand.java	(date 1716210569961)
+@@ -10,7 +10,7 @@
+         this.taskManagementSystemRepository = taskManagementSystemRepository;
+     }
+ 
+-    protected TaskManagementSystemRepository getTeamRepository() {
++    protected TaskManagementSystemRepository getTMSRepository() {
+         return taskManagementSystemRepository;
+     }
+ }
+Index: src/com/practice/projectone/teammanagement/commands/listing/ListAllTasksAlternativeCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.listing;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Task;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.Comparator;\r\nimport java.util.List;\r\nimport java.util.stream.Collectors;\r\n\r\npublic class ListAllTasksAlternativeCommand extends BaseCommand {\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 0;\r\n    public static final String LISTING_FACTOR_INVALID = \"Listing mechanism incorrect. Please try again\";\r\n    private String taskTitle;\r\n\r\n    public ListAllTasksAlternativeCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n\r\n        if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 1) {\r\n\r\n            taskTitle = parameters.get(0);\r\n            return filterTasks(taskTitle);\r\n\r\n        } else if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 2) {\r\n\r\n            String action = parameters.get(1);\r\n            return filterOrSortTasks(taskTitle, action);\r\n        }\r\n\r\n        return listAllTask();\r\n    }\r\n\r\n    private String listAllTask() {\r\n        return getTeamRepository().getTasks()\r\n                .stream()\r\n                .map(Task::toString)\r\n                .collect(Collectors.joining(System.lineSeparator()));\r\n    }\r\n\r\n    private String filterTasks(String taskTitle) {\r\n        return getTeamRepository()\r\n                .getTasks()\r\n                .stream()\r\n                .filter(task -> task.getName().equals(taskTitle))\r\n                .map(Task::toString)\r\n                .collect(Collectors.joining(System.lineSeparator()));\r\n    }\r\n\r\n    private String filterOrSortTasks(String taskTitle, String action) {\r\n        String result;\r\n\r\n        switch (action) {\r\n            case \"sort\" -> result = getTeamRepository().getTasks()\r\n                    .stream()\r\n                    .sorted(Comparator.comparing(Task::getName))\r\n                    .map(Task::toString)\r\n                    .collect(Collectors.joining(System.lineSeparator()));\r\n            case \"filter\" -> result = filterTasks(taskTitle);\r\n            default -> {\r\n                throw new InvalidUserInputException(LISTING_FACTOR_INVALID);\r\n            }\r\n        }\r\n\r\n        return result;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/listing/ListAllTasksAlternativeCommand.java b/src/com/practice/projectone/teammanagement/commands/listing/ListAllTasksAlternativeCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/listing/ListAllTasksAlternativeCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/listing/ListAllTasksAlternativeCommand.java	(date 1716210570235)
+@@ -38,17 +38,17 @@
+     }
+ 
+     private String listAllTask() {
+-        return getTeamRepository().getTasks()
++        return getTMSRepository().getTasks()
+                 .stream()
+                 .map(Task::toString)
+                 .collect(Collectors.joining(System.lineSeparator()));
+     }
+ 
+     private String filterTasks(String taskTitle) {
+-        return getTeamRepository()
++        return getTMSRepository()
+                 .getTasks()
+                 .stream()
+-                .filter(task -> task.getName().equals(taskTitle))
++                .filter(task -> task.getName().contains(taskTitle))
+                 .map(Task::toString)
+                 .collect(Collectors.joining(System.lineSeparator()));
+     }
+@@ -57,7 +57,7 @@
+         String result;
+ 
+         switch (action) {
+-            case "sort" -> result = getTeamRepository().getTasks()
++            case "sort" -> result = getTMSRepository().getTasks()
+                     .stream()
+                     .sorted(Comparator.comparing(Task::getName))
+                     .map(Task::toString)
+Index: src/com/practice/projectone/teammanagement/commands/createcommands/CreateNewBoardInTeamCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.createcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class CreateNewBoardInTeamCommand extends BaseCommand {\r\n\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 2;\r\n    public static final String BOARD_CREATED_SUCCESSFULLY = \"%s created successfully in %s\";\r\n\r\n    public CreateNewBoardInTeamCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        String boardName = parameters.get(0);\r\n        String teamName = parameters.get(1);\r\n\r\n        return createBoard(boardName, teamName);\r\n    }\r\n\r\n    private String createBoard(String boardName, String teamName) {\r\n\r\n        getTeamRepository().createBoard(teamName, boardName);\r\n\r\n        return String.format(BOARD_CREATED_SUCCESSFULLY, boardName, teamName);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateNewBoardInTeamCommand.java b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateNewBoardInTeamCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateNewBoardInTeamCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateNewBoardInTeamCommand.java	(date 1716210569897)
+@@ -27,7 +27,7 @@
+ 
+     private String createBoard(String boardName, String teamName) {
+ 
+-        getTeamRepository().createBoard(teamName, boardName);
++        getTMSRepository().createBoard(teamName, boardName);
+ 
+         return String.format(BOARD_CREATED_SUCCESSFULLY, boardName, teamName);
+     }
+Index: src/com/practice/projectone/teammanagement/models/PersonImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.models;\r\n\r\nimport com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;\r\nimport com.practice.projectone.teammanagement.models.contracts.EventLog;\r\nimport com.practice.projectone.teammanagement.models.contracts.Person;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Task;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport static java.lang.String.format;\r\n\r\npublic class PersonImpl implements Person {\r\n\r\n    public static final int NAME_LEN_MIN = 5;\r\n    public static final int NAME_LEN_MAX = 15;\r\n    private static final String NAME_LEN_ERR = format(\r\n            \"Employee name must be between %s and %s characters long!\",\r\n            NAME_LEN_MIN,\r\n            NAME_LEN_MAX);\r\n    public static final String WRONG_MEMBER = \"This task is not assigned to %s\";\r\n    private String memberName;\r\n    private final List<Task> tasks;\r\n    private final List<EventLog> eventLogs;\r\n\r\n    public PersonImpl(String memberName) {\r\n        setMemberName(memberName);\r\n        tasks = new ArrayList<>();\r\n        eventLogs = new ArrayList<>();\r\n\r\n        addEventToHistory(new EventLogImpl(String.format(\"Employee %s joined the company\", memberName)));\r\n    }\r\n\r\n    @Override\r\n    public String getName() {\r\n        return memberName;\r\n    }\r\n\r\n    @Override\r\n    public List<Task> getTasks() {\r\n        return new ArrayList<>(tasks);\r\n    }\r\n\r\n    @Override\r\n    public List<EventLog> getActivityHistory() {\r\n        return new ArrayList<>(eventLogs);\r\n    }\r\n\r\n    @Override\r\n    public void assignTask(Task task) {\r\n        tasks.add(task);\r\n        addEventToHistory(new EventLogImpl(String.format(\"New task %s assigned to %s.\", task, memberName)));\r\n    }\r\n\r\n    @Override\r\n    public void unassignTask(Task task) {\r\n        if (!tasks.contains(task)) {\r\n            throw new ElementNotFoundException(String.format(WRONG_MEMBER, memberName));\r\n        }\r\n\r\n        tasks.remove(task);\r\n\r\n        addEventToHistory(new EventLogImpl((String.format(\"Task ID%d removed from %s's list of assigned tasks.\", task.getId(), memberName))));\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return String.format(\"Member: %s\", memberName);\r\n    }\r\n\r\n\r\n\r\n    private void setMemberName(String memberName) {\r\n        ValidationHelpers.validateStringLength(memberName, NAME_LEN_MIN, NAME_LEN_MAX, NAME_LEN_ERR);\r\n        this.memberName = memberName;\r\n    }\r\n\r\n    private void addEventToHistory(EventLog eventLog) {\r\n        eventLogs.add(eventLog);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/models/PersonImpl.java b/src/com/practice/projectone/teammanagement/models/PersonImpl.java
+--- a/src/com/practice/projectone/teammanagement/models/PersonImpl.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/models/PersonImpl.java	(date 1716209848349)
+@@ -8,6 +8,7 @@
+ 
+ import java.util.ArrayList;
+ import java.util.List;
++import java.util.Objects;
+ 
+ import static java.lang.String.format;
+ 
+@@ -79,4 +80,17 @@
+     private void addEventToHistory(EventLog eventLog) {
+         eventLogs.add(eventLog);
+     }
++
++    @Override
++    public boolean equals(Object o) {
++        if (this == o) return true;
++        if (o == null || getClass() != o.getClass()) return false;
++        PersonImpl person = (PersonImpl) o;
++        return memberName.equals(person.memberName);
++    }
++
++    @Override
++    public int hashCode() {
++        return Objects.hash(memberName);
++    }
+ }
+Index: src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands;\r\n\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;\r\nimport com.practice.projectone.teammanagement.models.contracts.Person;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.*;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Priority;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Severity;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Size;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Status;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\nimport java.util.stream.Collectors;\r\n\r\npublic class AssignTaskToMemberCommand extends BaseCommand {\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 2;\r\n    private static final String INVALID_TASK_ID = \"Invalid value for taskID. Should be a number.\";\r\n    public static final String TASK_ASSIGNED = \"Task with ID%d assigned to %s\";\r\n    public static final String TASK_NOT_ASSIGNABLE = \"Task can not be assigned\";\r\n    public static final String INVALID_CONDITIONS = \"No task satisfy given condition\";\r\n    public static final String INVALID_TASK = \"Feedback\";\r\n\r\n    public AssignTaskToMemberCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);\r\n        String memberName = parameters.get(1);\r\n\r\n        if (parameters.size() == 4) {\r\n            String taskType = parameters.get(1);\r\n\r\n            if (taskType.equals(INVALID_TASK)) {\r\n                throw new InvalidUserInputException(TASK_NOT_ASSIGNABLE);\r\n            }\r\n\r\n            String taskAttribute = parameters.get(2);\r\n            String attributeCondition = parameters.get(3);\r\n\r\n            return assignSpecificTasks(memberName, taskType, taskAttribute, attributeCondition);\r\n        }\r\n\r\n        return assignTask(taskID, memberName);\r\n    }\r\n\r\n    private String assignTask(int taskID, String memberName) {\r\n        SpecificTask task = getTeamRepository().findSpecificTask(taskID);\r\n        Person person = getTeamRepository().findPersonByName(memberName);\r\n\r\n        return assign(task, person);\r\n    }\r\n\r\n    private String assignSpecificTasks(String memberName, String taskType, String taskAttribute, String attributeCondition) {\r\n        Person person = getTeamRepository().findPersonByName(memberName);\r\n        String result;\r\n\r\n        switch (taskAttribute) {\r\n            case \"Status\":\r\n                List<SpecificTask> tasks = getTeamRepository().getSpecificTasks();\r\n                Status status = ParsingHelpers.tryParseEnum(attributeCondition, Status.class);\r\n\r\n                result = assignStatusTasks(tasks, taskType, status, person);\r\n                break;\r\n            case \"Priority\":\r\n                List<SpecificTask> specificTasks = getTeamRepository().getSpecificTasks();\r\n                Priority priority = ParsingHelpers.tryParseEnum(attributeCondition, Priority.class);\r\n\r\n                result = assignPriorityTasks(specificTasks, taskType, priority, person);\r\n                break;\r\n            case \"Size\":\r\n                List<Story> stories = getTeamRepository().getStories();\r\n                Size size = ParsingHelpers.tryParseEnum(attributeCondition, Size.class);\r\n\r\n                result = assignSizeTasks(stories, taskType, size, person);\r\n                break;\r\n            case \"Severity\":\r\n                List<Bug> bugs = getTeamRepository().getBugs();\r\n                Severity severity = ParsingHelpers.tryParseEnum(attributeCondition, Severity.class);\r\n\r\n                result = assignSeverityTasks(bugs, taskType, severity, person);\r\n                break;\r\n            default:\r\n                throw new IllegalArgumentException(INVALID_CONDITIONS);\r\n        }\r\n\r\n        return result;\r\n    }\r\n\r\n    private String assignStatusTasks(List<SpecificTask> tasks, String taskType, Status status, Person person) {\r\n        List<SpecificTask> filteredTasks = tasks.stream()\r\n                .filter(task -> task.getStatus().getTaskType().equals(taskType))\r\n                .filter(task -> task.getStatus().equals(status))\r\n                .collect(Collectors.toList());\r\n\r\n        return getResult(filteredTasks, person);\r\n    }\r\n\r\n    private String assignPriorityTasks(List<SpecificTask> specificTasks, String taskType, Priority priority, Person person) {\r\n        List<SpecificTask> filteredTasks = specificTasks.stream()\r\n                .filter(task -> task.getStatus().getTaskType().equals(taskType))\r\n                .filter(task -> task.getPriority().equals(priority))\r\n                .collect(Collectors.toList());\r\n\r\n        return getResult(filteredTasks, person);\r\n    }\r\n\r\n    private String assignSizeTasks(List<Story> stories, String taskType, Size size, Person person) {\r\n        List<Story> filteredTasks = stories.stream()\r\n                .filter(task -> task.getStatus().getTaskType().equals(taskType))\r\n                .filter(task -> task.getSize().equals(size))\r\n                .collect(Collectors.toList());\r\n\r\n        return getResult(filteredTasks, person);\r\n    }\r\n\r\n    private String assignSeverityTasks(List<Bug> bugs, String taskType, Severity severity, Person person) {\r\n        List<Bug> filteredTasks = bugs.stream()\r\n                .filter(task -> task.getStatus().getTaskType().equals(taskType))\r\n                .filter(task -> task.getSeverity().equals(severity))\r\n                .collect(Collectors.toList());\r\n\r\n        return getResult(filteredTasks, person);\r\n    }\r\n\r\n    private <T extends SpecificTask> String getResult(List<T> filteredTasks, Person person) {\r\n        if (filteredTasks.isEmpty()) {\r\n            return INVALID_CONDITIONS;\r\n        }\r\n\r\n        List<String> result = new ArrayList<>();\r\n        filteredTasks.forEach(task -> {\r\n\r\n            Person taskAssignee = getTeamRepository().findPersonByName(task.getAssignee());\r\n\r\n            taskAssignee.unassignTask(task);\r\n            result.add(assign(task, person));\r\n        });\r\n\r\n        return String.join(System.lineSeparator(), result).trim();\r\n    }\r\n\r\n    private String assign(SpecificTask task, Person person) {\r\n        task.changeAssignee(person.getName());\r\n        person.assignTask(task);\r\n\r\n        return String.format(TASK_ASSIGNED, task.getId(), person.getName());\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java b/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java	(date 1716210569872)
+@@ -51,37 +51,37 @@
+     }
+ 
+     private String assignTask(int taskID, String memberName) {
+-        SpecificTask task = getTeamRepository().findSpecificTask(taskID);
+-        Person person = getTeamRepository().findPersonByName(memberName);
++        SpecificTask task = getTMSRepository().findSpecificTask(taskID);
++        Person person = getTMSRepository().findPersonByName(memberName);
+ 
+         return assign(task, person);
+     }
+ 
+     private String assignSpecificTasks(String memberName, String taskType, String taskAttribute, String attributeCondition) {
+-        Person person = getTeamRepository().findPersonByName(memberName);
++        Person person = getTMSRepository().findPersonByName(memberName);
+         String result;
+ 
+         switch (taskAttribute) {
+             case "Status":
+-                List<SpecificTask> tasks = getTeamRepository().getSpecificTasks();
++                List<SpecificTask> tasks = getTMSRepository().getSpecificTasks();
+                 Status status = ParsingHelpers.tryParseEnum(attributeCondition, Status.class);
+ 
+                 result = assignStatusTasks(tasks, taskType, status, person);
+                 break;
+             case "Priority":
+-                List<SpecificTask> specificTasks = getTeamRepository().getSpecificTasks();
++                List<SpecificTask> specificTasks = getTMSRepository().getSpecificTasks();
+                 Priority priority = ParsingHelpers.tryParseEnum(attributeCondition, Priority.class);
+ 
+                 result = assignPriorityTasks(specificTasks, taskType, priority, person);
+                 break;
+             case "Size":
+-                List<Story> stories = getTeamRepository().getStories();
++                List<Story> stories = getTMSRepository().getStories();
+                 Size size = ParsingHelpers.tryParseEnum(attributeCondition, Size.class);
+ 
+                 result = assignSizeTasks(stories, taskType, size, person);
+                 break;
+             case "Severity":
+-                List<Bug> bugs = getTeamRepository().getBugs();
++                List<Bug> bugs = getTMSRepository().getBugs();
+                 Severity severity = ParsingHelpers.tryParseEnum(attributeCondition, Severity.class);
+ 
+                 result = assignSeverityTasks(bugs, taskType, severity, person);
+@@ -137,7 +137,7 @@
+         List<String> result = new ArrayList<>();
+         filteredTasks.forEach(task -> {
+ 
+-            Person taskAssignee = getTeamRepository().findPersonByName(task.getAssignee());
++            Person taskAssignee = getTMSRepository().findPersonByName(task.getAssignee());
+ 
+             taskAssignee.unassignTask(task);
+             result.add(assign(task, person));
+Index: src/com/practice/projectone/teammanagement/commands/createcommands/CreateStoryToBoardCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.createcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Board;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Story;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Priority;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Size;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class CreateStoryToBoardCommand extends BaseCommand {\r\n\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 5;\r\n    private static final String STORY_CREATED_SUCCESSFULLY = \"Story created successfully in %s\";\r\n\r\n    public CreateStoryToBoardCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        String title = parameters.get(0);\r\n        String description = parameters.get(1);\r\n        Priority priority = ParsingHelpers.tryParseEnum(parameters.get(2), Priority.class);\r\n        Size size = ParsingHelpers.tryParseEnum(parameters.get(3), Size.class);\r\n        String boardName = parameters.get(4);\r\n\r\n        return createStory(title, description, priority, size, boardName);\r\n    }\r\n\r\n    private String createStory(String title, String description, Priority priority,\r\n                               Size size, String boardName) {\r\n\r\n        Board board = getTeamRepository().findBoardByName(boardName);\r\n        Story story = getTeamRepository().createStory(title, description, priority, size);\r\n\r\n        getTeamRepository().addTaskToBoard(board, story);\r\n\r\n        return String.format(STORY_CREATED_SUCCESSFULLY, boardName);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateStoryToBoardCommand.java b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateStoryToBoardCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateStoryToBoardCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateStoryToBoardCommand.java	(date 1716210569604)
+@@ -36,10 +36,10 @@
+     private String createStory(String title, String description, Priority priority,
+                                Size size, String boardName) {
+ 
+-        Board board = getTeamRepository().findBoardByName(boardName);
+-        Story story = getTeamRepository().createStory(title, description, priority, size);
++        Board board = getTMSRepository().findBoardByName(boardName);
++        Story story = getTMSRepository().createStory(title, description, priority, size);
+ 
+-        getTeamRepository().addTaskToBoard(board, story);
++        getTMSRepository().addTaskToBoard(board, story);
+ 
+         return String.format(STORY_CREATED_SUCCESSFULLY, boardName);
+     }
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"267e4434-ea34-4c4c-9368-85a562d5c2bf\" name=\"Changes\" comment=\"add project packages\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"CodeInsightWorkspaceSettings\">\r\n    <option name=\"optimizeImportsOnTheFly\" value=\"true\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Enum\" />\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2gP8yEDtRxiuqyRNmJDLxsHHzGf\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;D:/IT STUFF/TelerikProjects/TeamManagementSystemProject/src&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;inlay.hints&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CreateClassDialog.RecentsKey\">\r\n      <recent name=\"com.practice.projectone.teammanagement.commands.contracts\" />\r\n      <recent name=\"com.practice.projectone.teammanagement.core\" />\r\n      <recent name=\"com.practice.projectone.teammanagement.models\" />\r\n    </key>\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\IT STUFF\\TelerikProjects\\TeamManagementSystemProject\\src\" />\r\n      <recent name=\"D:\\IT STUFF\\TelerikProjects\\TeamManagementSystemProject\\src\\com\\practice\\projectone\\teammanagement\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"com.practice.projectone.teammanagement.exceptions\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.practice.projectone.teammanagement.Main\" />\r\n      <module name=\"TeamManagementSystemProject\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"com.practice.projectone.teammanagement.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Main\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"267e4434-ea34-4c4c-9368-85a562d5c2bf\" name=\"Changes\" comment=\"\" />\r\n      <created>1715588107845</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1715588107845</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"add project packages\">\r\n      <created>1715599328293</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1715599328293</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"2\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT\" value=\"false\" />\r\n    <option name=\"CHECK_NEW_TODO\" value=\"false\" />\r\n    <MESSAGE value=\"add project packages\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"add project packages\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <watches-manager>\r\n      <configuration name=\"Application\">\r\n        <watch expression=\"pattern\" />\r\n      </configuration>\r\n    </watches-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/.idea/workspace.xml	(date 1716210571173)
+@@ -3,6 +3,36 @@
+   <component name="ChangeListManager">
+     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddTeamMemberCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AddTeamMemberCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/BaseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/BaseCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMemberCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMemberCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangePriorityCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangePriorityCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeRatingCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeRatingCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSeverityCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSeverityCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSizeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSizeCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeStatusCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeStatusCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateFeedbackToBoardCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateFeedbackToBoardCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateNewBoardInTeamCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateNewBoardInTeamCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreatePersonCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreatePersonCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateStoryToBoardCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateStoryToBoardCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateTeamCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateTeamCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListAllTasksAlternativeCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListAllTasksAlternativeCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListBugsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListBugsCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPeople.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPeople.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLog.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamActivityCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamActivityCommand.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamMembers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamMembers.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeams.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeams.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/PersonImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/PersonImpl.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -50,6 +80,9 @@
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="D:\IT STUFF\TelerikProjects\TeamManagementSystemProject\src" />
+       <recent name="D:\IT STUFF\TelerikProjects\TeamManagementSystemProject\src\com\practice\projectone\teammanagement" />
++    </key>
++    <key name="MoveFile.RECENT_KEYS">
++      <recent name="D:\IT STUFF\TelerikProjects\TeamManagementSystemProject" />
+     </key>
+     <key name="CopyClassDialog.RECENTS_KEY">
+       <recent name="com.practice.projectone.teammanagement.exceptions" />
+Index: src/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.listing;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;\r\n\r\nimport java.util.Comparator;\r\nimport java.util.List;\r\nimport java.util.stream.Collectors;\r\n\r\npublic class ListFeedbacksCommand extends BaseCommand {\r\n\r\n    public static final String INVALID_SORT_PARAMETER = \"Invalid sorting parameter: should be \\\"title\\\", \\\"rating\\\" or \\\"nosort\\\"!\";\r\n\r\n    public ListFeedbacksCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        if (parameters.size() > 2){\r\n            throw new IllegalArgumentException(\"Argument count should be 2 or fewer!\");\r\n        }\r\n        if (parameters.size() == 1){\r\n            String sort = parameters.get(0);\r\n            return listFeedbacks(sort);\r\n        } else if (parameters.size() == 2) {\r\n            String sort = parameters.get(0);\r\n            String filter = parameters.get(1);\r\n            return listFeedbacks(sort, filter);\r\n        }\r\n        return listAllFeedbacks();\r\n    }\r\n\r\n    private String listFeedbacks(String sort) {\r\n        String result;\r\n        switch (sort) {\r\n            case \"title\":\r\n                result = getTeamRepository().getFeedbacks()\r\n                        .stream()\r\n                        .sorted(Comparator.comparing(Feedback::getName))\r\n                        .map(Feedback::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"rating\":\r\n                result = getTeamRepository().getFeedbacks()\r\n                        .stream()\r\n                        .sorted(Comparator.comparing(Feedback::getRating))\r\n                        .map(Feedback::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"nosort\":\r\n                return listAllFeedbacks();\r\n            default:\r\n                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private String listFeedbacks(String sort, String filter) {\r\n        String result;\r\n        switch (sort) {\r\n            case \"title\":\r\n                result = getTeamRepository().getFeedbacks()\r\n                        .stream()\r\n                        .filter(feedback -> feedback.getStatus().toString().equals(filter))\r\n                        .sorted(Comparator.comparing(Feedback::getName))\r\n                        .map(Feedback::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"rating\":\r\n                result = getTeamRepository().getFeedbacks()\r\n                        .stream()\r\n                        .filter(feedback -> feedback.getStatus().toString().equals(filter))\r\n                        .sorted(Comparator.comparing(Feedback::getRating))\r\n                        .map(Feedback::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"nosort\":\r\n                result = getTeamRepository().getFeedbacks()\r\n                        .stream()\r\n                        .filter(feedback -> feedback.getStatus().toString().equals(filter))\r\n                        .map(Feedback::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            default:\r\n                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private String listAllFeedbacks() {\r\n        return getTeamRepository().getFeedbacks()\r\n                .stream()\r\n                .map(Feedback::toString)\r\n                .collect(Collectors.joining(System.lineSeparator()));\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksCommand.java b/src/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksCommand.java	(date 1716210570090)
+@@ -36,14 +36,14 @@
+         String result;
+         switch (sort) {
+             case "title":
+-                result = getTeamRepository().getFeedbacks()
++                result = getTMSRepository().getFeedbacks()
+                         .stream()
+                         .sorted(Comparator.comparing(Feedback::getName))
+                         .map(Feedback::toString)
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "rating":
+-                result = getTeamRepository().getFeedbacks()
++                result = getTMSRepository().getFeedbacks()
+                         .stream()
+                         .sorted(Comparator.comparing(Feedback::getRating))
+                         .map(Feedback::toString)
+@@ -61,7 +61,7 @@
+         String result;
+         switch (sort) {
+             case "title":
+-                result = getTeamRepository().getFeedbacks()
++                result = getTMSRepository().getFeedbacks()
+                         .stream()
+                         .filter(feedback -> feedback.getStatus().toString().equals(filter))
+                         .sorted(Comparator.comparing(Feedback::getName))
+@@ -69,7 +69,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "rating":
+-                result = getTeamRepository().getFeedbacks()
++                result = getTMSRepository().getFeedbacks()
+                         .stream()
+                         .filter(feedback -> feedback.getStatus().toString().equals(filter))
+                         .sorted(Comparator.comparing(Feedback::getRating))
+@@ -77,7 +77,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "nosort":
+-                result = getTeamRepository().getFeedbacks()
++                result = getTMSRepository().getFeedbacks()
+                         .stream()
+                         .filter(feedback -> feedback.getStatus().toString().equals(filter))
+                         .map(Feedback::toString)
+@@ -90,7 +90,7 @@
+     }
+ 
+     private String listAllFeedbacks() {
+-        return getTeamRepository().getFeedbacks()
++        return getTMSRepository().getFeedbacks()
+                 .stream()
+                 .map(Feedback::toString)
+                 .collect(Collectors.joining(System.lineSeparator()));
+Index: src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.listing;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Board;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Task;\r\nimport com.practice.projectone.teammanagement.models.contracts.Team;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.Comparator;\r\nimport java.util.List;\r\n\r\npublic class ListTasksCommand extends BaseCommand {\r\n\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;\r\n\r\n    public ListTasksCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n        String sort = parameters.get(0);\r\n        String filter = parameters.get(1);\r\n        return listTasks(sort, filter);\r\n    }\r\n\r\n    private String listTasks(String sort, String filter) {\r\n        StringBuilder builder = new StringBuilder();\r\n        List<Team> teams = getTeamRepository().getTeams();\r\n        List<Board> boards = teams.stream()\r\n                .flatMap(team -> team.getBoards().stream())\r\n                .toList();\r\n        if (sort.equalsIgnoreCase(\"nosort\") && filter.equalsIgnoreCase(\"nofilter\")) {\r\n            boards\r\n                    .stream()\r\n                    .flatMap(board -> board.getTasks().stream())\r\n                    .forEach(builder::append);\r\n        } else if (sort.equalsIgnoreCase(\"title\") && filter.equalsIgnoreCase(\"nofilter\")) {\r\n            boards\r\n                    .stream()\r\n                    .flatMap(board -> board.getTasks().stream())\r\n                    .sorted(Comparator.comparing(Task::getName))\r\n                    .forEach(builder::append);\r\n        } else if (sort.equalsIgnoreCase(\"title\") && !filter.equalsIgnoreCase(\"nofilter\")) {\r\n            boards\r\n                    .stream()\r\n                    .flatMap(board -> board.getTasks().stream())\r\n                    .filter(task -> task.getName().equals(filter))\r\n                    .sorted(Comparator.comparing(Task::getName))\r\n                    .forEach(builder::append);\r\n        } else if (sort.equalsIgnoreCase(\"nosort\") && !filter.equalsIgnoreCase(\"nofilter\")) {\r\n            boards\r\n                    .stream()\r\n                    .flatMap(board -> board.getTasks().stream())\r\n                    .filter(task -> task.getName().equals(filter))\r\n                    .forEach(builder::append);\r\n        } else {\r\n            throw new IllegalArgumentException(\"Invalid sorting parameter: should be \\\"title\\\" or \\\"nosort\\\"\");\r\n        }\r\n        return builder.toString();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java b/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java	(date 1716210570063)
+@@ -28,7 +28,7 @@
+ 
+     private String listTasks(String sort, String filter) {
+         StringBuilder builder = new StringBuilder();
+-        List<Team> teams = getTeamRepository().getTeams();
++        List<Team> teams = getTMSRepository().getTeams();
+         List<Board> boards = teams.stream()
+                 .flatMap(team -> team.getBoards().stream())
+                 .toList();
+Index: src/com/practice/projectone/teammanagement/commands/listing/ListBugsCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.listing;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Bug;\r\n\r\nimport java.util.Comparator;\r\nimport java.util.List;\r\nimport java.util.stream.Collectors;\r\n\r\npublic class ListBugsCommand extends BaseCommand {\r\n\r\n    public static final String INVALID_SORT_PARAMETER = \"Invalid sorting parameter: should be \\\"title\\\", \\\"priority\\\", \\\"severity\\\" or \\\"nosort\\\"!\";\r\n\r\n    public ListBugsCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        if (parameters.size() > 3){\r\n            throw new IllegalArgumentException(\"Argument count should be 3 or fewer!\");\r\n        }\r\n        if (parameters.size() == 1){\r\n            String sort = parameters.get(0);\r\n            return listBugs(sort);\r\n        } else if (parameters.size() == 2) {\r\n            String sort = parameters.get(0);\r\n            String filter1 = parameters.get(1);\r\n            return listBugs(sort, filter1);\r\n        } else if (parameters.size() == 3) {\r\n            String sort = parameters.get(0);\r\n            String filter1 = parameters.get(1);\r\n            String filter2 = parameters.get(2);\r\n            return listBugs(sort, filter1, filter2);\r\n        }\r\n        return listAllBugs();\r\n    }\r\n\r\n    private String listBugs(String sort) {\r\n        String result;\r\n        switch (sort) {\r\n            case \"title\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .sorted(Comparator.comparing(Bug::getName))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"priority\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .sorted(Comparator.comparing(Bug::getPriority))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"severity\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .sorted(Comparator.comparing(Bug::getSeverity))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"nosort\":\r\n                return listAllBugs();\r\n            default:\r\n                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private String listBugs(String sort, String filter1) {\r\n        String result;\r\n        switch (sort) {\r\n            case \"title\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))\r\n                        .sorted(Comparator.comparing(Bug::getName))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"priority\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))\r\n                        .sorted(Comparator.comparing(Bug::getPriority))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"severity\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))\r\n                        .sorted(Comparator.comparing(Bug::getSeverity))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"nosort\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            default:\r\n                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private String listBugs(String sort, String filter1, String filter2) {\r\n        String result;\r\n        switch (sort) {\r\n            case \"title\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .filter(bug -> filter1.equals(bug.getAssignee()))\r\n                        .filter(bug -> bug.getStatus().toString().equals(filter2))\r\n                        .sorted(Comparator.comparing(Bug::getName))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"priority\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .filter(bug -> filter1.equals(bug.getAssignee()))\r\n                        .filter(bug -> bug.getStatus().toString().equals(filter2))\r\n                        .sorted(Comparator.comparing(Bug::getPriority))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"severity\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .filter(bug -> filter1.equals(bug.getAssignee()))\r\n                        .filter(bug -> bug.getStatus().toString().equals(filter2))\r\n                        .sorted(Comparator.comparing(Bug::getSeverity))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"nosort\":\r\n                result = getTeamRepository().getBugs()\r\n                        .stream()\r\n                        .filter(bug -> filter1.equals(bug.getAssignee()))\r\n                        .filter(bug -> bug.getStatus().toString().equals(filter2))\r\n                        .map(Bug::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            default:\r\n                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private String listAllBugs() {\r\n        return getTeamRepository().getBugs()\r\n                .stream()\r\n                .map(Bug::toString)\r\n                .collect(Collectors.joining(System.lineSeparator()));\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/listing/ListBugsCommand.java b/src/com/practice/projectone/teammanagement/commands/listing/ListBugsCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/listing/ListBugsCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/listing/ListBugsCommand.java	(date 1716210570014)
+@@ -41,21 +41,21 @@
+         String result;
+         switch (sort) {
+             case "title":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .sorted(Comparator.comparing(Bug::getName))
+                         .map(Bug::toString)
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "priority":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .sorted(Comparator.comparing(Bug::getPriority))
+                         .map(Bug::toString)
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "severity":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .sorted(Comparator.comparing(Bug::getSeverity))
+                         .map(Bug::toString)
+@@ -73,7 +73,7 @@
+         String result;
+         switch (sort) {
+             case "title":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
+                         .sorted(Comparator.comparing(Bug::getName))
+@@ -81,7 +81,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "priority":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
+                         .sorted(Comparator.comparing(Bug::getPriority))
+@@ -89,7 +89,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "severity":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
+                         .sorted(Comparator.comparing(Bug::getSeverity))
+@@ -97,7 +97,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "nosort":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .filter(bug -> filter1.equals(bug.getAssignee()) || bug.getStatus().toString().equals(filter1))
+                         .map(Bug::toString)
+@@ -113,7 +113,7 @@
+         String result;
+         switch (sort) {
+             case "title":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .filter(bug -> filter1.equals(bug.getAssignee()))
+                         .filter(bug -> bug.getStatus().toString().equals(filter2))
+@@ -122,7 +122,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "priority":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .filter(bug -> filter1.equals(bug.getAssignee()))
+                         .filter(bug -> bug.getStatus().toString().equals(filter2))
+@@ -131,7 +131,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "severity":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .filter(bug -> filter1.equals(bug.getAssignee()))
+                         .filter(bug -> bug.getStatus().toString().equals(filter2))
+@@ -140,7 +140,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "nosort":
+-                result = getTeamRepository().getBugs()
++                result = getTMSRepository().getBugs()
+                         .stream()
+                         .filter(bug -> filter1.equals(bug.getAssignee()))
+                         .filter(bug -> bug.getStatus().toString().equals(filter2))
+@@ -154,7 +154,7 @@
+     }
+ 
+     private String listAllBugs() {
+-        return getTeamRepository().getBugs()
++        return getTMSRepository().getBugs()
+                 .stream()
+                 .map(Bug::toString)
+                 .collect(Collectors.joining(System.lineSeparator()));
+Index: src/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.listing;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Story;\r\n\r\nimport java.util.Comparator;\r\nimport java.util.List;\r\nimport java.util.stream.Collectors;\r\n\r\npublic class ListStoriesCommand extends BaseCommand {\r\n\r\n    public static final String INVALID_SORT_PARAMETER = \"Invalid sorting parameter: should be \\\"title\\\", \\\"priority\\\", \\\"size\\\" or \\\"nosort\\\"!\";\r\n\r\n    public ListStoriesCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        if (parameters.size() > 3){\r\n            throw new IllegalArgumentException(\"Argument count should be 3 or fewer!\");\r\n        }\r\n        if (parameters.size() == 1){\r\n            String sort = parameters.get(0);\r\n            return listStories(sort);\r\n        } else if (parameters.size() == 2) {\r\n            String sort = parameters.get(0);\r\n            String filter1 = parameters.get(1);\r\n            return listStories(sort, filter1);\r\n        } else if (parameters.size() == 3) {\r\n            String sort = parameters.get(0);\r\n            String filter1 = parameters.get(1);\r\n            String filter2 = parameters.get(2);\r\n            return listStories(sort, filter1, filter2);\r\n        }\r\n        return listAllStories();\r\n    }\r\n\r\n    private String listStories(String sort) {\r\n        String result;\r\n        switch (sort) {\r\n            case \"title\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .sorted(Comparator.comparing(Story::getName))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"priority\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .sorted(Comparator.comparing(Story::getPriority))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"size\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .sorted(Comparator.comparing(Story::getSize))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"nosort\":\r\n                return listAllStories();\r\n            default:\r\n                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private String listStories(String sort, String filter1) {\r\n        String result;\r\n        switch (sort) {\r\n            case \"title\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))\r\n                        .sorted(Comparator.comparing(Story::getName))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"priority\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))\r\n                        .sorted(Comparator.comparing(Story::getPriority))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"size\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))\r\n                        .sorted(Comparator.comparing(Story::getSize))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"nosort\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            default:\r\n                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private String listStories(String sort, String filter1, String filter2) {\r\n        String result;\r\n        switch (sort) {\r\n            case \"title\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .filter(story -> filter1.equals(story.getAssignee()))\r\n                        .filter(story -> story.getStatus().toString().equals(filter2))\r\n                        .sorted(Comparator.comparing(Story::getName))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"priority\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .filter(story -> filter1.equals(story.getAssignee()))\r\n                        .filter(story -> story.getStatus().toString().equals(filter2))\r\n                        .sorted(Comparator.comparing(Story::getPriority))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"size\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .filter(story -> filter1.equals(story.getAssignee()))\r\n                        .filter(story -> story.getStatus().toString().equals(filter2))\r\n                        .sorted(Comparator.comparing(Story::getSize))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            case \"nosort\":\r\n                result = getTeamRepository().getStories()\r\n                        .stream()\r\n                        .filter(story -> filter1.equals(story.getAssignee()))\r\n                        .filter(story -> story.getStatus().toString().equals(filter2))\r\n                        .map(Story::toString)\r\n                        .collect(Collectors.joining(System.lineSeparator()));\r\n                break;\r\n            default:\r\n                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private String listAllStories() {\r\n        return getTeamRepository().getStories()\r\n                .stream()\r\n                .map(Story::toString)\r\n                .collect(Collectors.joining(System.lineSeparator()));\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommand.java b/src/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommand.java	(date 1716210570040)
+@@ -41,21 +41,21 @@
+         String result;
+         switch (sort) {
+             case "title":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .sorted(Comparator.comparing(Story::getName))
+                         .map(Story::toString)
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "priority":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .sorted(Comparator.comparing(Story::getPriority))
+                         .map(Story::toString)
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "size":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .sorted(Comparator.comparing(Story::getSize))
+                         .map(Story::toString)
+@@ -73,7 +73,7 @@
+         String result;
+         switch (sort) {
+             case "title":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
+                         .sorted(Comparator.comparing(Story::getName))
+@@ -81,7 +81,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "priority":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
+                         .sorted(Comparator.comparing(Story::getPriority))
+@@ -89,7 +89,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "size":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
+                         .sorted(Comparator.comparing(Story::getSize))
+@@ -97,7 +97,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "nosort":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .filter(story -> filter1.equals(story.getAssignee()) || story.getStatus().toString().equals(filter1))
+                         .map(Story::toString)
+@@ -113,7 +113,7 @@
+         String result;
+         switch (sort) {
+             case "title":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .filter(story -> filter1.equals(story.getAssignee()))
+                         .filter(story -> story.getStatus().toString().equals(filter2))
+@@ -122,7 +122,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "priority":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .filter(story -> filter1.equals(story.getAssignee()))
+                         .filter(story -> story.getStatus().toString().equals(filter2))
+@@ -131,7 +131,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "size":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .filter(story -> filter1.equals(story.getAssignee()))
+                         .filter(story -> story.getStatus().toString().equals(filter2))
+@@ -140,7 +140,7 @@
+                         .collect(Collectors.joining(System.lineSeparator()));
+                 break;
+             case "nosort":
+-                result = getTeamRepository().getStories()
++                result = getTMSRepository().getStories()
+                         .stream()
+                         .filter(story -> filter1.equals(story.getAssignee()))
+                         .filter(story -> story.getStatus().toString().equals(filter2))
+@@ -154,7 +154,7 @@
+     }
+ 
+     private String listAllStories() {
+-        return getTeamRepository().getStories()
++        return getTMSRepository().getStories()
+                 .stream()
+                 .map(Story::toString)
+                 .collect(Collectors.joining(System.lineSeparator()));
+Index: src/com/practice/projectone/teammanagement/commands/changecommands/ChangePriorityCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.changecommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Priority;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ChangePriorityCommand extends BaseCommand {\r\n\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 2;\r\n    private static final String INVALID_TASK_ID = \"Invalid value for taskID. Should be a number.\";\r\n    private static final String PRIORITY_CHANGED = \"Task priority successfully changed to %s\";\r\n\r\n    public ChangePriorityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);\r\n        Priority priority = ParsingHelpers.tryParseEnum(parameters.get(1), Priority.class);\r\n\r\n        return changePriority(taskID, priority);\r\n    }\r\n\r\n    private String changePriority(int taskID, Priority priority) {\r\n\r\n        SpecificTask task = getTeamRepository().findSpecificTask(taskID);\r\n        task.changePriority(priority);\r\n\r\n        return String.format(PRIORITY_CHANGED, priority);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangePriorityCommand.java b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangePriorityCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangePriorityCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangePriorityCommand.java	(date 1716210570171)
+@@ -31,7 +31,7 @@
+ 
+     private String changePriority(int taskID, Priority priority) {
+ 
+-        SpecificTask task = getTeamRepository().findSpecificTask(taskID);
++        SpecificTask task = getTMSRepository().findSpecificTask(taskID);
+         task.changePriority(priority);
+ 
+         return String.format(PRIORITY_CHANGED, priority);
+Index: src/com/practice/projectone/teammanagement/commands/AddTeamMemberCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands;\r\n\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Person;\r\nimport com.practice.projectone.teammanagement.models.contracts.Team;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class AddTeamMemberCommand extends BaseCommand {\r\n\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;\r\n    public static final String ADDED_MEMBER_TO_TEAM = \"%s added to team %s successfully!\";\r\n\r\n    public AddTeamMemberCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n        String name = parameters.get(0);\r\n        String teamName = parameters.get(1);\r\n\r\n        return addTeamMember(name, teamName);\r\n    }\r\n\r\n    private String addTeamMember(String name, String teamName) {\r\n        Person person = getTeamRepository().findPersonByName(name);\r\n        Team team = getTeamRepository().findTeamByName(teamName);\r\n\r\n        getTeamRepository().addMemberToTeam(person, team);\r\n        return String.format(ADDED_MEMBER_TO_TEAM, person.getName(), team.getName());\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/AddTeamMemberCommand.java b/src/com/practice/projectone/teammanagement/commands/AddTeamMemberCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/AddTeamMemberCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/AddTeamMemberCommand.java	(date 1716210570272)
+@@ -26,10 +26,10 @@
+     }
+ 
+     private String addTeamMember(String name, String teamName) {
+-        Person person = getTeamRepository().findPersonByName(name);
+-        Team team = getTeamRepository().findTeamByName(teamName);
++        Person person = getTMSRepository().findPersonByName(name);
++        Team team = getTMSRepository().findTeamByName(teamName);
+ 
+-        getTeamRepository().addMemberToTeam(person, team);
++        getTMSRepository().addMemberToTeam(person, team);
+         return String.format(ADDED_MEMBER_TO_TEAM, person.getName(), team.getName());
+     }
+ 
+Index: src/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.showcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Team;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ShowAllTeamBoardsCommand extends BaseCommand {\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 1;\r\n    private static final String NO_TEAMS = \"There are no teams.\";\r\n    private static final String NO_BOARDS = \"There are no boards.\";\r\n\r\n    public ShowAllTeamBoardsCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        String teamName = parameters.get(0);\r\n\r\n        return showAllTeamBoards(teamName);\r\n    }\r\n\r\n    private String showAllTeamBoards(String teamName) {\r\n        Team team = getTeamRepository().findTeamByName(teamName);\r\n\r\n        StringBuilder sb = new StringBuilder();\r\n\r\n        if (getTeamRepository().getTeams().isEmpty()) {\r\n            sb.append(NO_TEAMS);\r\n        } else {\r\n            sb.append(String.format(\"****TEAM %s****\", team.getName()));\r\n\r\n            if (team.getBoards().isEmpty()) {\r\n                sb.append(NO_BOARDS);\r\n            }\r\n\r\n            for (int i = 0; i < team.getBoards().size(); i++) {\r\n                sb.append(System.lineSeparator());\r\n                sb.append(i + 1);\r\n                sb.append(\". \");\r\n                sb.append(team.getBoards().get(i).toString());\r\n            }\r\n        }\r\n\r\n        return sb.toString().trim();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommand.java b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommand.java	(date 1716210570316)
+@@ -26,11 +26,11 @@
+     }
+ 
+     private String showAllTeamBoards(String teamName) {
+-        Team team = getTeamRepository().findTeamByName(teamName);
++        Team team = getTMSRepository().findTeamByName(teamName);
+ 
+         StringBuilder sb = new StringBuilder();
+ 
+-        if (getTeamRepository().getTeams().isEmpty()) {
++        if (getTMSRepository().getTeams().isEmpty()) {
+             sb.append(NO_TEAMS);
+         } else {
+             sb.append(String.format("****TEAM %s****", team.getName()));
+Index: src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.listing;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Task;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.Comparator;\r\nimport java.util.List;\r\nimport java.util.stream.Collectors;\r\n\r\npublic class ListOnlyAssignedTasksCommand extends BaseCommand {\r\n\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;\r\n\r\n    public ListOnlyAssignedTasksCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n\r\n        String filter = parameters.get(0);\r\n        List<SpecificTask> assignedTasks = getTeamRepository()\r\n                .getSpecificTasks()\r\n                .stream()\r\n                .filter(task -> task.getAssignee() != null)\r\n                .collect(Collectors.toList());\r\n\r\n        if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 1) {\r\n\r\n            String secondFilter = parameters.get(1);\r\n\r\n            return listTasks(assignedTasks, filter, secondFilter);\r\n        }\r\n\r\n        return listTasks(assignedTasks, filter);\r\n    }\r\n\r\n    private String listTasks(List<SpecificTask> specificTasks, String filter) {\r\n        List<String> result = specificTasks.stream()\r\n                .filter(task -> task.getAssignee().equals(filter) || task.getStatus().toString().equals(filter))\r\n                .map(Task::toString)\r\n                .collect(Collectors.toList());\r\n\r\n        return String.join(System.lineSeparator(), result).trim();\r\n    }\r\n\r\n    private String listTasks(List<SpecificTask> specificTasks, String status, String assigneeName) {\r\n        List<String> result = specificTasks\r\n                .stream()\r\n                .filter(task -> task.getStatus().toString().equals(status))\r\n                .filter(task -> task.getAssignee().equals(assigneeName))\r\n                .sorted(Comparator.comparing(Task::getName))\r\n                .map(Task::toString)\r\n                .collect(Collectors.toList());\r\n\r\n        return String.join(System.lineSeparator(), result).trim();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java b/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java	(date 1716210569446)
+@@ -23,7 +23,7 @@
+         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
+ 
+         String filter = parameters.get(0);
+-        List<SpecificTask> assignedTasks = getTeamRepository()
++        List<SpecificTask> assignedTasks = getTMSRepository()
+                 .getSpecificTasks()
+                 .stream()
+                 .filter(task -> task.getAssignee() != null)
+Index: src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeams.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.showcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\n\r\nimport java.util.List;\r\n\r\npublic class ShowTeams extends BaseCommand {\r\n\r\n    private static final String NO_TEAMS = \"There are no teams.\";\r\n\r\n    public ShowTeams(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        return showTeams();\r\n    }\r\n\r\n    private String showTeams() {\r\n        StringBuilder builder = new StringBuilder();\r\n        if (getTeamRepository().getTeams().isEmpty()) {\r\n            builder.append(NO_TEAMS);\r\n        } else {\r\n            builder.append(\"--TEAMS--\");\r\n            for (int i = 0; i < getTeamRepository().getTeams().size(); i++) {\r\n                builder.append(System.lineSeparator());\r\n                builder.append(i + 1);\r\n                builder.append(\". \");\r\n                builder.append(getTeamRepository().getTeams().get(i).toString());\r\n            }\r\n        }\r\n        return builder.toString();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeams.java b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeams.java
+--- a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeams.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeams.java	(date 1716210570376)
+@@ -20,15 +20,15 @@
+ 
+     private String showTeams() {
+         StringBuilder builder = new StringBuilder();
+-        if (getTeamRepository().getTeams().isEmpty()) {
++        if (getTMSRepository().getTeams().isEmpty()) {
+             builder.append(NO_TEAMS);
+         } else {
+             builder.append("--TEAMS--");
+-            for (int i = 0; i < getTeamRepository().getTeams().size(); i++) {
++            for (int i = 0; i < getTMSRepository().getTeams().size(); i++) {
+                 builder.append(System.lineSeparator());
+                 builder.append(i + 1);
+                 builder.append(". ");
+-                builder.append(getTeamRepository().getTeams().get(i).toString());
++                builder.append(getTMSRepository().getTeams().get(i).toString());
+             }
+         }
+         return builder.toString();
+Index: src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSeverityCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.changecommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Bug;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Severity;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ChangeSeverityCommand extends BaseCommand {\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 2;\r\n    private static final String INVALID_TASK_ID = \"Invalid value for taskID. Should be a number.\";\r\n    private static final String SEVERITY_CHANGED = \"Bug severity successfully changed to %s\";\r\n\r\n\r\n    public ChangeSeverityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);\r\n        Severity severity = ParsingHelpers.tryParseEnum(parameters.get(1), Severity.class);\r\n\r\n        return changeSeverity(taskID, severity);\r\n    }\r\n\r\n    private String changeSeverity(int taskID, Severity severity) {\r\n\r\n        Bug bug = getTeamRepository().findBugByID(taskID);\r\n        bug.changeSeverity(severity);\r\n\r\n        return String.format(SEVERITY_CHANGED, severity);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSeverityCommand.java b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSeverityCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSeverityCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSeverityCommand.java	(date 1716210569544)
+@@ -31,7 +31,7 @@
+ 
+     private String changeSeverity(int taskID, Severity severity) {
+ 
+-        Bug bug = getTeamRepository().findBugByID(taskID);
++        Bug bug = getTMSRepository().findBugByID(taskID);
+         bug.changeSeverity(severity);
+ 
+         return String.format(SEVERITY_CHANGED, severity);
+Index: src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSizeCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.changecommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Story;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Size;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ChangeSizeCommand extends BaseCommand {\r\n\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 2;\r\n    private static final String INVALID_TASK_ID = \"Invalid value for taskID. Should be a number.\";\r\n    private static final String SIZE_CHANGED = \"Story size successfully changed to %s\";\r\n\r\n    public ChangeSizeCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);\r\n        Size size = ParsingHelpers.tryParseEnum(parameters.get(1), Size.class);\r\n\r\n        return changeSeverity(taskID, size);\r\n    }\r\n\r\n    private String changeSeverity(int taskID, Size size) {\r\n\r\n        Story story = getTeamRepository().findStoryByID(taskID);\r\n        story.changeSize(size);\r\n\r\n        return String.format(SIZE_CHANGED, size);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSizeCommand.java b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSizeCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSizeCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeSizeCommand.java	(date 1716210569390)
+@@ -31,7 +31,7 @@
+ 
+     private String changeSeverity(int taskID, Size size) {
+ 
+-        Story story = getTeamRepository().findStoryByID(taskID);
++        Story story = getTMSRepository().findStoryByID(taskID);
+         story.changeSize(size);
+ 
+         return String.format(SIZE_CHANGED, size);
+Index: src/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.showcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ShowBoardActivityCommand extends BaseCommand {\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 1;\r\n\r\n    public ShowBoardActivityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        String boardName = parameters.get(0);\r\n\r\n        return showBoardActivity(boardName);\r\n    }\r\n\r\n    private String showBoardActivity(String boardName) {\r\n        return getTeamRepository().findBoardByName(boardName).viewActivity();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommand.java b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommand.java	(date 1716210570150)
+@@ -23,6 +23,6 @@
+     }
+ 
+     private String showBoardActivity(String boardName) {
+-        return getTeamRepository().findBoardByName(boardName).viewActivity();
++        return getTMSRepository().findBoardByName(boardName).viewActivity();
+     }
+ }
+Index: src/com/practice/projectone/teammanagement/commands/changecommands/ChangeRatingCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.changecommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ChangeRatingCommand extends BaseCommand {\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 2;\r\n    private static final String INVALID_VALUE = \"Invalid value for %s. Should be a number.\";\r\n    private static final String SIZE_CHANGED = \"Story size successfully changed to %s\";\r\n\r\n    public ChangeRatingCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), String.format(INVALID_VALUE, \"taskID\"));\r\n        int rating = ParsingHelpers.tryParseInt(parameters.get(1), String.format(INVALID_VALUE, \"rating\"));\r\n\r\n        return changeRating(taskID, rating);\r\n    }\r\n\r\n    private String changeRating(int taskID, int rating) {\r\n\r\n        Feedback feedback = getTeamRepository().findFeedbackById(taskID);\r\n        feedback.changeRating(rating);\r\n\r\n        return String.format(SIZE_CHANGED, rating);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeRatingCommand.java b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeRatingCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeRatingCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeRatingCommand.java	(date 1716210570484)
+@@ -29,7 +29,7 @@
+ 
+     private String changeRating(int taskID, int rating) {
+ 
+-        Feedback feedback = getTeamRepository().findFeedbackById(taskID);
++        Feedback feedback = getTMSRepository().findFeedbackById(taskID);
+         feedback.changeRating(rating);
+ 
+         return String.format(SIZE_CHANGED, rating);
+Index: src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamMembers.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.showcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Team;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ShowTeamMembers extends BaseCommand {\r\n\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;\r\n    public static final String TEAM_HAS_NO_MEMBERS = \"This team has no members!\";\r\n\r\n    public ShowTeamMembers(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n        String teamName = parameters.get(0);\r\n\r\n        return showTeamMembers(teamName);\r\n    }\r\n\r\n    private String showTeamMembers(String teamName) {\r\n        Team team = getTeamRepository().findTeamByName(teamName);\r\n        StringBuilder builder = new StringBuilder();\r\n\r\n        builder.append(String.format(\"****TEAM %s****\", teamName)).append(System.lineSeparator());\r\n\r\n        if (team.getMembers().isEmpty()) {\r\n            builder.append(TEAM_HAS_NO_MEMBERS);\r\n        } else {\r\n            builder.append(\"--MEMBERS--\");\r\n            for (int i = 0; i < team.getMembers().size(); i++) {\r\n                builder.append(System.lineSeparator());\r\n                builder.append(i + 1);\r\n                builder.append(\". \");\r\n                builder.append(team.getMembers().get(i).toString());\r\n            }\r\n            builder.append(System.lineSeparator()).append(\"--MEMBERS--\");\r\n        }\r\n        return builder.toString();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamMembers.java b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamMembers.java
+--- a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamMembers.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamMembers.java	(date 1716210570416)
+@@ -25,7 +25,7 @@
+     }
+ 
+     private String showTeamMembers(String teamName) {
+-        Team team = getTeamRepository().findTeamByName(teamName);
++        Team team = getTMSRepository().findTeamByName(teamName);
+         StringBuilder builder = new StringBuilder();
+ 
+         builder.append(String.format("****TEAM %s****", teamName)).append(System.lineSeparator());
+Index: src/com/practice/projectone/teammanagement/commands/showcommands/ShowPeople.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.showcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\n\r\nimport java.util.List;\r\n\r\npublic class ShowPeople extends BaseCommand {\r\n\r\n    private static final String NO_PEOPLE = \"There are no people.\";\r\n\r\n    public ShowPeople(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        return showPeople();\r\n    }\r\n\r\n    private String showPeople() {\r\n        StringBuilder builder = new StringBuilder();\r\n        if (getTeamRepository().getMembers().isEmpty()) {\r\n            builder.append(NO_PEOPLE);\r\n        } else {\r\n            builder.append(\"--PEOPLE--\");\r\n            for (int i = 0; i < getTeamRepository().getMembers().size(); i++) {\r\n                builder.append(System.lineSeparator());\r\n                builder.append(i + 1);\r\n                builder.append(\". \");\r\n                builder.append(getTeamRepository().getMembers().get(i).toString());\r\n            }\r\n        }\r\n        return builder.toString();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPeople.java b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPeople.java
+--- a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPeople.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPeople.java	(date 1716210570542)
+@@ -20,15 +20,15 @@
+ 
+     private String showPeople() {
+         StringBuilder builder = new StringBuilder();
+-        if (getTeamRepository().getMembers().isEmpty()) {
++        if (getTMSRepository().getMembers().isEmpty()) {
+             builder.append(NO_PEOPLE);
+         } else {
+             builder.append("--PEOPLE--");
+-            for (int i = 0; i < getTeamRepository().getMembers().size(); i++) {
++            for (int i = 0; i < getTMSRepository().getMembers().size(); i++) {
+                 builder.append(System.lineSeparator());
+                 builder.append(i + 1);
+                 builder.append(". ");
+-                builder.append(getTeamRepository().getMembers().get(i).toString());
++                builder.append(getTMSRepository().getMembers().get(i).toString());
+             }
+         }
+         return builder.toString();
+Index: src/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLog.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.showcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ShowPersonActivityLog extends BaseCommand {\r\n\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;\r\n\r\n    public ShowPersonActivityLog(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n        String name = parameters.get(0);\r\n        return showPersonActivityLog(name);\r\n    }\r\n\r\n    private String showPersonActivityLog(String name) {\r\n        return getTeamRepository().findPersonByName(name).viewActivity();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLog.java b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLog.java
+--- a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLog.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLog.java	(date 1716210569707)
+@@ -22,6 +22,6 @@
+     }
+ 
+     private String showPersonActivityLog(String name) {
+-        return getTeamRepository().findPersonByName(name).viewActivity();
++        return getTMSRepository().findPersonByName(name).viewActivity();
+     }
+ }
+Index: src/com/practice/projectone/teammanagement/commands/createcommands/CreatePersonCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.createcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Person;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class CreatePersonCommand extends BaseCommand {\r\n\r\n    private final static String PERSON_CREATED = \"Person %s created successfully!\";\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;\r\n\r\n    public CreatePersonCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n        String name = parameters.get(0);\r\n\r\n        return createPerson(name);\r\n    }\r\n\r\n    private String createPerson(String name) {\r\n        Person person = getTeamRepository().createPerson(name);\r\n        getTeamRepository().addPerson(person);\r\n\r\n        return String.format(PERSON_CREATED, name);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/createcommands/CreatePersonCommand.java b/src/com/practice/projectone/teammanagement/commands/createcommands/CreatePersonCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/createcommands/CreatePersonCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/createcommands/CreatePersonCommand.java	(date 1716210569648)
+@@ -25,8 +25,8 @@
+     }
+ 
+     private String createPerson(String name) {
+-        Person person = getTeamRepository().createPerson(name);
+-        getTeamRepository().addPerson(person);
++        Person person = getTMSRepository().createPerson(name);
++        getTMSRepository().addPerson(person);
+ 
+         return String.format(PERSON_CREATED, name);
+     }
+Index: src/com/practice/projectone/teammanagement/commands/createcommands/CreateTeamCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.createcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Team;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class CreateTeamCommand extends BaseCommand {\r\n\r\n    private final static String TEAM_CREATED = \"Team %s created successfully!\";\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;\r\n\r\n    public CreateTeamCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n        String teamName = parameters.get(0);\r\n\r\n        return createTeam(teamName);\r\n    }\r\n\r\n    private String createTeam(String teamName) {\r\n        Team team = getTeamRepository().createTeam(teamName);\r\n        getTeamRepository().addTeam(team);\r\n\r\n        return String.format(TEAM_CREATED, teamName);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateTeamCommand.java b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateTeamCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateTeamCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateTeamCommand.java	(date 1716210570578)
+@@ -25,8 +25,8 @@
+     }
+ 
+     private String createTeam(String teamName) {
+-        Team team = getTeamRepository().createTeam(teamName);
+-        getTeamRepository().addTeam(team);
++        Team team = getTMSRepository().createTeam(teamName);
++        getTMSRepository().addTeam(team);
+ 
+         return String.format(TEAM_CREATED, teamName);
+     }
+Index: src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamActivityCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.showcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Board;\r\nimport com.practice.projectone.teammanagement.models.contracts.Person;\r\nimport com.practice.projectone.teammanagement.models.contracts.Team;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ShowTeamActivityCommand extends BaseCommand {\r\n\r\n    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;\r\n\r\n    public ShowTeamActivityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);\r\n\r\n        String teamName = parameters.get(0);\r\n\r\n        return showTeamActivity(teamName);\r\n    }\r\n\r\n    private String showTeamActivity(String teamName) {\r\n        Team team = getTeamRepository().findTeamByName(teamName);\r\n\r\n        StringBuilder sb = new StringBuilder();\r\n        sb.append(String.format(\"****TEAM %s ACTIVITY****\", teamName)).append(System.lineSeparator());\r\n\r\n        List<Person> members = team.getMembers();\r\n        List<Board> boards = team.getBoards();\r\n\r\n        if (members.isEmpty() && boards.isEmpty()) {\r\n            sb.append(\"--NO RECENT ACTIVITY--\").append(System.lineSeparator());\r\n\r\n            return sb.toString().trim();\r\n        }\r\n\r\n        if (members.isEmpty()) {\r\n            sb.append(\"--NO MEMBER ACTIVITY--\").append(System.lineSeparator());\r\n        } else {\r\n            members.forEach(member -> sb.append(member.viewActivity()));\r\n        }\r\n\r\n        if (boards.isEmpty()) {\r\n            sb.append(\"--NO BOARD ACTIVITY--\").append(System.lineSeparator());\r\n        } else {\r\n            boards.forEach(board -> sb.append(board.viewActivity()));\r\n        }\r\n\r\n        sb.append(String.format(\"****TEAM %s ACTIVITY****\", teamName)).append(System.lineSeparator());\r\n\r\n        return sb.toString().trim();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamActivityCommand.java b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamActivityCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamActivityCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamActivityCommand.java	(date 1716210570126)
+@@ -27,7 +27,7 @@
+     }
+ 
+     private String showTeamActivity(String teamName) {
+-        Team team = getTeamRepository().findTeamByName(teamName);
++        Team team = getTMSRepository().findTeamByName(teamName);
+ 
+         StringBuilder sb = new StringBuilder();
+         sb.append(String.format("****TEAM %s ACTIVITY****", teamName)).append(System.lineSeparator());
+Index: src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands;\r\n\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Comment;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Task;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class AddCommentToTaskCommand extends BaseCommand {\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 3;\r\n    private static final String INVALID_TASK_ID = \"Invalid value for taskID. Should be a number.\";\r\n    private static final String COMMENT_ADDED = \"Comment successfully added to task with ID %d\";\r\n\r\n    public AddCommentToTaskCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        String description = parameters.get(0);\r\n        String author = parameters.get(1);\r\n        int taskID = ParsingHelpers.tryParseInt(parameters.get(2), INVALID_TASK_ID);\r\n\r\n        return addCommentToTask(author, description, taskID);\r\n    }\r\n\r\n    private String addCommentToTask(String author, String description, int taskID) {\r\n        Task task = getTeamRepository().findTaskByID(taskID);\r\n        Comment comment = getTeamRepository().createComment(author, description);\r\n\r\n        task.addComment(comment);\r\n        return String.format(COMMENT_ADDED, taskID);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java b/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommand.java	(date 1716210569764)
+@@ -29,8 +29,8 @@
+     }
+ 
+     private String addCommentToTask(String author, String description, int taskID) {
+-        Task task = getTeamRepository().findTaskByID(taskID);
+-        Comment comment = getTeamRepository().createComment(author, description);
++        Task task = getTMSRepository().findTaskByID(taskID);
++        Comment comment = getTMSRepository().createComment(author, description);
+ 
+         task.addComment(comment);
+         return String.format(COMMENT_ADDED, taskID);
+Index: src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.createcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Board;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Bug;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Priority;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Severity;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.Arrays;\r\nimport java.util.List;\r\n\r\npublic class CreateBugToBoardCommand extends BaseCommand {\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 6;\r\n    private static final String BUG_CREATED_SUCCESSFULLY = \"Bug created successfully in %s\";\r\n\r\n    public CreateBugToBoardCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        String title = parameters.get(0);\r\n        String description = parameters.get(1);\r\n        List<String> steps = Arrays.asList(parameters.get(2).split(\"; \"));\r\n        Priority priority = ParsingHelpers.tryParseEnum(parameters.get(3), Priority.class);\r\n        Severity severity = ParsingHelpers.tryParseEnum(parameters.get(4), Severity.class);\r\n        String boardName = parameters.get(5);\r\n\r\n        return createBug(title, description, priority, severity, steps, boardName);\r\n    }\r\n\r\n    private String createBug(String title, String description, Priority priority,\r\n                             Severity severity, List<String> steps, String boardName) {\r\n\r\n        Board board = getTeamRepository().findBoardByName(boardName);\r\n        Bug bug = getTeamRepository().createBug(title, description, priority, severity, steps);\r\n\r\n        getTeamRepository().addTaskToBoard(board, bug);\r\n\r\n        return String.format(BUG_CREATED_SUCCESSFULLY, boardName);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java	(date 1716210569741)
+@@ -37,10 +37,10 @@
+     private String createBug(String title, String description, Priority priority,
+                              Severity severity, List<String> steps, String boardName) {
+ 
+-        Board board = getTeamRepository().findBoardByName(boardName);
+-        Bug bug = getTeamRepository().createBug(title, description, priority, severity, steps);
++        Board board = getTMSRepository().findBoardByName(boardName);
++        Bug bug = getTMSRepository().createBug(title, description, priority, severity, steps);
+ 
+-        getTeamRepository().addTaskToBoard(board, bug);
++        getTMSRepository().addTaskToBoard(board, bug);
+ 
+         return String.format(BUG_CREATED_SUCCESSFULLY, boardName);
+     }
+Index: src/com/practice/projectone/teammanagement/commands/createcommands/CreateFeedbackToBoardCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.createcommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Board;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class CreateFeedbackToBoardCommand extends BaseCommand {\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 4;\r\n    private static final String STORY_CREATED_SUCCESSFULLY = \"Story created successfully in %s\";\r\n    public static final String INVALID_RATING = \"Invalid value for rating. Should be a number.\";\r\n\r\n    public CreateFeedbackToBoardCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        String title = parameters.get(0);\r\n        String description = parameters.get(1);\r\n        int rating = ParsingHelpers.tryParseInt(parameters.get(2), INVALID_RATING);\r\n        String boardName = parameters.get(3);\r\n\r\n        return createFeedback(title, description, rating, boardName);\r\n    }\r\n\r\n    private String createFeedback(String title, String description, int rating, String boardName) {\r\n\r\n        Board board = getTeamRepository().findBoardByName(boardName);\r\n        Feedback feedback = getTeamRepository().createFeedback(title, description, rating);\r\n\r\n        getTeamRepository().addTaskToBoard(board, feedback);\r\n\r\n        return String.format(STORY_CREATED_SUCCESSFULLY, boardName);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateFeedbackToBoardCommand.java b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateFeedbackToBoardCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/createcommands/CreateFeedbackToBoardCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/createcommands/CreateFeedbackToBoardCommand.java	(date 1716210570511)
+@@ -32,10 +32,10 @@
+ 
+     private String createFeedback(String title, String description, int rating, String boardName) {
+ 
+-        Board board = getTeamRepository().findBoardByName(boardName);
+-        Feedback feedback = getTeamRepository().createFeedback(title, description, rating);
++        Board board = getTMSRepository().findBoardByName(boardName);
++        Feedback feedback = getTMSRepository().createFeedback(title, description, rating);
+ 
+-        getTeamRepository().addTaskToBoard(board, feedback);
++        getTMSRepository().addTaskToBoard(board, feedback);
+ 
+         return String.format(STORY_CREATED_SUCCESSFULLY, boardName);
+     }
+Index: src/com/practice/projectone/teammanagement/commands/UnassignTaskToMemberCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands;\r\n\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.contracts.Person;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class UnassignTaskToMemberCommand extends BaseCommand {\r\n\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 2;\r\n    private static final String INVALID_TASK_ID = \"Invalid value for taskID. Should be a number.\";\r\n    public static final String TASK_UNASSIGNED = \"Task with ID%d removed from %s\";\r\n\r\n\r\n    public UnassignTaskToMemberCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);\r\n        String memberName = parameters.get(1);\r\n\r\n        return removeTask(taskID, memberName);\r\n    }\r\n\r\n    private String removeTask(int taskID, String memberName) {\r\n        SpecificTask task = getTeamRepository().findSpecificTask(taskID);\r\n        Person person = getTeamRepository().findPersonByName(memberName);\r\n\r\n        person.unassignTask(task);\r\n        task.changeAssignee(null);\r\n\r\n        return String.format(TASK_UNASSIGNED, taskID, memberName);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMemberCommand.java b/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMemberCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMemberCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/UnassignTaskToMemberCommand.java	(date 1716210569822)
+@@ -30,8 +30,8 @@
+     }
+ 
+     private String removeTask(int taskID, String memberName) {
+-        SpecificTask task = getTeamRepository().findSpecificTask(taskID);
+-        Person person = getTeamRepository().findPersonByName(memberName);
++        SpecificTask task = getTMSRepository().findSpecificTask(taskID);
++        Person person = getTMSRepository().findPersonByName(memberName);
+ 
+         person.unassignTask(task);
+         task.changeAssignee(null);
+Index: src/com/practice/projectone/teammanagement/commands/changecommands/ChangeStatusCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.practice.projectone.teammanagement.commands.changecommands;\r\n\r\nimport com.practice.projectone.teammanagement.commands.BaseCommand;\r\nimport com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;\r\nimport com.practice.projectone.teammanagement.models.tasks.contracts.Task;\r\nimport com.practice.projectone.teammanagement.models.tasks.enums.Status;\r\nimport com.practice.projectone.teammanagement.utils.ParsingHelpers;\r\nimport com.practice.projectone.teammanagement.utils.ValidationHelpers;\r\n\r\nimport java.util.List;\r\n\r\npublic class ChangeStatusCommand extends BaseCommand {\r\n    private static final int EXPECTED_PARAMETERS_COUNT = 2;\r\n    private static final String INVALID_TASK_ID = \"Invalid value for taskID. Should be a number.\";\r\n    private static final String STATUS_CHANGED = \"Task status successfully changed to %s\";\r\n\r\n\r\n    public ChangeStatusCommand(TaskManagementSystemRepository taskManagementSystemRepository) {\r\n        super(taskManagementSystemRepository);\r\n    }\r\n\r\n    @Override\r\n    public String execute(List<String> parameters) {\r\n        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);\r\n\r\n        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);\r\n        Status status = ParsingHelpers.tryParseEnum(parameters.get(1), Status.class);\r\n\r\n        return changeStatus(taskID, status);\r\n    }\r\n\r\n    private String changeStatus(int taskID, Status status) {\r\n\r\n        Task task = getTeamRepository().findTaskByID(taskID);\r\n        task.changeStatus(status);\r\n\r\n        return String.format(STATUS_CHANGED, status);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeStatusCommand.java b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeStatusCommand.java
+--- a/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeStatusCommand.java	(revision ff21617438a79c535b0b456c18f596c2cd7fa81b)
++++ b/src/com/practice/projectone/teammanagement/commands/changecommands/ChangeStatusCommand.java	(date 1716210569494)
+@@ -31,7 +31,7 @@
+ 
+     private String changeStatus(int taskID, Status status) {
+ 
+-        Task task = getTeamRepository().findTaskByID(taskID);
++        Task task = getTMSRepository().findTaskByID(taskID);
+         task.changeStatus(status);
+ 
+         return String.format(STATUS_CHANGED, status);

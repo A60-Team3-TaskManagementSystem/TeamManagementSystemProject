@@ -25,7 +25,7 @@ public class ShowTeamMembers extends BaseCommand {
     }
 
     private String showTeamMembers(String teamName) {
-        Team team = getTeamRepository().findTeamByName(teamName);
+        Team team = getTMSRepository().findTeamByName(teamName);
         StringBuilder builder = new StringBuilder();
 
         builder.append(String.format("****TEAM %s****", teamName)).append(System.lineSeparator());

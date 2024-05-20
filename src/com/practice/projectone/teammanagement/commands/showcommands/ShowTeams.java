@@ -20,15 +20,15 @@ public class ShowTeams extends BaseCommand {
 
     private String showTeams() {
         StringBuilder builder = new StringBuilder();
-        if (getTeamRepository().getTeams().isEmpty()) {
+        if (getTMSRepository().getTeams().isEmpty()) {
             builder.append(NO_TEAMS);
         } else {
             builder.append("--TEAMS--");
-            for (int i = 0; i < getTeamRepository().getTeams().size(); i++) {
+            for (int i = 0; i < getTMSRepository().getTeams().size(); i++) {
                 builder.append(System.lineSeparator());
                 builder.append(i + 1);
                 builder.append(". ");
-                builder.append(getTeamRepository().getTeams().get(i).toString());
+                builder.append(getTMSRepository().getTeams().get(i).toString());
             }
         }
         return builder.toString();

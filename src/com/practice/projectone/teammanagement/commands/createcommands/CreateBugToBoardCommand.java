@@ -37,10 +37,10 @@ public class CreateBugToBoardCommand extends BaseCommand {
     private String createBug(String title, String description, Priority priority,
                              Severity severity, List<String> steps, String boardName) {
 
-        Board board = getTeamRepository().findBoardByName(boardName);
-        Bug bug = getTeamRepository().createBug(title, description, priority, severity, steps);
+        Board board = getTMSRepository().findBoardByName(boardName);
+        Bug bug = getTMSRepository().createBug(title, description, priority, severity, steps);
 
-        getTeamRepository().addTaskToBoard(board, bug);
+        getTMSRepository().addTaskToBoard(board, bug);
 
         return String.format(BUG_CREATED_SUCCESSFULLY, boardName);
     }

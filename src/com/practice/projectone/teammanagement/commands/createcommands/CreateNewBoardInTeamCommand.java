@@ -27,7 +27,7 @@ public class CreateNewBoardInTeamCommand extends BaseCommand {
 
     private String createBoard(String boardName, String teamName) {
 
-        getTeamRepository().createBoard(teamName, boardName);
+        getTMSRepository().createBoard(teamName, boardName);
 
         return String.format(BOARD_CREATED_SUCCESSFULLY, boardName, teamName);
     }

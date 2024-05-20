@@ -10,7 +10,7 @@ public abstract class BaseCommand implements Command {
         this.taskManagementSystemRepository = taskManagementSystemRepository;
     }
 
-    protected TaskManagementSystemRepository getTeamRepository() {
+    protected TaskManagementSystemRepository getTMSRepository() {
         return taskManagementSystemRepository;
     }
 }
