@@ -2,63 +2,78 @@ package com.practice.projectone.teammanagement.commands.listing;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
-import com.practice.projectone.teammanagement.models.contracts.Board;
+import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
-import com.practice.projectone.teammanagement.models.contracts.Team;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class ListTasksCommand extends BaseCommand {
+public class ListAllTasksAlternativeCommand extends BaseCommand {
+    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 0;
+    public static final String LISTING_FACTOR_INVALID = "Listing mechanism incorrect. Please try again";
+    private String taskTitleSection;
 
-    public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
-
-    public ListTasksCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+    public ListAllTasksAlternativeCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
         super(taskManagementSystemRepository);
     }
 
     @Override
     public String execute(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
-        String sort = parameters.get(0);
-        String filter = parameters.get(1);
-        return listTasks(sort, filter);
+
+        if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 1) {
+
+            taskTitleSection = parameters.get(0);
+            return filterAndSortTasks(taskTitleSection);
+
+        } else if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 2) {
+
+            String action = parameters.get(1);
+            return filterOrSortTasks(taskTitleSection, action);
+        }
+
+        return listAllTask();
     }
 
-    private String listTasks(String sort, String filter) {
-        StringBuilder builder = new StringBuilder();
-        List<Team> teams = getTMSRepository().getTeams();
-        List<Board> boards = teams.stream()
-                .flatMap(team -> team.getBoards().stream())
-                .toList();
-        if (sort.equalsIgnoreCase("nosort") && filter.equalsIgnoreCase("nofilter")) {
-            boards
+    private String listAllTask() {
+        return getTMSRepository().getTasks()
+                .stream()
+                .map(Task::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    private String filterAndSortTasks(String taskTitle) {
+        return getTMSRepository()
+                .getTasks()
+                .stream()
+                .filter(task -> task.getName().contains(taskTitle))
+                .sorted(Comparator.comparing(Task::getName))
+                .map(Task::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
+    }
+
+    private String filterOrSortTasks(String taskTitle, String action) {
+        String result;
+
+        switch (action) {
+            case "sort" -> result = getTMSRepository().getTasks()
                     .stream()
-                    .flatMap(board -> board.getTasks().stream())
-                    .forEach(builder::append);
-        } else if (sort.equalsIgnoreCase("title") && filter.equalsIgnoreCase("nofilter")) {
-            boards
-                    .stream()
-                    .flatMap(board -> board.getTasks().stream())
                     .sorted(Comparator.comparing(Task::getName))
-                    .forEach(builder::append);
-        } else if (sort.equalsIgnoreCase("title") && !filter.equalsIgnoreCase("nofilter")) {
-            boards
+                    .map(Task::toString)
+                    .collect(Collectors.joining(System.lineSeparator()));
+            case "filter" -> result = getTMSRepository()
+                    .getTasks()
                     .stream()
-                    .flatMap(board -> board.getTasks().stream())
-                    .filter(task -> task.getName().equals(filter))
-                    .sorted(Comparator.comparing(Task::getName))
-                    .forEach(builder::append);
-        } else if (sort.equalsIgnoreCase("nosort") && !filter.equalsIgnoreCase("nofilter")) {
-            boards
-                    .stream()
-                    .flatMap(board -> board.getTasks().stream())
-                    .filter(task -> task.getName().equals(filter))
-                    .forEach(builder::append);
-        } else {
-            throw new IllegalArgumentException("Invalid sorting parameter: should be \"title\" or \"nosort\"");
+                    .filter(task -> task.getName().contains(taskTitle))
+                    .map(Task::toString)
+                    .collect(Collectors.joining(System.lineSeparator()));
+            default -> {
+                throw new InvalidUserInputException(LISTING_FACTOR_INVALID);
+            }
         }
-        return builder.toString();
+
+        return result;
     }
 }
