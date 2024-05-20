@@ -40,7 +40,7 @@ public class StoryImpl extends SpecificTaskImpl implements Story {
 
     @Override
     public String toString() {
-        return String.format("%s  #Size: %s%n", super.toString(), size);
+        return String.format("%s  #Size: %s%n  #AssignedTo: %s%n", super.toString(), size, getAssignee());
     }
 
     @Override

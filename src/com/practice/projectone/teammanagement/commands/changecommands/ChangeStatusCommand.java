@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.changecommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
 import com.practice.projectone.teammanagement.models.tasks.enums.Status;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
@@ -15,8 +15,8 @@ public class ChangeStatusCommand extends BaseCommand {
     private static final String STATUS_CHANGED = "Task status successfully changed to %s";
 
 
-    public ChangeStatusCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ChangeStatusCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

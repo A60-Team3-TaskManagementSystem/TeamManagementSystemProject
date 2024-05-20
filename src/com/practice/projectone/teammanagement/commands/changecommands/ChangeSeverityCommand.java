@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.changecommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Bug;
 import com.practice.projectone.teammanagement.models.tasks.enums.Severity;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
@@ -15,8 +15,8 @@ public class ChangeSeverityCommand extends BaseCommand {
     private static final String SEVERITY_CHANGED = "Bug severity successfully changed to %s";
 
 
-    public ChangeSeverityCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ChangeSeverityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

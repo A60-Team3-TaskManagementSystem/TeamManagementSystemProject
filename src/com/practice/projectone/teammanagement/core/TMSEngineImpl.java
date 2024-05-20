@@ -3,7 +3,7 @@ package com.practice.projectone.teammanagement.core;
 import com.practice.projectone.teammanagement.commands.contracts.Command;
 import com.practice.projectone.teammanagement.core.contracts.CommandFactory;
 import com.practice.projectone.teammanagement.core.contracts.TMSEngine;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,11 +19,11 @@ public class TMSEngineImpl implements TMSEngine {
     private static final String LONG_INPUT_CLOSE_SYMBOL = "}}";
     private static final String REPORT_SEPARATOR = "####################";
     private final CommandFactory commandFactory;
-    private final TeamRepository teamRepository;
+    private final TaskManagementSystemRepository taskManagementSystemRepository;
 
     public TMSEngineImpl() {
         this.commandFactory = new CommandFactoryImpl();
-        this.teamRepository = new TeamRepositoryImpl();
+        this.taskManagementSystemRepository = new TaskManagementSystemImpl();
     }
 
     public void start() {
@@ -52,7 +52,7 @@ public class TMSEngineImpl implements TMSEngine {
     private void processCommand(String inputLine) {
         String commandName = extractCommandName(inputLine);
         List<String> parameters = extractCommandParameters(inputLine);
-        Command command = commandFactory.createCommandFromCommandName(commandName, teamRepository);
+        Command command = commandFactory.createCommandFromCommandName(commandName, taskManagementSystemRepository);
         String executionResult = command.execute(parameters);
         print(executionResult);
     }
@@ -99,6 +99,7 @@ public class TMSEngineImpl implements TMSEngine {
             String parameter = fullCommand
                     .substring(indexOfOpenComment + LONG_INPUT_OPEN_SYMBOL.length(), indexOfCloseComment);
             parameters.add(parameter);
+
             fullCommand = fullCommand
                     .replace(String.format("%s%s%s", LONG_INPUT_OPEN_SYMBOL, parameter, LONG_INPUT_CLOSE_SYMBOL), "");
 

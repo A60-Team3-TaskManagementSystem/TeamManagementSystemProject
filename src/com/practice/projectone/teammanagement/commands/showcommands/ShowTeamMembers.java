@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.showcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.contracts.Team;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -12,8 +12,8 @@ public class ShowTeamMembers extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
     public static final String TEAM_HAS_NO_MEMBERS = "This team has no members!";
 
-    public ShowTeamMembers(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ShowTeamMembers(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override
@@ -28,6 +28,8 @@ public class ShowTeamMembers extends BaseCommand {
         Team team = getTeamRepository().findTeamByName(teamName);
         StringBuilder builder = new StringBuilder();
 
+        builder.append(String.format("****TEAM %s****", teamName)).append(System.lineSeparator());
+
         if (team.getMembers().isEmpty()) {
             builder.append(TEAM_HAS_NO_MEMBERS);
         } else {
@@ -38,6 +40,7 @@ public class ShowTeamMembers extends BaseCommand {
                 builder.append(". ");
                 builder.append(team.getMembers().get(i).toString());
             }
+            builder.append(System.lineSeparator()).append("--MEMBERS--");
         }
         return builder.toString();
     }

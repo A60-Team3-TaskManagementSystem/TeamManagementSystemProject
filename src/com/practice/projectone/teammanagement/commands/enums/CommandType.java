@@ -5,7 +5,6 @@ public enum CommandType {
     CREATEBUG,
     CREATESTORY,
     CREATEFEEDBACK,
-    CREATETASK,
     CREATEPERSON,
     CREATETEAM,
     ADDCOMMENT,

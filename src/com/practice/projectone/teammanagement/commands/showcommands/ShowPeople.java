@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.showcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ public class ShowPeople extends BaseCommand {
 
     private static final String NO_PEOPLE = "There are no people.";
 
-    public ShowPeople(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ShowPeople(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

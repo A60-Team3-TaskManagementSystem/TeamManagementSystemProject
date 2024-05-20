@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.changecommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;
 import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
@@ -15,8 +15,8 @@ public class ChangePriorityCommand extends BaseCommand {
     private static final String INVALID_TASK_ID = "Invalid value for taskID. Should be a number.";
     private static final String PRIORITY_CHANGED = "Task priority successfully changed to %s";
 
-    public ChangePriorityCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ChangePriorityCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

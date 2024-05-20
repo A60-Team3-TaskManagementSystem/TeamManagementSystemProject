@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.listing;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
@@ -14,8 +14,8 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
 
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public ListOnlyAssignedTasksCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ListOnlyAssignedTasksCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

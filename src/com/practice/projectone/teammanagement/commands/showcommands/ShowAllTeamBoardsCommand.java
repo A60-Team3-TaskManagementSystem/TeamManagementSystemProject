@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.showcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.contracts.Team;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -12,8 +12,8 @@ public class ShowAllTeamBoardsCommand extends BaseCommand {
     private static final String NO_TEAMS = "There are no teams.";
     private static final String NO_BOARDS = "There are no boards.";
 
-    public ShowAllTeamBoardsCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ShowAllTeamBoardsCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ShowAllTeamBoardsCommand extends BaseCommand {
         if (getTeamRepository().getTeams().isEmpty()) {
             sb.append(NO_TEAMS);
         } else {
-            sb.append(String.format("--TEAM %s--", team.getName()));
+            sb.append(String.format("****TEAM %s****", team.getName()));
 
             if (team.getBoards().isEmpty()) {
                 sb.append(NO_BOARDS);

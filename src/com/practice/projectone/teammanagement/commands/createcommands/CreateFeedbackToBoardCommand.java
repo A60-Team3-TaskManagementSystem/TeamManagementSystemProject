@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.createcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
@@ -14,8 +14,8 @@ public class CreateFeedbackToBoardCommand extends BaseCommand {
     private static final String STORY_CREATED_SUCCESSFULLY = "Story created successfully in %s";
     public static final String INVALID_RATING = "Invalid value for rating. Should be a number.";
 
-    public CreateFeedbackToBoardCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public CreateFeedbackToBoardCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

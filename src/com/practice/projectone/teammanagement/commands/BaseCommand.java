@@ -1,16 +1,16 @@
 package com.practice.projectone.teammanagement.commands;
 
 import com.practice.projectone.teammanagement.commands.contracts.Command;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 
 public abstract class BaseCommand implements Command {
-    private final TeamRepository teamRepository;
+    private final TaskManagementSystemRepository taskManagementSystemRepository;
 
-    protected BaseCommand(TeamRepository teamRepository) {
-        this.teamRepository = teamRepository;
+    protected BaseCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        this.taskManagementSystemRepository = taskManagementSystemRepository;
     }
 
-    protected TeamRepository getTeamRepository() {
-        return teamRepository;
+    protected TaskManagementSystemRepository getTeamRepository() {
+        return taskManagementSystemRepository;
     }
 }

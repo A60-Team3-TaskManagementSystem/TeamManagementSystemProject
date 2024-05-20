@@ -52,9 +52,10 @@ public class BugImpl extends SpecificTaskImpl implements Bug {
 
     @Override
     public String toString() {
-        return String.format("%s  #Severity: %s%n  #StepsToReproduce:%n    %s%n",
+        return String.format("%s  #Severity: %s%n  #AssignedTo: %s%n  #StepsToReproduce:%n    %s%n",
                 super.toString(),
                 severity,
+                getAssignee(),
                 String.join(System.lineSeparator() + "  ", getSteps())).trim();
     }
 

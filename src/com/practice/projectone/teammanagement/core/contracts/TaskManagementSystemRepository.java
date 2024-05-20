@@ -11,7 +11,7 @@ import com.practice.projectone.teammanagement.models.tasks.enums.Size;
 
 import java.util.List;
 
-public interface TeamRepository {
+public interface TaskManagementSystemRepository {
     List<Person> getMembers();
 
     List<Team> getTeams();

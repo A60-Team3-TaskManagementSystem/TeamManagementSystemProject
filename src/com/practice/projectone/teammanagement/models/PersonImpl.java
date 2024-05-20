@@ -8,7 +8,6 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -44,18 +43,8 @@ public class PersonImpl implements Person {
     }
 
     @Override
-    public String viewTasks() {
-        return getTasks().stream().map(Task::toString).collect(Collectors.joining(System.lineSeparator()));
-    }
-
-    @Override
     public List<EventLog> getActivityHistory() {
         return new ArrayList<>(eventLogs);
-    }
-
-    @Override
-    public String viewActivity() {
-        return getActivityHistory().stream().map(EventLog::toString).collect(Collectors.joining(System.lineSeparator()));
     }
 
     @Override
@@ -77,8 +66,10 @@ public class PersonImpl implements Person {
 
     @Override
     public String toString() {
-        return memberName;
+        return String.format("Member: %s", memberName);
     }
+
+
 
     private void setMemberName(String memberName) {
         ValidationHelpers.validateStringLength(memberName, NAME_LEN_MIN, NAME_LEN_MAX, NAME_LEN_ERR);

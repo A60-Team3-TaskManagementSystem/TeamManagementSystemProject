@@ -83,7 +83,7 @@ public class TeamImpl implements Team {
 
     @Override
     public String toString() {
-        return teamName;
+        return String.format("TEAM: %s, TOTAL MEMBERS: %d, TOTAL BOARDS: %d", teamName, people.size(), boards.size());
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.createcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Bug;
 import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
@@ -16,8 +16,8 @@ public class CreateBugToBoardCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 6;
     private static final String BUG_CREATED_SUCCESSFULLY = "Bug created successfully in %s";
 
-    public CreateBugToBoardCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public CreateBugToBoardCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.practice.projectone.teammanagement.commands;
 
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
@@ -15,8 +15,8 @@ public class UnassignTaskToMemberCommand extends BaseCommand {
     public static final String TASK_UNASSIGNED = "Task with ID%d removed from %s";
 
 
-    public UnassignTaskToMemberCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public UnassignTaskToMemberCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

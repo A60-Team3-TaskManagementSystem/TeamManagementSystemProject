@@ -1,6 +1,6 @@
 package com.practice.projectone.teammanagement.core;
 
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.BoardImpl;
@@ -19,7 +19,7 @@ import com.practice.projectone.teammanagement.models.tasks.enums.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamRepositoryImpl implements TeamRepository {
+public class TaskManagementSystemImpl implements TaskManagementSystemRepository {
     private final static String PERSON_ALREADY_EXIST = "Person %s already exist. Choose a different name!";
     private final static String TEAM_ALREADY_EXIST = "Team %s already exist. Choose a different name!";
     private final static String PERSON_ALREADY_MEMBER = "%s is already a member of this team!";
@@ -34,7 +34,7 @@ public class TeamRepositoryImpl implements TeamRepository {
     private final List<Feedback> feedbacks;
 
 
-    public TeamRepositoryImpl() {
+    public TaskManagementSystemImpl() {
         teams = new ArrayList<>();
         people = new ArrayList<>();
         boards = new ArrayList<>();

@@ -1,6 +1,6 @@
 package com.practice.projectone.teammanagement.commands;
 
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.tasks.contracts.*;
@@ -23,16 +23,16 @@ public class AssignTaskToMemberCommand extends BaseCommand {
     public static final String INVALID_CONDITIONS = "No task satisfy given condition";
     public static final String INVALID_TASK = "Feedback";
 
-    public AssignTaskToMemberCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public AssignTaskToMemberCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override
     public String execute(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);
 
-        String memberName = parameters.get(0);
-        int taskID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_TASK_ID);
+        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);
+        String memberName = parameters.get(1);
 
         if (parameters.size() == 4) {
             String taskType = parameters.get(1);

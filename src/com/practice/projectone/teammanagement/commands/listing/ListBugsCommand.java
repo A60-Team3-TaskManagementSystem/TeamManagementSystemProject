@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.listing;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Bug;
 
 import java.util.Comparator;
@@ -12,8 +12,8 @@ public class ListBugsCommand extends BaseCommand {
 
     public static final String INVALID_SORT_PARAMETER = "Invalid sorting parameter: should be \"title\", \"priority\", \"severity\" or \"nosort\"!";
 
-    public ListBugsCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ListBugsCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

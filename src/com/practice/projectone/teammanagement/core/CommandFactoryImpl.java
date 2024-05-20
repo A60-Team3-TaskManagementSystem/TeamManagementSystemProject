@@ -11,67 +11,67 @@ import com.practice.projectone.teammanagement.commands.enums.CommandType;
 import com.practice.projectone.teammanagement.commands.listing.*;
 import com.practice.projectone.teammanagement.commands.showcommands.*;
 import com.practice.projectone.teammanagement.core.contracts.CommandFactory;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 
 public class CommandFactoryImpl implements CommandFactory {
 
     @Override
-    public Command createCommandFromCommandName(String commandTypeAsString, TeamRepository teamRepository) {
+    public Command createCommandFromCommandName(String commandTypeAsString, TaskManagementSystemRepository taskManagementSystemRepository) {
         CommandType commandType = ParsingHelpers.tryParseEnum(commandTypeAsString, CommandType.class);
         switch (commandType) {
             case CREATENEWBOARDINTEAM:
-                return new CreateNewBoardInTeamCommand(teamRepository);
+                return new CreateNewBoardInTeamCommand(taskManagementSystemRepository);
             case CREATEBUG:
-                return new CreateBugToBoardCommand(teamRepository);
+                return new CreateBugToBoardCommand(taskManagementSystemRepository);
             case CREATESTORY:
-                return new CreateStoryToBoardCommand(teamRepository);
+                return new CreateStoryToBoardCommand(taskManagementSystemRepository);
             case ADDCOMMENT:
-                return new AddCommentToTaskCommand(teamRepository);
+                return new AddCommentToTaskCommand(taskManagementSystemRepository);
             case CREATEFEEDBACK:
-                return new CreateFeedbackToBoardCommand(teamRepository);
+                return new CreateFeedbackToBoardCommand(taskManagementSystemRepository);
             case CREATEPERSON:
-                return new CreatePersonCommand(teamRepository);
+                return new CreatePersonCommand(taskManagementSystemRepository);
             case CREATETEAM:
-                return new CreateTeamCommand(teamRepository);
+                return new CreateTeamCommand(taskManagementSystemRepository);
             case ADDTEAMMEMBER:
-                return new AddTeamMemberCommand(teamRepository);
+                return new AddTeamMemberCommand(taskManagementSystemRepository);
             case ASSIGNTASK:
-                return new AssignTaskToMemberCommand(teamRepository);
+                return new AssignTaskToMemberCommand(taskManagementSystemRepository);
             case UNASSIGNTASK:
-                return new UnassignTaskToMemberCommand(teamRepository);
+                return new UnassignTaskToMemberCommand(taskManagementSystemRepository);
             case SHOWBOARDS:
-                return new ShowAllTeamBoardsCommand(teamRepository);
+                return new ShowAllTeamBoardsCommand(taskManagementSystemRepository);
             case SHOWBOARDACTIVITY:
-                return new ShowBoardActivityCommand(teamRepository);
+                return new ShowBoardActivityCommand(taskManagementSystemRepository);
             case SHOWPEOPLE:
-                return new ShowPeople(teamRepository);
+                return new ShowPeople(taskManagementSystemRepository);
             case SHOWPERSONACTIVITY:
-                return new ShowPersonActivityLog(teamRepository);
+                return new ShowPersonActivityLog(taskManagementSystemRepository);
             case SHOWTEAMMEMBERS:
-                return new ShowTeamMembers(teamRepository);
+                return new ShowTeamMembers(taskManagementSystemRepository);
             case SHOWTEAMS:
-                return new ShowTeams(teamRepository);
+                return new ShowTeams(taskManagementSystemRepository);
             case CHANGEPRIORITY:
-                return new ChangePriorityCommand(teamRepository);
+                return new ChangePriorityCommand(taskManagementSystemRepository);
             case CHANGERATING:
-                return new ChangeRatingCommand(teamRepository);
+                return new ChangeRatingCommand(taskManagementSystemRepository);
             case CHANGESEVERITY:
-                return new ChangeSeverityCommand(teamRepository);
+                return new ChangeSeverityCommand(taskManagementSystemRepository);
             case CHANGESIZE:
-                return new ChangeSizeCommand(teamRepository);
+                return new ChangeSizeCommand(taskManagementSystemRepository);
             case CHANGESTATUS:
-                return new ChangeStatusCommand(teamRepository);
+                return new ChangeStatusCommand(taskManagementSystemRepository);
             case LISTTASKS:
-                return new ListAllTasksAlternativeCommand(teamRepository);
+                return new ListAllTasksAlternativeCommand(taskManagementSystemRepository);
             case LISTBUGS:
-                return new ListBugsCommand(teamRepository);
+                return new ListBugsCommand(taskManagementSystemRepository);
             case LISTSTORIES:
-                return new ListStoriesCommand(teamRepository);
+                return new ListStoriesCommand(taskManagementSystemRepository);
             case LISTFEEDBACKS:
-                return new ListFeedbacksCommand(teamRepository);
+                return new ListFeedbacksCommand(taskManagementSystemRepository);
             case LISTASSIGNEDTASKS:
-                return new ListOnlyAssignedTasksCommand(teamRepository);
+                return new ListOnlyAssignedTasksCommand(taskManagementSystemRepository);
             default:
                 throw new IllegalArgumentException("UNKNOWN COMMAND");
         }

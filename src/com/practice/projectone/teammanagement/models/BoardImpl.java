@@ -10,7 +10,6 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -51,18 +50,8 @@ public class BoardImpl implements Board {
     }
 
     @Override
-    public String viewTasks() {
-        return getTasks().stream().map(Task::toString).collect(Collectors.joining(System.lineSeparator()));
-    }
-
-    @Override
     public List<EventLog> getActivityHistory() {
         return new ArrayList<>(eventLogs);
-    }
-
-    @Override
-    public String viewActivity() {
-        return getActivityHistory().stream().map(EventLog::toString).collect(Collectors.joining(System.lineSeparator()));
     }
 
     @Override
@@ -87,7 +76,7 @@ public class BoardImpl implements Board {
 
     @Override
     public String toString() {
-        return boardName;
+        return String.format("BOARD: %s, TOTAL TASKS: %d", boardName, getTasks().size());
     }
 
     private void addEventToHistory(EventLog eventLog) {

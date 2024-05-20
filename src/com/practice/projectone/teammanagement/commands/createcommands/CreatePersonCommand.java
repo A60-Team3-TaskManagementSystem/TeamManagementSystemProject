@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.createcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -12,8 +12,8 @@ public class CreatePersonCommand extends BaseCommand {
     private final static String PERSON_CREATED = "Person %s created successfully!";
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 1;
 
-    public CreatePersonCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public CreatePersonCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

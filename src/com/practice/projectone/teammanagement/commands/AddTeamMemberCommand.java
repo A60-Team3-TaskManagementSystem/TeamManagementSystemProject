@@ -1,6 +1,6 @@
 package com.practice.projectone.teammanagement.commands;
 
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Team;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
@@ -12,8 +12,8 @@ public class AddTeamMemberCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 2;
     public static final String ADDED_MEMBER_TO_TEAM = "%s added to team %s successfully!";
 
-    public AddTeamMemberCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public AddTeamMemberCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

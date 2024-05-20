@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.listing;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
@@ -15,8 +15,8 @@ public class ListAllTasksAlternativeCommand extends BaseCommand {
     public static final String LISTING_FACTOR_INVALID = "Listing mechanism incorrect. Please try again";
     private String taskTitle;
 
-    public ListAllTasksAlternativeCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ListAllTasksAlternativeCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ListAllTasksAlternativeCommand extends BaseCommand {
         if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 1) {
 
             taskTitle = parameters.get(0);
-            return filterAndSortTasks(taskTitle);
+            return filterTasks(taskTitle);
 
         } else if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 2) {
 
@@ -44,12 +44,11 @@ public class ListAllTasksAlternativeCommand extends BaseCommand {
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 
-    private String filterAndSortTasks(String taskTitle) {
+    private String filterTasks(String taskTitle) {
         return getTeamRepository()
                 .getTasks()
                 .stream()
                 .filter(task -> task.getName().equals(taskTitle))
-                .sorted(Comparator.comparing(Task::getName))
                 .map(Task::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
     }
@@ -63,11 +62,7 @@ public class ListAllTasksAlternativeCommand extends BaseCommand {
                     .sorted(Comparator.comparing(Task::getName))
                     .map(Task::toString)
                     .collect(Collectors.joining(System.lineSeparator()));
-            case "filter" -> result = getTeamRepository().getTasks()
-                    .stream()
-                    .filter(task -> task.getName().equals(taskTitle))
-                    .map(Task::toString)
-                    .collect(Collectors.joining(System.lineSeparator()));
+            case "filter" -> result = filterTasks(taskTitle);
             default -> {
                 throw new InvalidUserInputException(LISTING_FACTOR_INVALID);
             }

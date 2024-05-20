@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.changecommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
@@ -13,8 +13,8 @@ public class ChangeRatingCommand extends BaseCommand {
     private static final String INVALID_VALUE = "Invalid value for %s. Should be a number.";
     private static final String SIZE_CHANGED = "Story size successfully changed to %s";
 
-    public ChangeRatingCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public ChangeRatingCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

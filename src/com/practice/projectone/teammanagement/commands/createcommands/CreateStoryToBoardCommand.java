@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.createcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Story;
 import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
@@ -16,8 +16,8 @@ public class CreateStoryToBoardCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 5;
     private static final String STORY_CREATED_SUCCESSFULLY = "Story created successfully in %s";
 
-    public CreateStoryToBoardCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public CreateStoryToBoardCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

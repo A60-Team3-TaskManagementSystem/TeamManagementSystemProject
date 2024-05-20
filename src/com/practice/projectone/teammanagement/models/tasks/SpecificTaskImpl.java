@@ -60,7 +60,7 @@ public abstract class SpecificTaskImpl extends TaskImpl implements SpecificTask 
 
     @Override
     public String toString() {
-        return String.format("%s  #Priority: %s%n  #AssignedTo: %s%n", super.toString(), priority, assigneeName);
+        return String.format("%s  #Priority: %s%n", super.toString(), priority);
     }
 
     private void setAssignee(String assigneeName) {

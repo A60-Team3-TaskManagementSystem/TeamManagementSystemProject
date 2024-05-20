@@ -1,7 +1,7 @@
 package com.practice.projectone.teammanagement.commands.createcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
-import com.practice.projectone.teammanagement.core.contracts.TeamRepository;
+import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
@@ -11,8 +11,8 @@ public class CreateNewBoardInTeamCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 2;
     public static final String BOARD_CREATED_SUCCESSFULLY = "%s created successfully in %s";
 
-    public CreateNewBoardInTeamCommand(TeamRepository teamRepository) {
-        super(teamRepository);
+    public CreateNewBoardInTeamCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+        super(taskManagementSystemRepository);
     }
 
     @Override

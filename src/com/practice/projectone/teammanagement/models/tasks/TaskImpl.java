@@ -11,7 +11,6 @@ import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
@@ -86,11 +85,6 @@ public abstract class TaskImpl implements Task {
     }
 
     @Override
-    public String viewActivity() {
-        return getActivityHistory().stream().map(EventLog::toString).collect(Collectors.joining(System.lineSeparator()));
-    }
-
-    @Override
     public List<Comment> getComments() {
         return new ArrayList<>(comments);
     }
@@ -103,8 +97,8 @@ public abstract class TaskImpl implements Task {
     @Override
     public String toString() {
         String taskType = getTaskType();
-        return String.format("Task ID%d%n  #Type: %s%n  #Title: %s%n  #Status: %s%n",
-                                    getId(), taskType, title, status);
+        return String.format("Task ID%d%n  #Type: %s%n  #Title: %s%n  #Description: %s%n  #Status: %s%n",
+                                    getId(), taskType, title, description, status);
     }
 
     @Override
