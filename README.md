@@ -288,14 +288,10 @@ says, "The status of item with ID 42 switched from Active to Done."
 
 ## Constraints
 
-You should implement the empty classes. You can add new classes where needed and modify any of the existing code under
-the **models** package if necessary.
+//TODO
 
 ## Unit Tests
-
-- You have been given unit tests to keep track of your progress. Run them by right-clicking the **tests** package and
-  selecting **Run 'All Tests'**.
-- If you get stuck, check out the tests' names to guide you on what to do.
+//TODO
 
 ## Technical Requirements
 
