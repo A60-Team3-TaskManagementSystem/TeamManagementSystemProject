@@ -21,76 +21,44 @@ public class ListFeedbacksCommand extends BaseCommand {
         if (parameters.size() > 2){
             throw new IllegalArgumentException("Argument count should be 2 or fewer!");
         }
-        if (parameters.size() == 1){
-            String sort = parameters.get(0);
-            return listFeedbacks(sort);
-        } else if (parameters.size() == 2) {
-            String sort = parameters.get(0);
-            String filter = parameters.get(1);
-            return listFeedbacks(sort, filter);
+
+        List<Feedback> feedbacks = getTMSRepository().getFeedbacks();
+
+        if (!parameters.isEmpty()) {
+            String sortArgument = parameters.get(0);
+            if (parameters.size() == 2) {
+                String filter = parameters.get(1);
+                feedbacks = filterFeedbacks(feedbacks, filter);
+            }
+            sortFeedbacks(feedbacks, sortArgument);
         }
-        return listAllFeedbacks();
+        return getResult(feedbacks);
     }
 
-    private String listFeedbacks(String sort) {
-        String result;
-        switch (sort) {
-            case "title":
-                result = getTMSRepository().getFeedbacks()
-                        .stream()
-                        .sorted(Comparator.comparing(Feedback::getName))
-                        .map(Feedback::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "rating":
-                result = getTMSRepository().getFeedbacks()
-                        .stream()
-                        .sorted(Comparator.comparing(Feedback::getRating))
-                        .map(Feedback::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
-                break;
-            case "nosort":
-                return listAllFeedbacks();
-            default:
-                throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
-        }
-        return result;
+    private List<Feedback> filterFeedbacks(List<Feedback> feedbacks, String filter) {
+        return feedbacks
+                .stream()
+                .filter(feedback -> feedback.getStatus().toString().equals(filter))
+                .collect(Collectors.toList());
     }
 
-    private String listFeedbacks(String sort, String filter) {
-        String result;
+    private void sortFeedbacks(List<Feedback> feedbacks, String sort) {
         switch (sort) {
             case "title":
-                result = getTMSRepository().getFeedbacks()
-                        .stream()
-                        .filter(feedback -> feedback.getStatus().toString().equals(filter))
-                        .sorted(Comparator.comparing(Feedback::getName))
-                        .map(Feedback::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                feedbacks.sort(Comparator.comparing(Feedback::getName));
                 break;
             case "rating":
-                result = getTMSRepository().getFeedbacks()
-                        .stream()
-                        .filter(feedback -> feedback.getStatus().toString().equals(filter))
-                        .sorted(Comparator.comparing(Feedback::getRating))
-                        .map(Feedback::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
+                feedbacks.sort(Comparator.comparing(Feedback::getRating));
                 break;
             case "nosort":
-                result = getTMSRepository().getFeedbacks()
-                        .stream()
-                        .filter(feedback -> feedback.getStatus().toString().equals(filter))
-                        .map(Feedback::toString)
-                        .collect(Collectors.joining(System.lineSeparator()));
                 break;
             default:
                 throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
         }
-        return result;
     }
 
-    private String listAllFeedbacks() {
-        return getTMSRepository().getFeedbacks()
+    private String getResult(List<Feedback> feedbacks) {
+        return feedbacks
                 .stream()
                 .map(Feedback::toString)
                 .collect(Collectors.joining(System.lineSeparator()));
