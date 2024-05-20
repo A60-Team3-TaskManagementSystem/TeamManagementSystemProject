@@ -50,6 +50,8 @@ public class CommandFactoryImpl implements CommandFactory {
                 return new ShowPersonActivityLog(taskManagementSystemRepository);
             case SHOWTEAMMEMBERS:
                 return new ShowTeamMembers(taskManagementSystemRepository);
+            case SHOWTEAMACTIVITY:
+                return new ShowTeamActivityCommand(taskManagementSystemRepository);
             case SHOWTEAMS:
                 return new ShowTeams(taskManagementSystemRepository);
             case CHANGEPRIORITY:

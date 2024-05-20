@@ -134,7 +134,7 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
             throw new DuplicateEntityException(DUPLICATE_BOARD_NAME);
         }
 
-        team.createBoard(board);
+        team.addBoard(board);
 
         boards.add(board);
     }

@@ -246,7 +246,7 @@ Currently, the engine supports the following commands:
 - **ShowBoards** `[teamName]`- shows all the boards created in a specific team.
 - **ShowTeamMembers** `[teamName]`- shows all the members of a specific team.
 - **ShowTeamMembers** `[teamName]`- shows all the members of a specific team.
-- **ShowTeamActivity** ??????????
+- **ShowTeamActivity** `[teamName]`- shows each member and each board activity history of a specific team.
 - **ShowBoardActivity** `[boardName]`- shows all the events tied to a specific task.
 - **ShowPersonActivity** `[personName]`- shows all the events tide to a specific member.
 - **ListTasks** `[]` / `[taskTitle]` / `[taskTitle] [listCondition]` - lists all stored tasks - straight or sorted

@@ -12,7 +12,7 @@ public interface Team extends Nameable {
 
     List<Board> getBoards();
 
-    void createBoard(Board boardName);
+    void addBoard(Board boardName);
 
     void removeBoard(Board board);
 }
