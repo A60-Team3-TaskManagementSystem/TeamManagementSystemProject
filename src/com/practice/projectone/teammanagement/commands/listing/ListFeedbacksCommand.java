@@ -3,6 +3,8 @@ package com.practice.projectone.teammanagement.commands.listing;
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;
+import com.practice.projectone.teammanagement.models.tasks.enums.Status;
+import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 
 import java.util.Comparator;
 import java.util.List;
@@ -27,18 +29,18 @@ public class ListFeedbacksCommand extends BaseCommand {
         if (!parameters.isEmpty()) {
             String sortArgument = parameters.get(0);
             if (parameters.size() == 2) {
-                String filter = parameters.get(1);
-                feedbacks = filterFeedbacks(feedbacks, filter);
+                Status status = ParsingHelpers.tryParseEnum(parameters.get(1), Status.class);
+                feedbacks = filterFeedbacks(feedbacks, status);
             }
             sortFeedbacks(feedbacks, sortArgument);
         }
         return getResult(feedbacks);
     }
 
-    private List<Feedback> filterFeedbacks(List<Feedback> feedbacks, String filter) {
+    private List<Feedback> filterFeedbacks(List<Feedback> feedbacks, Status status) {
         return feedbacks
                 .stream()
-                .filter(feedback -> feedback.getStatus().toString().equals(filter))
+                .filter(feedback -> feedback.getStatus().equals(status))
                 .collect(Collectors.toList());
     }
 

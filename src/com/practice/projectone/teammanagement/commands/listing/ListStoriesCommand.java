@@ -3,6 +3,8 @@ package com.practice.projectone.teammanagement.commands.listing;
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Story;
+import com.practice.projectone.teammanagement.models.tasks.enums.Status;
+import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 
 import java.util.Comparator;
 import java.util.List;
@@ -30,9 +32,9 @@ public class ListStoriesCommand extends BaseCommand {
                 String filter1 = parameters.get(1);
                 stories = filterStories(stories, filter1);
             } else if (parameters.size() == 3) {
-                String filter1 = parameters.get(1);
-                String filter2 = parameters.get(2);
-                stories = filterStories(stories, filter1, filter2);
+                Status status = ParsingHelpers.tryParseEnum(parameters.get(1), Status.class);
+                String assigneeName = parameters.get(2);
+                stories = filterStories(stories, status, assigneeName);
             }
             sortStories(stories, sortArgument);
         }
@@ -47,10 +49,10 @@ public class ListStoriesCommand extends BaseCommand {
                 .collect(Collectors.toList());
     }
 
-    private List<Story> filterStories(List<Story> stories, String filter1, String filter2) {
+    private List<Story> filterStories(List<Story> stories, Status status, String assigneeName) {
         return stories
                 .stream()
-                .filter(story -> filter1.equals(story.getAssignee()) && story.getStatus().toString().equals(filter2))
+                .filter(story -> assigneeName.equals(story.getAssignee()) && story.getStatus().equals(status))
                 .collect(Collectors.toList());
     }
 

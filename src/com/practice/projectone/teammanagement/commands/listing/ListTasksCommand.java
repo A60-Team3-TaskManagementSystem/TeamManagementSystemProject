@@ -10,12 +10,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ListAllTasksAlternativeCommand extends BaseCommand {
+public class ListTasksCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 0;
     public static final String LISTING_FACTOR_INVALID = "Listing mechanism incorrect. Please try again";
     private String taskTitleSection;
 
-    public ListAllTasksAlternativeCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
+    public ListTasksCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
         super(taskManagementSystemRepository);
     }
 
@@ -23,57 +23,53 @@ public class ListAllTasksAlternativeCommand extends BaseCommand {
     public String execute(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
+        List<Task> tasks = getTMSRepository().getTasks();
+
         if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 1) {
 
             taskTitleSection = parameters.get(0);
-            return filterAndSortTasks(taskTitleSection);
+
+            return filterAndSortTasks(taskTitleSection, tasks);
 
         } else if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 2) {
 
             String action = parameters.get(1);
-            return filterOrSortTasks(taskTitleSection, action);
+            return filterOrSortTasks(taskTitleSection, action, tasks);
         }
 
-        return listAllTask();
+        return listAllTasks(tasks);
     }
 
-    private String listAllTask() {
-        return getTMSRepository().getTasks()
-                .stream()
-                .map(Task::toString)
-                .collect(Collectors.joining(System.lineSeparator()));
+    private String filterAndSortTasks(String taskTitle, List<Task> tasks) {
+        List<Task> filteredTasks = filterTasks(tasks, taskTitle);
+        filteredTasks.sort(Comparator.comparing(Task::getName));
+
+        return listAllTasks(filteredTasks);
     }
 
-    private String filterAndSortTasks(String taskTitle) {
-        return getTMSRepository()
-                .getTasks()
-                .stream()
-                .filter(task -> task.getName().contains(taskTitle))
-                .sorted(Comparator.comparing(Task::getName))
-                .map(Task::toString)
-                .collect(Collectors.joining(System.lineSeparator()));
-    }
-
-    private String filterOrSortTasks(String taskTitle, String action) {
-        String result;
+    private String filterOrSortTasks(String taskTitle, String action, List<Task> tasks) {
 
         switch (action) {
-            case "sort" -> result = getTMSRepository().getTasks()
-                    .stream()
-                    .sorted(Comparator.comparing(Task::getName))
-                    .map(Task::toString)
-                    .collect(Collectors.joining(System.lineSeparator()));
-            case "filter" -> result = getTMSRepository()
-                    .getTasks()
-                    .stream()
-                    .filter(task -> task.getName().contains(taskTitle))
-                    .map(Task::toString)
-                    .collect(Collectors.joining(System.lineSeparator()));
-            default -> {
+            case "sort":
+                tasks.sort(Comparator.comparing(Task::getName));
+                return listAllTasks(tasks);
+            case "filter":
+                return listAllTasks(filterTasks(tasks, taskTitle));
+            default:
                 throw new InvalidUserInputException(LISTING_FACTOR_INVALID);
-            }
         }
+    }
 
-        return result;
+    private List<Task> filterTasks(List<Task> tasks, String filter) {
+        return tasks.stream()
+                .filter(task -> task.getName().contains(filter))
+                .collect(Collectors.toList());
+    }
+
+    private String listAllTasks(List<Task> list) {
+        return list
+                .stream()
+                .map(Task::toString)
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }

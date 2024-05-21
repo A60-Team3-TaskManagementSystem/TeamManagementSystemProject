@@ -65,7 +65,7 @@ public class CommandFactoryImpl implements CommandFactory {
             case CHANGESTATUS:
                 return new ChangeStatusCommand(taskManagementSystemRepository);
             case LISTTASKS:
-                return new ListAllTasksAlternativeCommand(taskManagementSystemRepository);
+                return new ListTasksCommand(taskManagementSystemRepository);
             case LISTBUGS:
                 return new ListBugsCommand(taskManagementSystemRepository);
             case LISTSTORIES:

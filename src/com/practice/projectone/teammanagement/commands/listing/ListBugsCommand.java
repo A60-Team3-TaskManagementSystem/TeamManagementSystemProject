@@ -3,13 +3,16 @@ package com.practice.projectone.teammanagement.commands.listing;
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Bug;
+import com.practice.projectone.teammanagement.models.tasks.enums.Status;
+import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ListBugsCommand extends BaseCommand {
-
+    public static final int OR_FILTER = 2;
+    public static final int AND_FILTER = 3;
     public static final String INVALID_SORT_PARAMETER = "Invalid sorting parameter: should be \"title\", \"priority\", \"severity\" or \"nosort\"!";
 
     public ListBugsCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
@@ -27,16 +30,16 @@ public class ListBugsCommand extends BaseCommand {
         if (!parameters.isEmpty()) {
             String sortArgument = parameters.get(0);
 
-            if (parameters.size() == 2) {
+            if (parameters.size() == OR_FILTER) {
                 String filter1 = parameters.get(1);
 
                 bugs = filterBugs(bugs, filter1);
 
-            } else if (parameters.size() == 3) {
-                String filter1 = parameters.get(1);
-                String filter2 = parameters.get(2);
+            } else if (parameters.size() == AND_FILTER) {
+                Status status = ParsingHelpers.tryParseEnum(parameters.get(1), Status.class);
+                String assigneeName = parameters.get(2);
 
-                bugs = filterBugs(bugs, filter1, filter2);
+                bugs = filterBugs(bugs, status, assigneeName);
             }
 
             sortBugs(bugs, sortArgument);
@@ -51,9 +54,9 @@ public class ListBugsCommand extends BaseCommand {
                 .collect(Collectors.toList());
     }
 
-    private List<Bug> filterBugs(List<Bug> bugs, String filter1, String filter2) {
+    private List<Bug> filterBugs(List<Bug> bugs, Status status, String assigneeName) {
         return bugs.stream()
-                .filter(bug -> filter1.equals(bug.getAssignee()) && bug.getStatus().toString().equals(filter2))
+                .filter(bug -> assigneeName.equals(bug.getAssignee()) && bug.getStatus().equals(status))
                 .collect(Collectors.toList());
     }
 

@@ -2,7 +2,8 @@
 
 ## Description
 
-A `Tasks Management System` console application to be used by a small team of developers, who need to keep track of all the
+A `Tasks Management System` console application to be used by a small team of developers, who need to keep track of all
+the
 tasks,
 surrounding a software product they are building
 
@@ -249,12 +250,16 @@ Currently, the engine supports the following commands:
 - **ShowTeamActivity** `[teamName]`- shows each member and each board activity history of a specific team.
 - **ShowBoardActivity** `[boardName]`- shows all the events tied to a specific task.
 - **ShowPersonActivity** `[personName]`- shows all the events tide to a specific member.
-- **ListTasks** `[]` / `[taskTitle]` / `[taskTitle] [listCondition]` - lists all stored tasks - straight or sorted
+- **ListTasks** `[]` / `[taskTitle]` / `[taskTitle] [listCondition]` - lists all stored tasks - directly or sorted
   and/or filtered by task name.
-- **ListBugs** //TODO
-- **ListStories** //TODO
-- **ListFeedback** //TODO
-- **ListAssignedTasks** //TODO
+- **ListBugs** `[]` / `[sortBy] [filterBy]` / `[sortBy] [filterBy] [filterBy]` - lists all stored bugs. Can be filtered
+  by `Status` and/or `Assignee`. Can be sorted by `title`, `priority` or `severity`.
+- **ListStories** `[]` / `[sortBy] [filterBy]` / `[sortBy] [filterBy] [filterBy]` - lists all stored stories. Can be
+  filtered by `Status` and/or `Assignee`. Can be sorted by `title`, `priority` or `size`.
+- **ListStories** `[]` / `[sortBy] [filterBy]` - lists all stored feedbacks. Can be filtered by `Status`. Can be sorted
+  by `title` or `rating`.
+- **ListAssignedTasks** `[]` / `[toSort] [filterBy]` / `[toSort] [filterBy] [filterBy]`- lists all assigned tasks. Can
+  be filtered by `Status` and/or `Assignee`. Can be sorted  by `title`.
 
 > Note: All commands return **appropriate success messages**. The `Engine` returns **appropriate error messages** in
 > case of an invalid operation or error.
@@ -291,6 +296,7 @@ says, "The status of item with ID 42 switched from Active to Done."
 //TODO
 
 ## Unit Tests
+
 //TODO
 
 ## Technical Requirements

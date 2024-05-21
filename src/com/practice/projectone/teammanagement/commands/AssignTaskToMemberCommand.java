@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 public class AssignTaskToMemberCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 2;
     private static final String INVALID_TASK_ID = "Invalid value for taskID. Should be a number.";
-    public static final String TASK_ASSIGNED = "Task with ID%d assigned to %s";
-    public static final String TASK_NOT_ASSIGNABLE = "Task can not be assigned";
-    public static final String INVALID_CONDITIONS = "No task satisfy given condition";
-    public static final String INVALID_TASK = "Feedback";
+    private static final String TASK_ASSIGNED = "Task with ID%d assigned to %s";
+    private static final String TASK_NOT_ASSIGNABLE = "Task can not be assigned";
+    private static final String INVALID_CONDITIONS = "No task satisfy given condition";
+    private static final String INVALID_TASK = "Feedback";
 
     public AssignTaskToMemberCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
         super(taskManagementSystemRepository);
