@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/SpecificTaskImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/SpecificTaskImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/StoryImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/StoryImplTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/utils/Constants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,23 +64,93 @@
       <recent name="com.practice.projectone.teammanagement.exceptions" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.Main" />
+  <component name="RunManager" selected="JUnit.StoryImplTests">
+    <configuration name="StoryImplTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TeamManagementSystemProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.*" />
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.tasks.StoryImplTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StoryImplTests.changeAssignee_Should_LogEvent_When_ChangingAssignee" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TeamManagementSystemProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.tasks.StoryImplTests" />
+      <option name="METHOD_NAME" value="changeAssignee_Should_LogEvent_When_ChangingAssignee" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StoryImplTests.changePriority_Should_LogEvent_When_PriorityIsChanged" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TeamManagementSystemProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.tasks.StoryImplTests" />
+      <option name="METHOD_NAME" value="changePriority_Should_LogEvent_When_PriorityIsChanged" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StoryImplTests.changePriority_Should_SetPriority_When_NewPriorityIsValid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TeamManagementSystemProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.tasks.StoryImplTests" />
+      <option name="METHOD_NAME" value="changePriority_Should_SetPriority_When_NewPriorityIsValid" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StoryImplTests.changePriority_Should_ThrowException_When_SamePriority" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TeamManagementSystemProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.tasks.StoryImplTests" />
+      <option name="METHOD_NAME" value="changePriority_Should_ThrowException_When_SamePriority" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.StoryImplTests" />
+        <item itemvalue="JUnit.StoryImplTests.changePriority_Should_LogEvent_When_PriorityIsChanged" />
+        <item itemvalue="JUnit.StoryImplTests.changePriority_Should_SetPriority_When_NewPriorityIsValid" />
+        <item itemvalue="JUnit.StoryImplTests.changeAssignee_Should_LogEvent_When_ChangingAssignee" />
+        <item itemvalue="JUnit.StoryImplTests.changePriority_Should_ThrowException_When_SamePriority" />
       </list>
     </recent_temporary>
   </component>
@@ -125,5 +196,10 @@
         <watch expression="pattern" />
       </configuration>
     </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/TeamManagementSystemProject$StoryImplTests.ic" NAME="StoryImplTests Coverage Results" MODIFIED="1716416445310" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.practice.projectone.teammanagement.models.tasks.*</FILTER>
+    </SUITE>
   </component>
 </project>

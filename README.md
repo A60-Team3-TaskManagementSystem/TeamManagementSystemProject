@@ -246,7 +246,6 @@ Currently, the engine supports the following commands:
 - **ShowPeople** - shows all the employees in the database.
 - **ShowBoards** `[teamName]`- shows all the boards created in a specific team.
 - **ShowTeamMembers** `[teamName]`- shows all the members of a specific team.
-- **ShowTeamMembers** `[teamName]`- shows all the members of a specific team.
 - **ShowTeamActivity** `[teamName]`- shows each member and each board activity history of a specific team.
 - **ShowBoardActivity** `[boardName]`- shows all the events tied to a specific task.
 - **ShowPersonActivity** `[personName]`- shows all the events tide to a specific member.
@@ -256,7 +255,7 @@ Currently, the engine supports the following commands:
   by `Status` and/or `Assignee`. Can be sorted by `title`, `priority` or `severity`.
 - **ListStories** `[]` / `[sortBy] [filterBy]` / `[sortBy] [filterBy] [filterBy]` - lists all stored stories. Can be
   filtered by `Status` and/or `Assignee`. Can be sorted by `title`, `priority` or `size`.
-- **ListStories** `[]` / `[sortBy] [filterBy]` - lists all stored feedbacks. Can be filtered by `Status`. Can be sorted
+- **ListFeedbacks** `[]` / `[sortBy] [filterBy]` - lists all stored feedbacks. Can be filtered by `Status`. Can be sorted
   by `title` or `rating`.
 - **ListAssignedTasks** `[]` / `[toSort] [filterBy]` / `[toSort] [filterBy] [filterBy]`- lists all assigned tasks. Can
   be filtered by `Status` and/or `Assignee`. Can be sorted  by `title`.

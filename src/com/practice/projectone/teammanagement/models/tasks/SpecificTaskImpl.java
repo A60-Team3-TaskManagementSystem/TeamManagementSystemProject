@@ -14,6 +14,7 @@ public abstract class SpecificTaskImpl extends TaskImpl implements SpecificTask 
     public static final String NEW_ASSIGNEE_ARRIVED = "Task given to %s";
     public static final String ASSIGNEE_REPLACED = "Task transferred from %s to %s";
     public static final String TASK_NOT_YET_ASSIGNED = "Task not yet assigned";
+    public static final String SAME_ASSIGNE_TASK = "Task %s already assigned to %s";
     private Priority priority;
     private String assigneeName;
 
@@ -25,20 +26,16 @@ public abstract class SpecificTaskImpl extends TaskImpl implements SpecificTask 
 
     @Override
     public String getAssignee() {
-        return assigneeName;
+        return assigneeName == null ? "Not assigned yet" : assigneeName;
     }
 
     @Override
     public void changeAssignee(String assigneeName) {
-        if (assigneeName == null && !assigneeIsValid()) {
-            throw new IllegalArgumentException(TASK_NOT_YET_ASSIGNED);
+        if (assigneeName == null) {
+            unassign();
+        } else {
+            assign(assigneeName);
         }
-
-        if (this.assigneeName != null && this.assigneeName.equals(assigneeName)) {
-            throw new IllegalArgumentException(String.format("Task %s already assigned to %s", super.getName(), assigneeName));
-        }
-
-        setAssignee(assigneeName);
     }
 
     @Override
@@ -63,19 +60,29 @@ public abstract class SpecificTaskImpl extends TaskImpl implements SpecificTask 
         return String.format("%s  #Priority: %s%n", super.toString(), priority);
     }
 
-    private void setAssignee(String assigneeName) {
-        String eventTitle;
-
-        if (assigneeName == null) {
-            eventTitle = ASSIGNEE_TRANSFERRED;
-        } else {
-            eventTitle = assigneeIsValid() ? String.format(ASSIGNEE_REPLACED, getAssignee(), assigneeName)
-                                            : String.format(NEW_ASSIGNEE_ARRIVED, assigneeName);
+    private void unassign() {
+        if (!assigneeIsValid()) {
+            throw new IllegalArgumentException(TASK_NOT_YET_ASSIGNED);
         }
 
-        this.assigneeName = assigneeName;
+        setAssignee(null);
+        addEventToHistory(new EventLogImpl(ASSIGNEE_TRANSFERRED));
+    }
 
+    private void assign(String assigneeName) {
+        if (assigneeIsValid() && this.assigneeName.equals(assigneeName)) {
+            throw new IllegalArgumentException(String.format(SAME_ASSIGNE_TASK, getName(), assigneeName));
+        }
+
+        String eventTitle = assigneeIsValid() ? String.format(ASSIGNEE_REPLACED, getAssignee(), assigneeName)
+                : String.format(NEW_ASSIGNEE_ARRIVED, assigneeName);
+
+        setAssignee(assigneeName);
         addEventToHistory(new EventLogImpl(eventTitle));
+    }
+
+    private void setAssignee(String assigneeName) {
+        this.assigneeName = assigneeName;
     }
 
     private void setPriority(Priority priority) {
