@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_3_34_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_3_34_PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_4_59_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_4_59_PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_5_30_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_5_30_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TeamManagementSystemProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TeamManagementSystemProject.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/ListingHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/ListingHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/StoryImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/StoryImplTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/utils/Constants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
