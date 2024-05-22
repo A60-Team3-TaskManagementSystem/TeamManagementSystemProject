@@ -2,19 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_3_34_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_3_34_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_4_59_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_4_59_PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_5_30_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_14_2024_5_30_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListBugsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListBugsCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/CommandFactoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TeamManagementSystemProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TeamManagementSystemProject.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/ListingHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/ListingHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/ParsingHelpers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/ParsingHelpers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/TaskHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/TaskHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/ValidationHelpers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/utils/ValidationHelpers.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,9 +45,9 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "D:/IT STUFF/TelerikProjects/TeamManagementSystemProject/src",
+    "last_opened_file_path": "D:/IT STUFF/TelerikProjects/TeamManagementSystemProject/lib",
     "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
+    "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "inlay.hints"
   }

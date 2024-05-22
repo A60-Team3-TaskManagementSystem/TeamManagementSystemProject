@@ -1,10 +1,9 @@
 package com.practice.projectone.teammanagement.utils;
 
+import com.practice.projectone.teammanagement.models.contracts.Nameable;
 import com.practice.projectone.teammanagement.models.tasks.contracts.*;
-import com.practice.projectone.teammanagement.utils.comparators.TaskNameComparator;
-import com.practice.projectone.teammanagement.utils.comparators.TaskPriorityComparator;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -13,29 +12,30 @@ public class ListingHelper {
     public static final String INVALID_SORT_PARAMETER = "Invalid sorting parameter: should be \"title\", \"priority\", \"size\" or \"nosort\"!";
 
 
-    public static <T extends Task> void sort(List<T> tasks, String sort) {
+    public static <T extends Task> List<? extends Task> sort(List<T> tasks, String sort) {
         switch (sort) {
             case "title":
-                TaskNameComparator taskNameComparator = new TaskNameComparator();
-                tasks.sort(taskNameComparator);
+                tasks.sort(Comparator.comparing(Nameable::getName));
                 break;
             case "priority":
-                TaskPriorityComparator taskPriorityComparator = new TaskPriorityComparator()
-                tasks.sort(taskPriorityComparator);
-                break;
+                SpecificTask[] specificTasks = tasks.toArray(new SpecificTask[0]);
+                Arrays.sort((specificTasks), Comparator.comparing(SpecificTask::getPriority));
+                return List.of(specificTasks);
             case "severity":
-                tasks.sort(Comparator.comparing());
+                Arrays.sort(tasks.toArray(new Bug[0]), Comparator.comparing(Bug::getSeverity));
                 break;
             case "size":
-                tasks.sort(Comparator.comparing(Story::getSize));
+                Arrays.sort(tasks.toArray(new Story[0]), Comparator.comparing(Story::getSize));
                 break;
             case "rating":
-                tasks.sort(Comparator.comparing(Feedback::getRating));
+                Arrays.sort(tasks.toArray(new Feedback[0]), Comparator.comparing(Feedback::getRating));
                 break;
             case "nosort":
                 break;
             default:
                 throw new IllegalArgumentException(INVALID_SORT_PARAMETER);
         }
+
+        return null;
     }
 }
