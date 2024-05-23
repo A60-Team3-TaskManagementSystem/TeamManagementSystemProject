@@ -1,5 +1,6 @@
 package com.practice.projectone.teammanagement.models.tasks;
 
+import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.EventLogImpl;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;
 import com.practice.projectone.teammanagement.models.tasks.enums.Status;
@@ -12,6 +13,9 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
     public static final String INVALID_RATING_ERR = String.format("Story rating must be between %d and %d",
             RATING_MIN_VALUE,
             RATING_MAX_VALUE);
+    private static final String RATING_CHANGED = "The rating of item with ID %d switched from %d to %d";
+    private static final String RATING_SAME_ARR = "Can't change, rating already is %d";
+
     private int rating;
 
     public FeedbackImpl(String title, String description, int rating) {
@@ -22,18 +26,24 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
     }
 
     @Override
-    public double getRating() {
+    public int getRating() {
         return rating;
     }
 
     @Override
     public void changeRating(int rating) {
+        int oldRating = this.rating;
+        if (rating == oldRating) {
+            throw new InvalidUserInputException(String.format(RATING_SAME_ARR, this.rating));
+        }
+
         setRating(rating);
+        addEventToHistory(new EventLogImpl(String.format(RATING_CHANGED, getId(), oldRating, rating)));
     }
 
     @Override
     public String toString() {
-        return String.format("%s  #Rating: %d", super.toString(), rating);
+        return String.format("%s  #Rating: %d%n", super.toString(), rating);
     }
 
     @Override
@@ -53,5 +63,4 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
 
         this.rating = rating;
     }
-
 }

@@ -7,23 +7,30 @@ import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
 import com.practice.projectone.teammanagement.models.tasks.enums.Size;
 import com.practice.projectone.teammanagement.models.tasks.enums.Status;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.practice.projectone.teammanagement.utils.Constants.*;
 
 public class StoryImplTests {
 
-    @Test
-    public void carImpl_Should_ImplementStoryInterface() {
-        StoryImpl story = initializeTestStory();
+    private StoryImpl story;
 
+    @BeforeEach
+    void beforeEach(){
+        story = new StoryImpl(VALID_TITLE,
+                VALID_DESCRIPTION,
+                VALID_SPECIFIC_TASK_PRIORITY,
+                VALID_STORY_SIZE);
+    }
+
+    @Test
+    public void StoryImpl_Should_ImplementStoryInterface() {
         Assertions.assertTrue(story instanceof Story);
     }
 
     @Test
-    public void carImpl_Should_ImplementTaskInterface() {
-        StoryImpl story = initializeTestStory();
-
+    public void StoryImpl_Should_ImplementTaskInterface() {
         Assertions.assertTrue(story instanceof Task);
     }
 
@@ -65,21 +72,47 @@ public class StoryImplTests {
 
     @Test
     public void constructor_Should_CreateNewStory_When_ParametersAreCorrect() {
-        StoryImpl story = initializeTestStory();
-
         Assertions.assertEquals(VALID_TITLE, story.getName());
     }
 
     @Test
     public void constructor_Should_LogEvent_When_StoryIsCreated() {
-        StoryImpl story = initializeTestStory();
-
         Assertions.assertEquals(1, story.getActivityHistory().size());
+    }
+    @Test
+    public void changeStatus_Should_ThrowException_When_SameStatus() {
+        Status initialStoryStatus = Status.NOT_DONE;
+
+        Assertions.assertThrows(InvalidUserInputException.class, () -> story.changeStatus(initialStoryStatus));
+    }
+
+    @Test
+    public void changeStatus_Should_ThrowException_When_NotValidStoryStatus() {
+        Status notValidStoryStatus = Status.NEW;
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> story.changeStatus(notValidStoryStatus));
+    }
+
+    @Test
+    public void changeStatus_Should_SetStatus_When_NewStatusIsValid() {
+        Status validStatus = Status.IN_PROGRESS;
+
+        story.changeStatus(validStatus);
+
+        Assertions.assertEquals(validStatus, story.getStatus());
+    }
+
+    @Test
+    public void changeStatus_Should_LogEvent_When_StatusIsChanged() {
+        Status validStatus = Status.IN_PROGRESS;
+
+        story.changeStatus(validStatus);
+
+        Assertions.assertEquals(2, story.getActivityHistory().size());
     }
 
     @Test
     public void getAssignee_Should_ReturnNone_IfTaskIsYetAssigned() {
-        StoryImpl story = initializeTestStory();
         String expected = "Not assigned yet";
 
         Assertions.assertEquals(expected, story.getAssignee());
@@ -87,23 +120,20 @@ public class StoryImplTests {
 
     @Test
     public void changeAssignee_Should_ThrowException_When_UnAssigningNotYetAssignedTask() {
-        StoryImpl story = initializeTestStory();
-
         Assertions.assertThrows(IllegalArgumentException.class, () -> story.changeAssignee(null));
     }
 
     @Test
     public void changeAssignee_Should_ThrowException_When_AssigningSamePerson() {
-        StoryImpl story = initializeTestStory();
         String expected = "Pesho";
 
         story.changeAssignee(expected);
+
         Assertions.assertThrows(IllegalArgumentException.class, () -> story.changeAssignee(expected));
     }
 
     @Test
     public void changeAssignee_Should_AssignNewPerson_When_AssigningNotYetAssignedTask() {
-        StoryImpl story = initializeTestStory();
         String expected = "Pesho";
 
         story.changeAssignee(expected);
@@ -113,7 +143,6 @@ public class StoryImplTests {
 
     @Test
     public void changeAssignee_Should_UnAssignPerson_When_PassedNullValue() {
-        StoryImpl story = initializeTestStory();
         String assignee = "Pesho";
         String expected = "Not assigned yet";
 
@@ -125,7 +154,6 @@ public class StoryImplTests {
 
     @Test
     public void changeAssignee_Should_LogEvent_When_UnAssigningPerson() {
-        StoryImpl story = initializeTestStory();
         String expected = "Pesho";
 
         story.changeAssignee(expected);
@@ -136,7 +164,6 @@ public class StoryImplTests {
 
     @Test
     public void changeAssignee_Should_LogEvent_When_AssigningNewPerson() {
-        StoryImpl story = initializeTestStory();
         String expected = "Pesho";
 
         story.changeAssignee(expected);
@@ -146,7 +173,6 @@ public class StoryImplTests {
 
     @Test
     public void changeAssignee_Should_LogEvent_When_ChangingAssignee() {
-        StoryImpl story = initializeTestStory();
         String assignee = "Gosho";
         String expected = "Pesho";
 
@@ -158,14 +184,11 @@ public class StoryImplTests {
 
     @Test
     public void changePriority_Should_ThrowException_When_SamePriority() {
-        StoryImpl story = initializeTestStory();
-
         Assertions.assertThrows(InvalidUserInputException.class, () -> story.changePriority(VALID_SPECIFIC_TASK_PRIORITY));
     }
 
     @Test
     public void changePriority_Should_SetPriority_When_NewPriorityIsValid() {
-        StoryImpl story = initializeTestStory();
         story.changePriority(Priority.LOW);
 
         Assertions.assertEquals(Priority.LOW, story.getPriority());
@@ -173,7 +196,6 @@ public class StoryImplTests {
 
     @Test
     public void changePriority_Should_LogEvent_When_PriorityIsChanged() {
-        StoryImpl story = initializeTestStory();
         story.changePriority(Priority.LOW);
 
         Assertions.assertEquals(2, story.getActivityHistory().size());
@@ -181,14 +203,11 @@ public class StoryImplTests {
 
     @Test
     public void changeSize_Should_ThrowException_When_NewSizeEqualsStorySize() {
-        StoryImpl story = initializeTestStory();
-
         Assertions.assertThrows(InvalidUserInputException.class, () -> story.changeSize(VALID_STORY_SIZE));
     }
 
     @Test
     void changeSize_Should_ChangeSize_When_NewSizeIsValid() {
-        StoryImpl story = initializeTestStory();
         story.changeSize(Size.LARGE);
 
         Assertions.assertEquals(Size.LARGE, story.getSize());
@@ -196,7 +215,6 @@ public class StoryImplTests {
 
     @Test
     public void changeSize_Should_LogEvent_When_SizeIsChanged() {
-        StoryImpl story = initializeTestStory();
         story.changeSize(Size.LARGE);
 
         Assertions.assertEquals(2, story.getActivityHistory().size());
@@ -204,21 +222,20 @@ public class StoryImplTests {
 
     @Test
     public void validateStatus_Should_ThrowException_When_StatusProvidedIsNotValidForStory() {
-        StoryImpl story = initializeTestStory();
+        Status notValidStoryStatus = Status.NEW;
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> story.validateStatus(Status.ACTIVE));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> story.validateStatus(notValidStoryStatus));
     }
 
     @Test
     public void getTaskType_Should_ReturnTaskName_When_Invoked() {
-        StoryImpl story = initializeTestStory();
+        String expected = "Story";
 
-        Assertions.assertEquals("Story", story.getTaskType());
+        Assertions.assertEquals(expected, story.getTaskType());
     }
 
     @Test
     public void toString_Should_PrintExpectedOutput() {
-        StoryImpl story = initializeTestStory();
         String expected = String.format("Task ID%d%n  #Type: %s%n  #Title: %s%n  #Description: %s%n  #Status: %s%n  #Priority: %s%n  #Size: %s%n  #AssignedTo: %s%n",
                 story.getId(), story.getTaskType(), story.getName(),
                 story.getDescription(), story.getStatus(), story.getPriority(),
@@ -227,10 +244,30 @@ public class StoryImplTests {
         Assertions.assertEquals(expected, story.toString());
     }
 
-    public StoryImpl initializeTestStory() {
-        return new StoryImpl(VALID_TITLE,
+    @Test
+    public void equals_Should_AssertEquality() {
+        StoryImpl sameStory = new StoryImpl(VALID_TITLE,
+                VALID_DESCRIPTION,
+                VALID_SPECIFIC_TASK_PRIORITY,
+                VALID_STORY_SIZE);;
+
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotEquals(story, sameStory),
+                () -> Assertions.assertEquals(story, story)
+        );
+    }
+
+    @Test
+    public void hashCode_Should_AssertEquality() {
+        StoryImpl sameStory = new StoryImpl(VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_STORY_SIZE);
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotEquals(story.hashCode(), sameStory.hashCode()),
+                () -> Assertions.assertEquals(story.hashCode(), story.hashCode())
+        );
     }
 }

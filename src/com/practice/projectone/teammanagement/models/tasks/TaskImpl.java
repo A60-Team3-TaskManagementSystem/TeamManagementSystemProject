@@ -30,6 +30,7 @@ public abstract class TaskImpl implements Task {
             DESCRIPTION_LEN_MAX);
     private static final String STATUS_CHANGED = "The status of item with ID %d switched from %s to %s";
     private static final String STATUS_SAME_ERR = "Can't change, task status already at %s";
+    public static final String COMMENT_ADDED = "New comment %s added by %s";
     private static long idCounter = 0;
     private final long id;
     private String title;
@@ -92,13 +93,15 @@ public abstract class TaskImpl implements Task {
     @Override
     public void addComment(Comment comment) {
         comments.add(comment);
+
+        addEventToHistory(new EventLogImpl(String.format(COMMENT_ADDED, comment.getDescription(), comment.getAuthor())));
     }
 
     @Override
     public String toString() {
         String taskType = getTaskType();
         return String.format("Task ID%d%n  #Type: %s%n  #Title: %s%n  #Description: %s%n  #Status: %s%n",
-                                    getId(), taskType, title, description, status);
+                getId(), taskType, title, description, status);
     }
 
     @Override
@@ -111,7 +114,7 @@ public abstract class TaskImpl implements Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, status, comments, activityHistory);
+        return Objects.hash(id);
     }
 
     protected abstract String getTaskType();
