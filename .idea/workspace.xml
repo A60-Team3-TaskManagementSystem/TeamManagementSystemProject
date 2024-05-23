@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/FeedbackImplTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/BoardImplTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/TeamImplTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/FeedbackImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/FeedbackImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/TaskImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/TaskImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/contracts/Feedback.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/contracts/Feedback.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/FeedbackImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/FeedbackImplTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/PersonImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/PersonImplTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/StoryImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/StoryImplTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,83 +64,85 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\IT STUFF\TelerikProjects\TeamManagementSystemProject" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.practice.projectone.teammanagement.models" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.practice.projectone.teammanagement.exceptions" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.com.practice.projectone.teammanagement.models.tasks in TeamManagementSystemProject">
-    <configuration name="FeedbackImplTest.addComment_Should_AddCommentToTask" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.com.practice.projectone.teammanagement.models in TeamManagementSystemProject">
+    <configuration name="BoardImplTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TeamManagementSystemProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
-      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.tasks.FeedbackImplTest" />
-      <option name="METHOD_NAME" value="addComment_Should_AddCommentToTask" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FeedbackImplTest.addComment_Should_LogEvent_When_Invoked" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TeamManagementSystemProject" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
-      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.tasks.FeedbackImplTest" />
-      <option name="METHOD_NAME" value="addComment_Should_LogEvent_When_Invoked" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="FeedbackImplTest.getComments_Should_ReturnNewArray_When_Invoked" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TeamManagementSystemProject" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
-      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.tasks.FeedbackImplTest" />
-      <option name="METHOD_NAME" value="getComments_Should_ReturnNewArray_When_Invoked" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="StoryImplTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="TeamManagementSystemProject" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
-      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.tasks.StoryImplTests" />
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.BoardImplTests" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="com.practice.projectone.teammanagement.models.tasks in TeamManagementSystemProject" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BoardImplTests.addTask_Should_AddTask_When_Successful" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TeamManagementSystemProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.tasks.*" />
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models.tasks" />
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.BoardImplTests" />
+      <option name="METHOD_NAME" value="addTask_Should_AddTask_When_Successful" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardImplTests.removeTask_Should_RemoveTask_When_TaskIsPresent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TeamManagementSystemProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.BoardImplTests" />
+      <option name="METHOD_NAME" value="removeTask_Should_RemoveTask_When_TaskIsPresent" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TeamImplTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TeamManagementSystemProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.models.TeamImplTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.practice.projectone.teammanagement.models in TeamManagementSystemProject" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="TeamManagementSystemProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.models.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.models" />
       <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -146,11 +150,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.com.practice.projectone.teammanagement.models.tasks in TeamManagementSystemProject" />
-        <item itemvalue="JUnit.FeedbackImplTest.addComment_Should_AddCommentToTask" />
-        <item itemvalue="JUnit.FeedbackImplTest.addComment_Should_LogEvent_When_Invoked" />
-        <item itemvalue="JUnit.FeedbackImplTest.getComments_Should_ReturnNewArray_When_Invoked" />
-        <item itemvalue="JUnit.StoryImplTests" />
+        <item itemvalue="JUnit.com.practice.projectone.teammanagement.models in TeamManagementSystemProject" />
+        <item itemvalue="JUnit.BoardImplTests" />
+        <item itemvalue="JUnit.TeamImplTests" />
+        <item itemvalue="JUnit.BoardImplTests.removeTask_Should_RemoveTask_When_TaskIsPresent" />
+        <item itemvalue="JUnit.BoardImplTests.addTask_Should_AddTask_When_Successful" />
       </list>
     </recent_temporary>
   </component>
@@ -198,10 +202,16 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/TeamManagementSystemProject$BoardImplTests.ic" NAME="BoardImplTests Coverage Results" MODIFIED="1716426879830" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.practice.projectone.teammanagement.models.*</FILTER>
+    </SUITE>
     <SUITE FILE_PATH="coverage/TeamManagementSystemProject$FeedbackImplTest.ic" NAME="FeedbackImplTest Coverage Results" MODIFIED="1716421576221" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.practice.projectone.teammanagement.models.tasks.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/TeamManagementSystemProject$StoryImplTests.ic" NAME="StoryImplTests Coverage Results" MODIFIED="1716422699779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.practice.projectone.teammanagement.models.tasks.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/TeamManagementSystemProject$com_practice_projectone_teammanagement_models_tasks_in_TeamManagementSystemProject.ic" NAME="com.practice.projectone.teammanagement.models.tasks in TeamManagementSystemProject Coverage Results" MODIFIED="1716423156038" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.practice.projectone.teammanagement.models.tasks.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/TeamManagementSystemProject$All_in_TeamManagementSystemProject.ic" NAME="All in TeamManagementSystemProject Coverage Results" MODIFIED="1716421744283" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

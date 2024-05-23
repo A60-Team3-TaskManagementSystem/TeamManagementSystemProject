@@ -93,6 +93,6 @@ public class BoardImpl implements Board {
 
     @Override
     public int hashCode() {
-        return Objects.hash(boardName, tasks, eventLogs);
+        return Objects.hash(boardName);
     }
 }

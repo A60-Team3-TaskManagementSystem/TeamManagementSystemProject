@@ -14,6 +14,7 @@ import java.util.Objects;
 public class TeamImpl implements Team {
 
     public static final String BOARD_ALREADY_EXISTS = "Board already exists";
+    public static final String MEMBER_ALREADY_EXISTS = "Member already exists";
     public static final int TEAM_NAME_LEN_MIN = 5;
     public static final int TEAM_NAME_LEN_MAX = 15;
     private static final String TEAM_NAME_LEN_ERR = String.format(
@@ -32,11 +33,6 @@ public class TeamImpl implements Team {
         boards = new ArrayList<>();
     }
 
-    private void setTeamName(String teamName) {
-        ValidationHelpers.validateStringLength(teamName, TEAM_NAME_LEN_MIN, TEAM_NAME_LEN_MAX, TEAM_NAME_LEN_ERR);
-        this.teamName = teamName;
-    }
-
     @Override
     public String getName() {
         return teamName;
@@ -49,6 +45,9 @@ public class TeamImpl implements Team {
 
     @Override
     public void addMember(Person person) {
+        if (getMembers().contains(person)) {
+            throw new DuplicateEntityException(MEMBER_ALREADY_EXISTS);
+        }
         people.add(person);
     }
 
@@ -97,5 +96,10 @@ public class TeamImpl implements Team {
     @Override
     public int hashCode() {
         return Objects.hash(teamName, people, boards);
+    }
+
+    private void setTeamName(String teamName) {
+        ValidationHelpers.validateStringLength(teamName, TEAM_NAME_LEN_MIN, TEAM_NAME_LEN_MAX, TEAM_NAME_LEN_ERR);
+        this.teamName = teamName;
     }
 }

@@ -1,8 +1,9 @@
-package com.practice.projectone.teammanagement.models.tasks;
+package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.EventLogImpl;
 import com.practice.projectone.teammanagement.models.PersonImpl;
+import com.practice.projectone.teammanagement.models.tasks.BugImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

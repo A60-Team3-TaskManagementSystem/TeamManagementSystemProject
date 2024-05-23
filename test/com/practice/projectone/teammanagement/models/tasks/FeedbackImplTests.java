@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.practice.projectone.teammanagement.utils.Constants.*;
 
-public class FeedbackImplTest {
+public class FeedbackImplTests {
 
     private FeedbackImpl feedback;
 
@@ -81,7 +81,13 @@ public class FeedbackImplTest {
 
     @Test
     public void constructor_Should_CreateNewFeedback_When_ParametersAreCorrect() {
-        Assertions.assertEquals(VALID_TITLE, feedback.getName());
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(VALID_TITLE, feedback.getName()),
+                () -> Assertions.assertDoesNotThrow(() -> feedback.getComments()),
+                () -> Assertions.assertDoesNotThrow(() -> feedback.getActivityHistory()),
+                () -> Assertions.assertEquals(VALID_RATING, feedback.getRating())
+
+        );
     }
 
     @Test
@@ -158,14 +164,15 @@ public class FeedbackImplTest {
     public void getActivityHistory_Should_ReturnNewArrays_When_Invoked() {
         Assertions.assertNotSame(feedback.getActivityHistory(), feedback.getActivityHistory());
     }
+
     @Test
-    public void getComments_Should_ReturnNewArray_When_Invoked(){
+    public void getComments_Should_ReturnNewArray_When_Invoked() {
         Assertions.assertNotSame(feedback.getComments(), feedback.getComments());
     }
 
     @Test
-    public void addComment_Should_AddCommentToTask(){
-        CommentImpl comment = new CommentImpl("xxxxxx", "xxxx");
+    public void addComment_Should_AddCommentToTask() {
+        CommentImpl comment = new CommentImpl(VALID_AUTHOR_NAME, VALID_DESCRIPTION);
 
         feedback.addComment(comment);
 
@@ -173,8 +180,8 @@ public class FeedbackImplTest {
     }
 
     @Test
-    public void addComment_Should_LogEvent_When_Invoked(){
-        CommentImpl comment = new CommentImpl("xxxxxx", "xxxx");
+    public void addComment_Should_LogEvent_When_Invoked() {
+        CommentImpl comment = new CommentImpl(VALID_AUTHOR_NAME, VALID_DESCRIPTION);
 
         feedback.addComment(comment);
 

@@ -72,7 +72,14 @@ public class StoryImplTests {
 
     @Test
     public void constructor_Should_CreateNewStory_When_ParametersAreCorrect() {
-        Assertions.assertEquals(VALID_TITLE, story.getName());
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(VALID_TITLE, story.getName()),
+                () -> Assertions.assertEquals(VALID_DESCRIPTION, story.getDescription()),
+                () -> Assertions.assertEquals(VALID_SPECIFIC_TASK_PRIORITY, story.getPriority()),
+                () -> Assertions.assertEquals(VALID_STORY_SIZE, story.getSize()),
+                () -> Assertions.assertDoesNotThrow(() -> story.getComments()),
+                () -> Assertions.assertDoesNotThrow(() -> story.getActivityHistory())
+        );
     }
 
     @Test
