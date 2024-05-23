@@ -1,6 +1,5 @@
 package com.practice.projectone.teammanagement.models;
 
-import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.EventLog;
@@ -56,9 +55,6 @@ public class BoardImpl implements Board {
 
     @Override
     public void addTask(Task task) {
-        if (tasks.contains(task)) {
-            throw new DuplicateEntityException(DUPLICATE_ENTRY);
-        }
 
         tasks.add(task);
 

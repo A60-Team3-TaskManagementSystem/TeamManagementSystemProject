@@ -1,8 +1,6 @@
 package com.practice.projectone.teammanagement.models;
 
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
-import com.practice.projectone.teammanagement.models.EventLogImpl;
-import com.practice.projectone.teammanagement.models.PersonImpl;
 import com.practice.projectone.teammanagement.models.tasks.BugImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -91,6 +89,28 @@ public class PersonImplTests {
         person.assignTask(bug);
         person.unassignTask(bug);
         Assertions.assertEquals(0, person.getTasks().size());
+    }
+
+    @Test
+    public void equals_Should_AssertEquality() {
+        PersonImpl person = new PersonImpl("LakeCity");
+        PersonImpl person1 = initializePerson();
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotEquals(person, person1),
+                () -> Assertions.assertEquals(person, person)
+        );
+    }
+
+    @Test
+    public void hashCode_Should_AssertEquality() {
+        PersonImpl person = new PersonImpl("LakeCity");
+        PersonImpl person1 = initializePerson();
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotEquals(person.hashCode(), person1.hashCode()),
+                () -> Assertions.assertEquals(person.hashCode(), person.hashCode())
+        );
     }
 
     public PersonImpl initializePerson(){

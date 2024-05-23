@@ -26,6 +26,8 @@ public interface TaskManagementSystemRepository {
 
     List<SpecificTask> getSpecificTasks();
 
+    void addBoardToTeam(Board board, Team team);
+
     void addPerson(Person person);
 
     void addTeam(Team team);
@@ -36,8 +38,7 @@ public interface TaskManagementSystemRepository {
 
     Team createTeam(String teamName);
 
-    void createBoard(String team, String boardName);
-
+    Board createBoard(String boardName);
     void addTaskToBoard(Board board, Task task);
 
     Bug createBug(String teamName, String description, Priority priority, Severity severity, List<String> steps);

@@ -65,11 +65,6 @@ public class TeamImpl implements Team {
 
     @Override
     public void addBoard(Board board) {
-
-        if (getBoards().contains(board)) {
-            throw new DuplicateEntityException(BOARD_ALREADY_EXISTS);
-        }
-
         boards.add(board);
     }
 

@@ -18,17 +18,18 @@ import com.practice.projectone.teammanagement.models.tasks.enums.Size;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskManagementSystemImpl implements TaskManagementSystemRepository {
     private final static String PERSON_ALREADY_EXIST = "Person %s already exist. Choose a different name!";
     private final static String TEAM_ALREADY_EXIST = "Team %s already exist. Choose a different name!";
     private final static String PERSON_ALREADY_MEMBER = "%s is already a member of this team!";
     public static final String DUPLICATE_BOARD_NAME = "Board name already taken. Choose another";
+    public static final String DUPLICATE_TASK = "Task already exist";
     public static final String NO_SUCH_ELEMENT = "No such %s found";
     public static final String TASK_NOT_EXIST = "Task with ID%d does not exist.";
     private final List<Team> teams;
     private final List<Person> people;
-    private final List<Board> boards;
     private final List<Bug> bugs;
     private final List<Story> stories;
     private final List<Feedback> feedbacks;
@@ -37,7 +38,6 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
     public TaskManagementSystemImpl() {
         teams = new ArrayList<>();
         people = new ArrayList<>();
-        boards = new ArrayList<>();
         bugs = new ArrayList<>();
         stories = new ArrayList<>();
         feedbacks = new ArrayList<>();
@@ -125,23 +125,8 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
     }
 
     @Override
-    public void createBoard(String teamName, String boardName) {
-        Team team = findTeamByName(teamName);
-
-        Board board = new BoardImpl(boardName);
-
-        if (boards.contains(board)) {
-            throw new DuplicateEntityException(DUPLICATE_BOARD_NAME);
-        }
-
-        team.addBoard(board);
-
-        boards.add(board);
-    }
-
-    @Override
-    public void addTaskToBoard(Board board, Task task) {
-        board.addTask(task);
+    public Board createBoard(String boardName) {
+       return new BoardImpl(boardName);
     }
 
     @Override
@@ -151,7 +136,6 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
         }
         people.add(person);
     }
-
     @Override
     public void addTeam(Team team) {
         if (teams.contains(team)) {
@@ -161,11 +145,28 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
     }
 
     @Override
+    public void addBoardToTeam(Board board, Team team) {
+        if (team.getBoards().contains(board)) {
+            throw new DuplicateEntityException(DUPLICATE_BOARD_NAME);
+        }
+
+        team.addBoard(board);
+    }
+
+    @Override
     public void addMemberToTeam(Person person, Team team) {
         if (team.getMembers().contains(person)) {
             throw new IllegalArgumentException(String.format(PERSON_ALREADY_MEMBER, person.getName()));
         }
         team.addMember(person);
+    }
+
+    @Override
+    public void addTaskToBoard(Board board, Task task) {
+        if (board.getTasks().contains(task)) {
+            throw new DuplicateEntityException(DUPLICATE_TASK);
+        }
+        board.addTask(task);
     }
 
     @Override
@@ -180,6 +181,10 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
 
     @Override
     public Board findBoardByName(String name) {
+        List<Board> boards = getTeams()
+                                    .stream()
+                                    .flatMap(team -> team.getBoards().stream())
+                                    .collect(Collectors.toList());
         return findElementByName(name, boards, "board");
     }
 

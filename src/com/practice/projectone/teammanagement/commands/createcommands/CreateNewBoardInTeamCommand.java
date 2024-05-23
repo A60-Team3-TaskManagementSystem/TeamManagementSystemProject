@@ -2,6 +2,8 @@ package com.practice.projectone.teammanagement.commands.createcommands;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
+import com.practice.projectone.teammanagement.models.contracts.Board;
+import com.practice.projectone.teammanagement.models.contracts.Team;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.List;
@@ -26,8 +28,10 @@ public class CreateNewBoardInTeamCommand extends BaseCommand {
     }
 
     private String createBoard(String boardName, String teamName) {
+        Board board = getTMSRepository().createBoard(boardName);
+        Team team = getTMSRepository().findTeamByName(teamName);
 
-        getTMSRepository().createBoard(teamName, boardName);
+        getTMSRepository().addBoardToTeam(board, team);
 
         return String.format(BOARD_CREATED_SUCCESSFULLY, boardName, teamName);
     }

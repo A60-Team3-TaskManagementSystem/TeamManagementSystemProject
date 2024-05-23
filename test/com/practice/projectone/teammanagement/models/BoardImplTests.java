@@ -1,6 +1,5 @@
 package com.practice.projectone.teammanagement.models;
 
-import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.tasks.FeedbackImpl;
 import org.junit.jupiter.api.Assertions;
@@ -53,15 +52,6 @@ public class BoardImplTests {
     @Test
     public void getTasks_Should_ReturnNewArray_When_Invoked() {
         Assertions.assertNotSame(board.getTasks(), board.getTasks());
-    }
-
-    @Test
-    public void addTask_Should_ThrowException_When_TaskAlreadyExists() {
-        FeedbackImpl feedback = new FeedbackImpl(VALID_TITLE, VALID_DESCRIPTION, VALID_RATING);
-
-        board.addTask(feedback);
-
-        Assertions.assertThrows(DuplicateEntityException.class, () -> board.addTask(feedback));
     }
 
     @Test

@@ -44,15 +44,6 @@ public class TeamImplTests {
     }
 
     @Test
-    public void addBoard_Should_ThrowException_When_BoardAlreadyAdded() {
-        BoardImpl board = new BoardImpl(VALID_NAME);
-
-        team.addBoard(board);
-
-        Assertions.assertThrows(DuplicateEntityException.class, () -> team.addBoard(board));
-    }
-
-    @Test
     public void addBoard_Should_AddBoard_When_NotExists() {
         BoardImpl board = new BoardImpl(VALID_NAME);
 
