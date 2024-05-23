@@ -67,8 +67,8 @@ public class CreateFeedbackToBoardCommandTests {
 
         Assertions.assertAll(
                 () -> Assertions.assertEquals(1, taskManagementSystemRepository.getFeedbacks().size()),
-                () -> Assertions.assertDoesNotThrow(() -> taskManagementSystemRepository.findFeedbackById(1))
-        );
+                () -> Assertions.assertEquals(1, taskManagementSystemRepository
+                                                        .findBoardByName(board.getName()).getTasks().size()));
 
     }
 }

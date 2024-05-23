@@ -55,15 +55,14 @@ public class ChangePriorityCommandTests {
 
     @Test
     public void should_ChangePriority_When_InputIsValid(){
-        repository.createBug(
+        Bug bug = repository.createBug(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_SEVERITY,
                 VALID_STEPS_LIST
         );
-        Bug bug = repository.findBugByID(1);
-        List<String> params = List.of("1", VALID_PRIORITY_CHANGE.toString());
+        List<String> params = List.of(String.valueOf(bug.getId()), VALID_PRIORITY_CHANGE.toString());
         changePriorityCommand.execute(params);
         Assertions.assertEquals(VALID_PRIORITY_CHANGE, bug.getPriority());
     }

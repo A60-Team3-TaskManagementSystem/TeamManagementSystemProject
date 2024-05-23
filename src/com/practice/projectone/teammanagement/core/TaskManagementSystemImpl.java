@@ -34,6 +34,8 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
     private final List<Story> stories;
     private final List<Feedback> feedbacks;
 
+    private static long taskIdCounter = 0;
+
 
     public TaskManagementSystemImpl() {
         teams = new ArrayList<>();

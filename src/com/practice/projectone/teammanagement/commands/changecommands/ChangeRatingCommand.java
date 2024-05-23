@@ -11,7 +11,7 @@ import java.util.List;
 public class ChangeRatingCommand extends BaseCommand {
     private static final int EXPECTED_PARAMETERS_COUNT = 2;
     private static final String INVALID_VALUE = "Invalid value for %s. Should be a number.";
-    private static final String SIZE_CHANGED = "Story size successfully changed to %s";
+    private static final String RATING_CHANGED = "Feedback rating successfully changed to %s";
 
     public ChangeRatingCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
         super(taskManagementSystemRepository);
@@ -32,6 +32,6 @@ public class ChangeRatingCommand extends BaseCommand {
         Feedback feedback = getTMSRepository().findFeedbackById(taskID);
         feedback.changeRating(rating);
 
-        return String.format(SIZE_CHANGED, rating);
+        return String.format(RATING_CHANGED, rating);
     }
 }

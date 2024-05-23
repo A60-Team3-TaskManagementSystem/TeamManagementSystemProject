@@ -32,7 +32,7 @@ public abstract class TaskImpl implements Task {
     private static final String STATUS_SAME_ERR = "Can't change, task status already at %s";
     public static final String COMMENT_ADDED = "New comment %s added by %s";
     private static long idCounter = 0;
-    private final long id;
+    private long id;
     private String title;
     private String description;
     private Status status;

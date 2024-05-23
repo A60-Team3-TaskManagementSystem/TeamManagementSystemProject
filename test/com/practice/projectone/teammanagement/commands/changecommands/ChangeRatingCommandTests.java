@@ -54,13 +54,12 @@ public class ChangeRatingCommandTests {
 
     @Test
     public void should_ChangeRating_When_InputIsValid(){
-        repository.createFeedback(
+        Feedback feedback = repository.createFeedback(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_RATING
         );
-        Feedback feedback = repository.findFeedbackById(1);
-        List<String> params = List.of("1", VALID_RATING_CHANGE);
+        List<String> params = List.of(String.valueOf(feedback.getId()), VALID_RATING_CHANGE);
         changeRatingCommand.execute(params);
         Assertions.assertEquals(Integer.parseInt(VALID_RATING_CHANGE), feedback.getRating());
     }

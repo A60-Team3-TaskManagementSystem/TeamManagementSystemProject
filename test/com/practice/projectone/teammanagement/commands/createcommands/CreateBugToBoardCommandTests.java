@@ -83,12 +83,12 @@ public class CreateBugToBoardCommandTests {
         taskManagementSystemRepository.addTeam(team);
         taskManagementSystemRepository.addBoardToTeam(board, team);
 
-
         createBugToBoardCommand.execute(validParams);
 
         Assertions.assertAll(
                 () -> Assertions.assertEquals(1, taskManagementSystemRepository.getBugs().size()),
-                () -> Assertions.assertDoesNotThrow(() -> taskManagementSystemRepository.findBugByID(1))
+                () -> Assertions.assertEquals(1, taskManagementSystemRepository
+                        .findBoardByName(board.getName()).getTasks().size())
         );
 
     }

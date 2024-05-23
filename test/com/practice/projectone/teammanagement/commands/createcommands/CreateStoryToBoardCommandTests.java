@@ -83,8 +83,8 @@ public class CreateStoryToBoardCommandTests {
 
         Assertions.assertAll(
                 () -> Assertions.assertEquals(1, taskManagementSystemRepository.getStories().size()),
-                () -> Assertions.assertDoesNotThrow(() -> taskManagementSystemRepository.findStoryByID(1))
-        );
+                () -> Assertions.assertEquals(1, taskManagementSystemRepository
+                                                .findBoardByName(board.getName()).getTasks().size()));
 
     }
 }

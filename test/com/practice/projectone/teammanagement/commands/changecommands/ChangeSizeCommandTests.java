@@ -56,14 +56,13 @@ public class ChangeSizeCommandTests {
 
     @Test
     public void should_ChangeSize_When_InputIsValid(){
-        repository.createStory(
+        Story story = repository.createStory(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_STORY_SIZE
         );
-        Story story = repository.findStoryByID(1);
-        List<String> params = List.of("1", VALID_SIZE_CHANGE.toString());
+        List<String> params = List.of(String.valueOf(story.getId()), VALID_SIZE_CHANGE.toString());
         changeSizeCommand.execute(params);
         Assertions.assertEquals(VALID_SIZE_CHANGE, story.getSize());
     }
