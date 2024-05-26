@@ -2,55 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="267e4434-ea34-4c4c-9368-85a562d5c2bf" name="Changes" comment="add project packages">
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommandTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/UnassignTaskToMemberCommandTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommandTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/showcommands/ShowBoardActivityCommandTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/showcommands/ShowPeopleCommandTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/showcommands/ShowPersonActivityLogCommandTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamActivityCommandTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamMembersCommandTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/showcommands/ShowTeamsCommandTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/SpecificTaskImplTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/TaskImplTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_16_2024_1_40_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_16_2024_1_40_PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2024_2_12_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2024_2_12_PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2024_3_03_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2024_3_03_PM__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2024_3_48_PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_17_2024_3_48_PM__Changes_.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommandTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/listing/ListTasksCommandTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/AssignTaskToMemberCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateBugToBoardCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateFeedbackToBoardCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateFeedbackToBoardCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateStoryToBoardCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/createcommands/CreateStoryToBoardCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/showcommands/ShowAllTeamBoardsCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TaskManagementSystemImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/TaskManagementSystemImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TaskManagementSystemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/core/contracts/TaskManagementSystemRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/BoardImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/TeamImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/ActivityAble.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/contracts/ActivityAble.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/BugImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/BugImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/commands/listing/ListTasksCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/FeedbackImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/FeedbackImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/StoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/StoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/TaskImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/TaskImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/contracts/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/practice/projectone/teammanagement/models/tasks/contracts/Task.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommandTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/AddCommentToTaskCommandTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/AddTeamMemberCommandTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/AddTeamMemberCommandTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangePriorityCommandTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangePriorityCommandTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangeRatingCommandTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangeRatingCommandTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangeSeverityCommandTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangeSeverityCommandTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangeSizeCommandTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangeSizeCommandTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangeStatusCommandTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/changecommands/ChangeStatusCommandTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/core/TaskManagementSystemImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/core/TaskManagementSystemImplTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/CommentImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/CommentImplTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/EventLogImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/EventLogImplTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/PersonImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/PersonImplTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/TeamImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/TeamImplTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/BugImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/BugImplTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/listing/ListBugsCommandTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/listing/ListBugsCommandTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/listing/ListFeedbacksTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommandTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/listing/ListStoriesCommandTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/FeedbackImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/FeedbackImplTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/StoryImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/practice/projectone/teammanagement/models/tasks/StoryImplTests.java" afterDir="false" />
     </list>
@@ -127,65 +89,65 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShowPersonActivityLogCommandTests.execute_Should_ReturnPersonActivity_When_InputIsValid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ListOnlyAssignedTasksCommandTests.execute_Should_PrintAllAssignedTasks_When_NoParameters" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TeamManagementSystemProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.commands.showcommands.*" />
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.commands.listing.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.commands.showcommands" />
-      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.commands.showcommands.ShowPersonActivityLogCommandTests" />
-      <option name="METHOD_NAME" value="execute_Should_ReturnPersonActivity_When_InputIsValid" />
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.commands.listing" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.commands.listing.ListOnlyAssignedTasksCommandTests" />
+      <option name="METHOD_NAME" value="execute_Should_PrintAllAssignedTasks_When_NoParameters" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShowTeamActivityCommandTests.execute_Should_ReturnTeamActivity_When_TeamHasBoardsAndMembers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ListOnlyAssignedTasksCommandTests.execute_Should_ReturnSortOrFilterTasks_When_TwoParameter" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TeamManagementSystemProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.commands.showcommands.*" />
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.commands.listing.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.commands.showcommands" />
-      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.commands.showcommands.ShowTeamActivityCommandTests" />
-      <option name="METHOD_NAME" value="execute_Should_ReturnTeamActivity_When_TeamHasBoardsAndMembers" />
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.commands.listing" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.commands.listing.ListOnlyAssignedTasksCommandTests" />
+      <option name="METHOD_NAME" value="execute_Should_ReturnSortOrFilterTasks_When_TwoParameter" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShowTeamActivityCommandTests.execute_Should_ReturnTeamActivity_When_TeamHasNoBoards" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ListOnlyAssignedTasksCommandTests.execute_Should_ReturnSortOrTwoFilterTasks_When_ThreeParameter" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TeamManagementSystemProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.commands.showcommands.*" />
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.commands.listing.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.commands.showcommands" />
-      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.commands.showcommands.ShowTeamActivityCommandTests" />
-      <option name="METHOD_NAME" value="execute_Should_ReturnTeamActivity_When_TeamHasNoBoards" />
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.commands.listing" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.commands.listing.ListOnlyAssignedTasksCommandTests" />
+      <option name="METHOD_NAME" value="execute_Should_ReturnSortOrTwoFilterTasks_When_ThreeParameter" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ShowTeamActivityCommandTests.execute_Should_ReturnTeamActivity_When_TeamHasNoMembers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ListOnlyAssignedTasksCommandTests.execute_Should_ThrowException_When_SortConditionIsInvalid" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TeamManagementSystemProject" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.practice.projectone.teammanagement.commands.showcommands.*" />
+          <option name="PATTERN" value="com.practice.projectone.teammanagement.commands.listing.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.commands.showcommands" />
-      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.commands.showcommands.ShowTeamActivityCommandTests" />
-      <option name="METHOD_NAME" value="execute_Should_ReturnTeamActivity_When_TeamHasNoMembers" />
+      <option name="PACKAGE_NAME" value="com.practice.projectone.teammanagement.commands.listing" />
+      <option name="MAIN_CLASS_NAME" value="com.practice.projectone.teammanagement.commands.listing.ListOnlyAssignedTasksCommandTests" />
+      <option name="METHOD_NAME" value="execute_Should_ThrowException_When_SortConditionIsInvalid" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -194,10 +156,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.All in TeamManagementSystemProject" />
-        <item itemvalue="JUnit.ShowPersonActivityLogCommandTests.execute_Should_ReturnPersonActivity_When_InputIsValid" />
-        <item itemvalue="JUnit.ShowTeamActivityCommandTests.execute_Should_ReturnTeamActivity_When_TeamHasBoardsAndMembers" />
-        <item itemvalue="JUnit.ShowTeamActivityCommandTests.execute_Should_ReturnTeamActivity_When_TeamHasNoMembers" />
-        <item itemvalue="JUnit.ShowTeamActivityCommandTests.execute_Should_ReturnTeamActivity_When_TeamHasNoBoards" />
+        <item itemvalue="JUnit.ListOnlyAssignedTasksCommandTests.execute_Should_ReturnSortOrTwoFilterTasks_When_ThreeParameter" />
+        <item itemvalue="JUnit.ListOnlyAssignedTasksCommandTests.execute_Should_ReturnSortOrFilterTasks_When_TwoParameter" />
+        <item itemvalue="JUnit.ListOnlyAssignedTasksCommandTests.execute_Should_ThrowException_When_SortConditionIsInvalid" />
+        <item itemvalue="JUnit.ListOnlyAssignedTasksCommandTests.execute_Should_PrintAllAssignedTasks_When_NoParameters" />
       </list>
     </recent_temporary>
   </component>
@@ -245,6 +207,11 @@
           <line>52</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/test/com/practice/projectone/teammanagement/commands/listing/ListOnlyAssignedTasksCommandTests.java</url>
+          <line>125</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
@@ -275,7 +242,7 @@
     <SUITE FILE_PATH="coverage/TeamManagementSystemProject$AssignTaskToMemberCommandTests.ic" NAME="AssignTaskToMemberCommandTests Coverage Results" MODIFIED="1716745086564" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.practice.projectone.teammanagement.commands.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/TeamManagementSystemProject$All_in_TeamManagementSystemProject.ic" NAME="All in TeamManagementSystemProject Coverage Results" MODIFIED="1716755163792" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/TeamManagementSystemProject$All_in_TeamManagementSystemProject.ic" NAME="All in TeamManagementSystemProject Coverage Results" MODIFIED="1716763311418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/TeamManagementSystemProject$CreateBugToBoardCommandTests.ic" NAME="CreateBugToBoardCommandTests Coverage Results" MODIFIED="1716437807123" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>com.practice.projectone.teammanagement.commands.createcommands.*</FILTER>
     </SUITE>

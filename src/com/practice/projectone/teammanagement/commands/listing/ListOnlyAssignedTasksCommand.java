@@ -2,6 +2,7 @@ package com.practice.projectone.teammanagement.commands.listing;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
+import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
 import com.practice.projectone.teammanagement.models.tasks.enums.Status;
@@ -23,18 +24,18 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
 
     @Override
     public String execute(List<String> parameters) {
-        if (parameters.size() > AND_FILTER) {
-            throw new IllegalArgumentException("Argument count should be 3 or less!");
-        }
-
         List<SpecificTask> assignedTasks = getTMSRepository()
                 .getSpecificTasks()
                 .stream()
-                .filter(task -> task.getAssignee() != null)
+                .filter(task -> !task.getAssignee().equals("Not assigned yet"))
                 .collect(Collectors.toList());
 
         if (!parameters.isEmpty()) {
-            boolean toSort = Boolean.parseBoolean(parameters.get(0));
+            String toSort = parameters.get(0);
+
+            if (!"true".equals(toSort) && !"false".equals(toSort)){
+                throw new IllegalArgumentException("No sorting condition provided");
+            }
 
             if (parameters.size() == OR_FILTER) {
                 String filter = parameters.get(1);
@@ -47,7 +48,7 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
                 assignedTasks = filterTasks(assignedTasks, status, assigneeName);
             }
 
-            if (toSort) assignedTasks.sort(Comparator.comparing(Task::getName));
+            if (Boolean.parseBoolean(toSort)) assignedTasks.sort(Comparator.comparing(Task::getName));
         }
 
         return getResult(assignedTasks);
@@ -56,14 +57,14 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
     private List<SpecificTask> filterTasks(List<SpecificTask> specificTasks, String... filters) {
         String filter = filters[0];
 
-        Predicate<SpecificTask> filterPredicate = task -> task.getAssignee().equals(filter)
+        Predicate<SpecificTask> filterPredicate = task -> task.getAssignee().contains(filter)
                 || task.getStatus().toString().equals(filter);
 
         if (filters.length == 2) {
             Status status = ParsingHelpers.tryParseEnum(filter, Status.class);
             String assigneeName = filters[1];
 
-            filterPredicate = task -> task.getStatus().equals(status) && task.getAssignee().equals(assigneeName);
+            filterPredicate = task -> task.getStatus().equals(status) && task.getAssignee().contains(assigneeName);
         }
 
         return specificTasks.stream().filter(filterPredicate).collect(Collectors.toList());
@@ -71,6 +72,8 @@ public class ListOnlyAssignedTasksCommand extends BaseCommand {
 
 
     private <T extends Task> String getResult(List<T> tasks) {
+        if (tasks.isEmpty()) throw new ElementNotFoundException("No any assigned task");
+
         return tasks.stream()
                 .map(Task::toString)
                 .collect(Collectors.joining(System.lineSeparator()));

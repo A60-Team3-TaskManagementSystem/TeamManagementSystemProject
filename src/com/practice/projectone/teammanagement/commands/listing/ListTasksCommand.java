@@ -2,9 +2,9 @@ package com.practice.projectone.teammanagement.commands.listing;
 
 import com.practice.projectone.teammanagement.commands.BaseCommand;
 import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
+import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
-import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 public class ListTasksCommand extends BaseCommand {
     public static final int EXPECTED_NUMBER_OF_ARGUMENTS = 0;
     public static final String LISTING_FACTOR_INVALID = "Listing mechanism incorrect. Please try again";
-    private String taskTitleSection;
 
     public ListTasksCommand(TaskManagementSystemRepository taskManagementSystemRepository) {
         super(taskManagementSystemRepository);
@@ -21,18 +20,15 @@ public class ListTasksCommand extends BaseCommand {
 
     @Override
     public String execute(List<String> parameters) {
-        ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_NUMBER_OF_ARGUMENTS);
 
         List<Task> tasks = getTMSRepository().getTasks();
 
         if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 1) {
-
-            taskTitleSection = parameters.get(0);
-
+            String taskTitleSection = parameters.get(0);
             return filterAndSortTasks(taskTitleSection, tasks);
 
         } else if (parameters.size() == EXPECTED_NUMBER_OF_ARGUMENTS + 2) {
-
+            String taskTitleSection = parameters.get(0);
             String action = parameters.get(1);
             return filterOrSortTasks(taskTitleSection, action, tasks);
         }
@@ -67,6 +63,8 @@ public class ListTasksCommand extends BaseCommand {
     }
 
     private String listAllTasks(List<Task> list) {
+        if (list.isEmpty()) throw new ElementNotFoundException("No tasks available");
+
         return list
                 .stream()
                 .map(Task::toString)

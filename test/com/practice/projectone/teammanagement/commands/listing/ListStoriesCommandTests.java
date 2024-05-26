@@ -149,18 +149,22 @@ public class ListStoriesCommandTests {
 
     @Test
     public void should_FilterByStatusORAssignee_When_OnlyOneFilter(){
-        repository.createStory(
+        Story story1 = repository.createStory(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_STORY_SIZE
         );
-        repository.createStory(
+        Story story2 = repository.createStory(
                 "abc" + VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_STORY_SIZE
         );
+
+        repository.addStory(story1);
+        repository.addStory(story2);
+
         repository.getStories().get(1).changeStatus(Status.DONE);
         repository.createPerson("Pesho");
         repository.getStories().get(0).changeAssignee("Pesho");
@@ -178,18 +182,22 @@ public class ListStoriesCommandTests {
 
     @Test
     public void should_FilterByStatusANDAssignee_When_TwoFilters(){
-        repository.createStory(
+        Story story1 = repository.createStory(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_STORY_SIZE
         );
-        repository.createStory(
+        Story story2 = repository.createStory(
                 "abc" + VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_STORY_SIZE
         );
+
+        repository.addStory(story1);
+        repository.addStory(story2);
+
         repository.getStories().get(1).changeStatus(Status.DONE);
         repository.createPerson("Pesho");
         repository.getStories().get(0).changeAssignee("Pesho");

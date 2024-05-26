@@ -68,7 +68,7 @@ public class StoryImplTests {
         String expected = String.format("Task ID%d%n  #Type: %s%n  #Title: %s%n  #Description: %s%n  #Status: %s%n  #Priority: %s%n  #Size: %s%n  #AssignedTo: %s%n",
                 story.getId(), story.getTaskType(), story.getName(),
                 story.getDescription(), story.getStatus(), story.getPriority(),
-                story.getSize(), story.getAssignee());
+                story.getSize(), story.getAssignee()).trim();
 
         Assertions.assertEquals(expected, story.toString());
     }

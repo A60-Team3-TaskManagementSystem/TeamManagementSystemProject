@@ -46,7 +46,7 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
 
     @Override
     public String toString() {
-        return String.format("%s  #Rating: %d%n", super.toString(), rating);
+        return String.format("%s  #Rating: %d%n", super.toString(), rating).trim();
     }
 
     @Override

@@ -157,20 +157,24 @@ public class ListBugsCommandTests {
 
     @Test
     public void should_FilterByStatusORAssignee_When_OnlyOneFilter(){
-        repository.createBug(
+        Bug bug1 = repository.createBug(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_SEVERITY,
                 VALID_STEPS_LIST
         );
-        repository.createBug(
+        Bug bug2 = repository.createBug(
                 "abc" + VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_SEVERITY,
                 VALID_STEPS_LIST
         );
+
+        repository.addBug(bug1);
+        repository.addBug(bug2);
+
         repository.getBugs().get(1).changeStatus(Status.DONE);
         repository.createPerson("Pesho");
         repository.getBugs().get(0).changeAssignee("Pesho");
@@ -188,20 +192,24 @@ public class ListBugsCommandTests {
 
     @Test
     public void should_FilterByStatusANDAssignee_When_TwoFilters(){
-        repository.createBug(
+        Bug bug1 = repository.createBug(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_SEVERITY,
                 VALID_STEPS_LIST
         );
-        repository.createBug(
+        Bug bug2 = repository.createBug(
                 "abc" + VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_SEVERITY,
                 VALID_STEPS_LIST
         );
+
+        repository.addBug(bug1);
+        repository.addBug(bug2);
+
         repository.getBugs().get(1).changeStatus(Status.DONE);
         repository.createPerson("Pesho");
         repository.getBugs().get(0).changeAssignee("Pesho");

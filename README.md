@@ -292,7 +292,7 @@ says, "The status of item with ID 42 switched from Active to Done."
 
 ## Unit Tests
 
-//TODO
+Target line coverage - **80%**
 
 ## Technical Requirements
 

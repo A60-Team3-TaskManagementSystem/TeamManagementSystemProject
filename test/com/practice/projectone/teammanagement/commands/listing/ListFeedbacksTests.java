@@ -117,16 +117,20 @@ public class ListFeedbacksTests {
 
     @Test
     public void should_FilterByStatus_When_ThereIsFilter(){
-        repository.createFeedback(
+        Feedback feedback1 = repository.createFeedback(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_RATING
         );
-        repository.createFeedback(
+        Feedback feedback2 = repository.createFeedback(
                 "asd" + VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_RATING
         );
+
+        repository.addFeedback(feedback1);
+        repository.addFeedback(feedback2);
+
         repository.getFeedbacks().get(1).changeStatus(Status.DONE);
         List<Feedback> feedbacks = repository.getFeedbacks();
         List<String> params = List.of("nosort", "Done");

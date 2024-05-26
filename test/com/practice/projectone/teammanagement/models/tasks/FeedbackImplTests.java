@@ -83,7 +83,7 @@ public class FeedbackImplTests {
     public void toString_Should_PrintExpectedOutput() {
         String expected = String.format("Task ID%d%n  #Type: %s%n  #Title: %s%n  #Description: %s%n  #Status: %s%n  #Rating: %d%n",
                 feedback.getId(), feedback.getTaskType(), feedback.getName(),
-                feedback.getDescription(), feedback.getStatus(), feedback.getRating());
+                feedback.getDescription(), feedback.getStatus(), feedback.getRating()).trim();
 
         Assertions.assertEquals(expected, feedback.toString());
     }
