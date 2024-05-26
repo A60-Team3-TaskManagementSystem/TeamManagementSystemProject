@@ -20,13 +20,13 @@ public class ChangeRatingCommandTests {
     private Command changeRatingCommand;
 
     @BeforeEach
-    public void beforeEach(){
+    public void beforeEach() {
         repository = new TaskManagementSystemImpl();
         changeRatingCommand = new ChangeRatingCommand(repository);
     }
 
     @Test
-    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected(){
+    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected() {
         List<String> params = TestUtilities.getList(EXPECTED_PARAMETERS_COUNT - 1);
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -35,7 +35,7 @@ public class ChangeRatingCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_TaskIDIsNotANumber(){
+    public void execute_Should_ThrowException_When_TaskIDIsNotANumber() {
         List<String> params = List.of("INVALID ID", VALID_RATING_CHANGE);
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -44,7 +44,7 @@ public class ChangeRatingCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_RatingIsInvalid(){
+    public void execute_Should_ThrowException_When_RatingIsInvalid() {
         List<String> params = List.of("1", "INVALID RATING");
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -53,14 +53,17 @@ public class ChangeRatingCommandTests {
     }
 
     @Test
-    public void should_ChangeRating_When_InputIsValid(){
+    public void should_ChangeRating_When_InputIsValid() {
         Feedback feedback = repository.createFeedback(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_RATING
         );
+        repository.addFeedback(feedback);
         List<String> params = List.of(String.valueOf(feedback.getId()), VALID_RATING_CHANGE);
+
         changeRatingCommand.execute(params);
+
         Assertions.assertEquals(Integer.parseInt(VALID_RATING_CHANGE), feedback.getRating());
     }
 }

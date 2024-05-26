@@ -3,6 +3,9 @@ package com.practice.projectone.teammanagement.models;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class EventLogImplTests {
 
 
@@ -28,5 +31,16 @@ public class EventLogImplTests {
                 () ->Assertions.assertNotNull(eventLog.getDescription()),
                 () ->Assertions.assertNotNull(eventLog.getTimestamp())
         );
+    }
+
+    @Test
+    public void toString_Should_PrintExpectedOutput() {
+        EventLogImpl eventLog = new EventLogImpl("a");
+
+        String expected = String.format("[%s] %s%n",
+                eventLog.getTimestamp().format(DateTimeFormatter.ofPattern("dd-MMMM-y HH:mm:ss", Locale.ENGLISH)),
+                eventLog.getDescription());
+
+        Assertions.assertEquals(expected, eventLog.toString());
     }
 }

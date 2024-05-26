@@ -53,6 +53,7 @@ public class AddCommentToTaskCommandTests {
     public void execute_Should_AddCommentToTask_When_ParametersAreValid() {
         Feedback feedback = taskManagementSystemRepository
                 .createFeedback(VALID_TITLE, VALID_DESCRIPTION, VALID_RATING);
+        taskManagementSystemRepository.addFeedback(feedback);
 
         addCommentToTaskCommand.execute(validParams);
 

@@ -27,15 +27,11 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
     public static final String DUPLICATE_BOARD_NAME = "Board name already taken. Choose another";
     public static final String DUPLICATE_TASK = "Task already exist";
     public static final String NO_SUCH_ELEMENT = "No such %s found";
-    public static final String TASK_NOT_EXIST = "Task with ID%d does not exist.";
     private final List<Team> teams;
     private final List<Person> people;
     private final List<Bug> bugs;
     private final List<Story> stories;
     private final List<Feedback> feedbacks;
-
-    private static long taskIdCounter = 0;
-
 
     public TaskManagementSystemImpl() {
         teams = new ArrayList<>();
@@ -99,26 +95,17 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
 
     @Override
     public Bug createBug(String title, String description, Priority priority, Severity severity, List<String> steps) {
-        Bug bug = new BugImpl(title, description, priority, severity, steps);
-        bugs.add(bug);
-
-        return bug;
+        return new BugImpl(title, description, priority, severity, steps);
     }
 
     @Override
     public Story createStory(String title, String description, Priority priority, Size size) {
-        Story story = new StoryImpl(title, description, priority, size);
-        stories.add(story);
-
-        return story;
+        return new StoryImpl(title, description, priority, size);
     }
 
     @Override
     public Feedback createFeedback(String title, String description, int rating) {
-        Feedback feedback = new FeedbackImpl(title, description, rating);
-        feedbacks.add(feedback);
-
-        return feedback;
+        return new FeedbackImpl(title, description, rating);
     }
 
     @Override
@@ -128,7 +115,7 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
 
     @Override
     public Board createBoard(String boardName) {
-       return new BoardImpl(boardName);
+        return new BoardImpl(boardName);
     }
 
     @Override
@@ -138,12 +125,28 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
         }
         people.add(person);
     }
+
     @Override
     public void addTeam(Team team) {
         if (teams.contains(team)) {
             throw new IllegalArgumentException(String.format(TEAM_ALREADY_EXIST, team.getName()));
         }
         teams.add(team);
+    }
+
+    @Override
+    public void addBug(Bug bug) {
+        addTask(bugs, bug);
+    }
+
+    @Override
+    public void addStory(Story story) {
+        addTask(stories, story);
+    }
+
+    @Override
+    public void addFeedback(Feedback feedback) {
+        addTask(feedbacks, feedback);
     }
 
     @Override
@@ -158,7 +161,7 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
     @Override
     public void addMemberToTeam(Person person, Team team) {
         if (team.getMembers().contains(person)) {
-            throw new IllegalArgumentException(String.format(PERSON_ALREADY_MEMBER, person.getName()));
+            throw new DuplicateEntityException(String.format(PERSON_ALREADY_MEMBER, person.getName()));
         }
         team.addMember(person);
     }
@@ -184,34 +187,42 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
     @Override
     public Board findBoardByName(String name) {
         List<Board> boards = getTeams()
-                                    .stream()
-                                    .flatMap(team -> team.getBoards().stream())
-                                    .collect(Collectors.toList());
-        return findElementByName(name, boards, "board");
+                .stream()
+                .flatMap(team -> team.getBoards().stream())
+                .filter(board -> board.getName().equals(name))
+                .collect(Collectors.toList());
+
+        if (boards.isEmpty()) {
+            throw new ElementNotFoundException(String.format(NO_SUCH_ELEMENT, "board"));
+        } if (boards.size() > 1) {
+            throw new DuplicateEntityException(String.format("Multiple boards with name %s", name));
+        }
+
+        return boards.get(0);
     }
 
     @Override
-    public Task findTaskByID(int id) {
+    public Task findTaskByID(long id) {
         return findElementByID(id, getTasks(), "task");
     }
 
     @Override
-    public SpecificTask findSpecificTask(int id) {
+    public SpecificTask findSpecificTask(long id) {
         return findElementByID(id, getSpecificTasks(), "task");
     }
 
     @Override
-    public Bug findBugByID(int id) {
+    public Bug findBugByID(long id) {
         return findElementByID(id, getBugs(), "bug");
     }
 
     @Override
-    public Story findStoryByID(int id) {
+    public Story findStoryByID(long id) {
         return findElementByID(id, getStories(), "story");
     }
 
     @Override
-    public Feedback findFeedbackById(int id) {
+    public Feedback findFeedbackById(long id) {
         return findElementByID(id, getFeedbacks(), "feedback");
     }
 
@@ -222,10 +233,18 @@ public class TaskManagementSystemImpl implements TaskManagementSystemRepository 
                 .orElseThrow(() -> new ElementNotFoundException(String.format(NO_SUCH_ELEMENT, lookingFor)));
     }
 
-    private <T extends Identifiable> T findElementByID(int ID, List<T> list, String lookingFor) {
+    private <T extends Identifiable> T findElementByID(long ID, List<T> list, String lookingFor) {
         return list.stream()
                 .filter(e -> e.getId() == ID)
                 .findFirst()
                 .orElseThrow(() -> new ElementNotFoundException(String.format(NO_SUCH_ELEMENT, lookingFor)));
+    }
+
+    private <T extends Task> void addTask(List<T> list, T task) {
+        if (getTasks().contains(task)) {
+            throw new DuplicateEntityException(DUPLICATE_TASK);
+        }
+
+        list.add(task);
     }
 }

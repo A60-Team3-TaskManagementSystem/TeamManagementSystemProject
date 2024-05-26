@@ -46,6 +46,8 @@ public abstract class TaskImpl implements Task {
         comments = new ArrayList<>();
         activityHistory = new ArrayList<>();
         this.id = ++idCounter;
+
+        addEventToHistory(new EventLogImpl(String.format("Task %s with ID%d created", title, getId())));
     }
 
     @Override
@@ -116,8 +118,6 @@ public abstract class TaskImpl implements Task {
     public int hashCode() {
         return Objects.hash(id);
     }
-
-    protected abstract String getTaskType();
 
     protected abstract void validateStatus(Status status);
 

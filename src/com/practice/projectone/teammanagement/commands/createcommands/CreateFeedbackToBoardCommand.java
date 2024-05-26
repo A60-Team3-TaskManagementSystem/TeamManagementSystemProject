@@ -34,6 +34,7 @@ public class CreateFeedbackToBoardCommand extends BaseCommand {
 
         Board board = getTMSRepository().findBoardByName(boardName);
         Feedback feedback = getTMSRepository().createFeedback(title, description, rating);
+        getTMSRepository().addFeedback(feedback);
 
         getTMSRepository().addTaskToBoard(board, feedback);
 

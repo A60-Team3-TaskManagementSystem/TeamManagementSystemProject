@@ -22,13 +22,13 @@ public class ChangeSizeCommandTests {
     private Command changeSizeCommand;
 
     @BeforeEach
-    public void beforeEach(){
+    public void beforeEach() {
         repository = new TaskManagementSystemImpl();
         changeSizeCommand = new ChangeSizeCommand(repository);
     }
 
     @Test
-    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected(){
+    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected() {
         List<String> params = TestUtilities.getList(EXPECTED_PARAMETERS_COUNT - 1);
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -37,7 +37,7 @@ public class ChangeSizeCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_TaskIDIsNotANumber(){
+    public void execute_Should_ThrowException_When_TaskIDIsNotANumber() {
         List<String> params = List.of("INVALID ID", VALID_SIZE_CHANGE.toString());
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -46,7 +46,7 @@ public class ChangeSizeCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_SizeIsInvalid(){
+    public void execute_Should_ThrowException_When_SizeIsInvalid() {
         List<String> params = List.of("1", "INVALID SIZE");
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -55,15 +55,18 @@ public class ChangeSizeCommandTests {
     }
 
     @Test
-    public void should_ChangeSize_When_InputIsValid(){
+    public void should_ChangeSize_When_InputIsValid() {
         Story story = repository.createStory(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
                 VALID_SPECIFIC_TASK_PRIORITY,
                 VALID_STORY_SIZE
         );
+        repository.addStory(story);
         List<String> params = List.of(String.valueOf(story.getId()), VALID_SIZE_CHANGE.toString());
+
         changeSizeCommand.execute(params);
+
         Assertions.assertEquals(VALID_SIZE_CHANGE, story.getSize());
     }
 }

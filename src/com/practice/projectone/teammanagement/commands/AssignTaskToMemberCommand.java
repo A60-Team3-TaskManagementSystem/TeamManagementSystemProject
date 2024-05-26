@@ -3,11 +3,9 @@ package com.practice.projectone.teammanagement.commands;
 import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
 import com.practice.projectone.teammanagement.models.contracts.Person;
-import com.practice.projectone.teammanagement.models.tasks.contracts.*;
-import com.practice.projectone.teammanagement.models.tasks.enums.Priority;
-import com.practice.projectone.teammanagement.models.tasks.enums.Severity;
-import com.practice.projectone.teammanagement.models.tasks.enums.Size;
-import com.practice.projectone.teammanagement.models.tasks.enums.Status;
+import com.practice.projectone.teammanagement.models.tasks.contracts.Bug;
+import com.practice.projectone.teammanagement.models.tasks.contracts.SpecificTask;
+import com.practice.projectone.teammanagement.models.tasks.contracts.Story;
 import com.practice.projectone.teammanagement.utils.ParsingHelpers;
 import com.practice.projectone.teammanagement.utils.ValidationHelpers;
 
@@ -31,8 +29,8 @@ public class AssignTaskToMemberCommand extends BaseCommand {
     public String execute(List<String> parameters) {
         ValidationHelpers.validateArgumentsCount(parameters, EXPECTED_PARAMETERS_COUNT);
 
-        int taskID = ParsingHelpers.tryParseInt(parameters.get(0), INVALID_TASK_ID);
-        String memberName = parameters.get(1);
+        String memberName = parameters.get(0);
+        Person person = getTMSRepository().findPersonByName(memberName);
 
         if (parameters.size() == 4) {
             String taskType = parameters.get(1);
@@ -44,86 +42,58 @@ public class AssignTaskToMemberCommand extends BaseCommand {
             String taskAttribute = parameters.get(2);
             String attributeCondition = parameters.get(3);
 
-            return assignSpecificTasks(memberName, taskType, taskAttribute, attributeCondition);
+            return assignSpecificTasks(person, taskType, taskAttribute, attributeCondition);
         }
 
-        return assignTask(taskID, memberName);
+        int taskID = ParsingHelpers.tryParseInt(parameters.get(1), INVALID_TASK_ID);
+
+        return assignTask(taskID, person);
     }
 
-    private String assignTask(int taskID, String memberName) {
+    private String assignTask(int taskID, Person person) {
         SpecificTask task = getTMSRepository().findSpecificTask(taskID);
-        Person person = getTMSRepository().findPersonByName(memberName);
-
         return assign(task, person);
     }
 
-    private String assignSpecificTasks(String memberName, String taskType, String taskAttribute, String attributeCondition) {
-        Person person = getTMSRepository().findPersonByName(memberName);
-        String result;
-
+    private String assignSpecificTasks(Person person, String taskType, String taskAttribute, String attributeCondition) {
         switch (taskAttribute) {
             case "Status":
-                List<SpecificTask> tasks = getTMSRepository().getSpecificTasks();
-                Status status = ParsingHelpers.tryParseEnum(attributeCondition, Status.class);
-
-                result = assignStatusTasks(tasks, taskType, status, person);
-                break;
             case "Priority":
                 List<SpecificTask> specificTasks = getTMSRepository().getSpecificTasks();
-                Priority priority = ParsingHelpers.tryParseEnum(attributeCondition, Priority.class);
-
-                result = assignPriorityTasks(specificTasks, taskType, priority, person);
-                break;
+                return assignStatusOrPriorityTasks(specificTasks, taskType, attributeCondition, person);
             case "Size":
                 List<Story> stories = getTMSRepository().getStories();
-                Size size = ParsingHelpers.tryParseEnum(attributeCondition, Size.class);
-
-                result = assignSizeTasks(stories, taskType, size, person);
-                break;
+                return assignSizeTasks(stories, taskType, attributeCondition, person);
             case "Severity":
                 List<Bug> bugs = getTMSRepository().getBugs();
-                Severity severity = ParsingHelpers.tryParseEnum(attributeCondition, Severity.class);
-
-                result = assignSeverityTasks(bugs, taskType, severity, person);
-                break;
+                return assignSeverityTasks(bugs, taskType, attributeCondition, person);
             default:
                 throw new IllegalArgumentException(INVALID_CONDITIONS);
         }
-
-        return result;
     }
 
-    private String assignStatusTasks(List<SpecificTask> tasks, String taskType, Status status, Person person) {
+    private String assignStatusOrPriorityTasks(List<SpecificTask> tasks, String taskType, String condition, Person person) {
         List<SpecificTask> filteredTasks = tasks.stream()
                 .filter(task -> task.getStatus().getTaskType().equals(taskType))
-                .filter(task -> task.getStatus().equals(status))
+                .filter(task -> task.getStatus().toString().equals(condition) || task.getPriority().toString().equals(condition))
                 .collect(Collectors.toList());
 
         return getResult(filteredTasks, person);
     }
 
-    private String assignPriorityTasks(List<SpecificTask> specificTasks, String taskType, Priority priority, Person person) {
-        List<SpecificTask> filteredTasks = specificTasks.stream()
-                .filter(task -> task.getStatus().getTaskType().equals(taskType))
-                .filter(task -> task.getPriority().equals(priority))
-                .collect(Collectors.toList());
-
-        return getResult(filteredTasks, person);
-    }
-
-    private String assignSizeTasks(List<Story> stories, String taskType, Size size, Person person) {
+    private String assignSizeTasks(List<Story> stories, String taskType, String size, Person person) {
         List<Story> filteredTasks = stories.stream()
                 .filter(task -> task.getStatus().getTaskType().equals(taskType))
-                .filter(task -> task.getSize().equals(size))
+                .filter(task -> task.getSize().toString().equals(size))
                 .collect(Collectors.toList());
 
         return getResult(filteredTasks, person);
     }
 
-    private String assignSeverityTasks(List<Bug> bugs, String taskType, Severity severity, Person person) {
+    private String assignSeverityTasks(List<Bug> bugs, String taskType, String severity, Person person) {
         List<Bug> filteredTasks = bugs.stream()
                 .filter(task -> task.getStatus().getTaskType().equals(taskType))
-                .filter(task -> task.getSeverity().equals(severity))
+                .filter(task -> task.getSeverity().toString().equals(severity))
                 .collect(Collectors.toList());
 
         return getResult(filteredTasks, person);
@@ -131,15 +101,17 @@ public class AssignTaskToMemberCommand extends BaseCommand {
 
     private <T extends SpecificTask> String getResult(List<T> filteredTasks, Person person) {
         if (filteredTasks.isEmpty()) {
-            return INVALID_CONDITIONS;
+            throw new InvalidUserInputException(INVALID_CONDITIONS);
         }
 
         List<String> result = new ArrayList<>();
+
         filteredTasks.forEach(task -> {
+            if (task.getAssignee() != null) {
+                Person taskAssignee = getTMSRepository().findPersonByName(task.getAssignee());
+                taskAssignee.unassignTask(task);
+            }
 
-            Person taskAssignee = getTMSRepository().findPersonByName(task.getAssignee());
-
-            taskAssignee.unassignTask(task);
             result.add(assign(task, person));
         });
 

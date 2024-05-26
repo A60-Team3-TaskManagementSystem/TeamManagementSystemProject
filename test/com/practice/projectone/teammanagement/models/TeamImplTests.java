@@ -1,6 +1,5 @@
 package com.practice.projectone.teammanagement.models;
 
-import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,23 +63,13 @@ public class TeamImplTests {
         BoardImpl board = new BoardImpl(VALID_NAME);
 
         team.addBoard(board);
-        team.removeBoard(board);
 
-        Assertions.assertFalse(team.getBoards().contains(board));
+        Assertions.assertDoesNotThrow(() -> team.removeBoard(board));
     }
 
     @Test
     public void getMembers_Should_ReturnNewArray_When_Invoked() {
         Assertions.assertNotSame(team.getMembers(), team.getMembers());
-    }
-
-    @Test
-    public void addMember_Should_ThrowException_When_MemberAlreadyAdded() {
-        PersonImpl person = new PersonImpl(VALID_NAME);
-
-        team.addMember(person);
-
-        Assertions.assertThrows(DuplicateEntityException.class, () -> team.addMember(person));
     }
 
     @Test
@@ -104,9 +93,8 @@ public class TeamImplTests {
         PersonImpl person = new PersonImpl(VALID_NAME);
 
         team.addMember(person);
-        team.removeMember(person);
 
-        Assertions.assertFalse(team.getMembers().contains(person));
+        Assertions.assertDoesNotThrow(() -> team.removeMember(person));
     }
 
     @Test

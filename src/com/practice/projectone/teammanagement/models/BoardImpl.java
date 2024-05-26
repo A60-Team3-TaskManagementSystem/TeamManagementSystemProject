@@ -55,7 +55,6 @@ public class BoardImpl implements Board {
 
     @Override
     public void addTask(Task task) {
-
         tasks.add(task);
 
         addEventToHistory(new EventLogImpl(String.format("New task %s added to board %s", task.getName(), boardName)));

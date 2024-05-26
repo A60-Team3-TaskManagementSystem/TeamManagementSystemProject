@@ -21,8 +21,11 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
     public FeedbackImpl(String title, String description, int rating) {
         super(title, description, INITIAL_STATUS);
         setRating(rating);
+    }
 
-        addEventToHistory(new EventLogImpl(String.format("Task %s with ID%d created", title, getId())));
+    @Override
+    public String getTaskType() {
+        return getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 4);
     }
 
     @Override
@@ -51,11 +54,6 @@ public class FeedbackImpl extends TaskImpl implements Feedback {
         if (!status.getTaskType().equals("Feedback") && !status.getTaskType().equals("All")) {
             throw new IllegalArgumentException("Please provide valid story status");
         }
-    }
-
-    @Override
-    protected String getTaskType() {
-        return getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 4);
     }
 
     private void setRating(int rating) {

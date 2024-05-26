@@ -239,9 +239,9 @@ Currently, the engine supports the following commands:
 - **ChangeSeverity** `[taskID] [severity]` - Changes the severity of a bug task with given ID
 - **ChangeSize** `[taskID] [size]` - Changes the size of a story task with given ID
 - **ChangeStatus** `[taskID] [severity]` - Changes the status of a task with given ID
-- **AssignTask** `[taskID] [memberName]`/`[memberName] [taskType] [taskAttribute][attributeCondition]` - Assign tasks to
+- **AssignTask** `[memberName] [taskID]`/`[memberName] [taskType] [taskAttribute][attributeCondition]` - Assign tasks to
   a member and adds them to his list. Can assign a specific task or a list of tasks chosen by a given condition.
-- **UnAssignTask** `[taskID] [memberName]` - Removes task assignee and deletes it from his list
+- **UnAssignTask** `[memberName] [taskID]` - Removes task assignee and deletes it from his list
 - **ShowTeams** - shows all the teams in the database.
 - **ShowPeople** - shows all the employees in the database.
 - **ShowBoards** `[teamName]`- shows all the boards created in a specific team.
@@ -289,10 +289,6 @@ One of the developers has fixed a bug that was assigned to him. He adds a commen
 saying "This one took me a while, but it is fixed now!", and then changes the status of the bug to Done.
 Just to be sure, he checks the changes history list of the bug and sees that the last entry in the list
 says, "The status of item with ID 42 switched from Active to Done."
-
-## Constraints
-
-//TODO
 
 ## Unit Tests
 

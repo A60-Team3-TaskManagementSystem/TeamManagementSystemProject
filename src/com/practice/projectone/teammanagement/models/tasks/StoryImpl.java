@@ -17,8 +17,11 @@ public class StoryImpl extends SpecificTaskImpl implements Story {
     public StoryImpl(String title, String description, Priority priority, Size size) {
         super(title, description, INITIAL_STATUS, priority);
         this.size = size;
+    }
 
-        addEventToHistory(new EventLogImpl(String.format("Task %s with ID%d created", title, getId())));
+    @Override
+    public String getTaskType() {
+        return getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 4);
     }
 
     @Override
@@ -42,15 +45,10 @@ public class StoryImpl extends SpecificTaskImpl implements Story {
     public String toString() {
         return String.format("%s  #Size: %s%n  #AssignedTo: %s%n", super.toString(), size, getAssignee());
     }
-
     @Override
     protected void validateStatus(Status status) {
         if (!status.getTaskType().equals("Story") && !status.getTaskType().equals("All")) {
             throw new IllegalArgumentException("Please provide valid story status");
         }
-    }
-    @Override
-    protected String getTaskType() {
-        return getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 4);
     }
 }

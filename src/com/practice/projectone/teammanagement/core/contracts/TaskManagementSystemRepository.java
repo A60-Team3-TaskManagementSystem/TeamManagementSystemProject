@@ -26,6 +26,12 @@ public interface TaskManagementSystemRepository {
 
     List<SpecificTask> getSpecificTasks();
 
+    void addBug(Bug bug);
+
+    void addStory(Story story);
+
+    void addFeedback(Feedback feedback);
+
     void addBoardToTeam(Board board, Team team);
 
     void addPerson(Person person);
@@ -55,13 +61,13 @@ public interface TaskManagementSystemRepository {
 
     Board findBoardByName(String name);
 
-    Task findTaskByID(int id);
+    Task findTaskByID(long id);
 
-    Bug findBugByID(int id);
+    Bug findBugByID(long id);
 
-    Story findStoryByID(int id);
+    Story findStoryByID(long id);
 
-    Feedback findFeedbackById(int id);
+    Feedback findFeedbackById(long id);
 
-    SpecificTask findSpecificTask(int id);
+    SpecificTask findSpecificTask(long id);
 }

@@ -11,6 +11,8 @@ public interface Task extends Identifiable, Commentable, ActivityAble, Nameable 
 
     Status getStatus();
 
+    String getTaskType();
+
     void changeStatus(Status status);
 
     void addComment(Comment comment);

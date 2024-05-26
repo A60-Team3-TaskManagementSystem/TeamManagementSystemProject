@@ -3,6 +3,7 @@ package com.practice.projectone.teammanagement.commands;
 import com.practice.projectone.teammanagement.commands.contracts.Command;
 import com.practice.projectone.teammanagement.core.TaskManagementSystemImpl;
 import com.practice.projectone.teammanagement.core.contracts.TaskManagementSystemRepository;
+import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.contracts.Person;
 import com.practice.projectone.teammanagement.models.contracts.Team;
@@ -59,7 +60,7 @@ public class AddTeamMemberCommandTests {
 
         team.addMember(person);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> addTeamMemberCommand.execute(validParams));
+        Assertions.assertThrows(DuplicateEntityException.class, () -> addTeamMemberCommand.execute(validParams));
     }
 
     @Test

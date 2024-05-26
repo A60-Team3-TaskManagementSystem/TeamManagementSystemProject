@@ -39,6 +39,7 @@ public class CreateBugToBoardCommand extends BaseCommand {
 
         Board board = getTMSRepository().findBoardByName(boardName);
         Bug bug = getTMSRepository().createBug(title, description, priority, severity, steps);
+        getTMSRepository().addBug(bug);
 
         getTMSRepository().addTaskToBoard(board, bug);
 

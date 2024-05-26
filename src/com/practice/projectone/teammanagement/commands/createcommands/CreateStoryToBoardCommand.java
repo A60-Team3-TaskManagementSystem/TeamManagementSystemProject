@@ -38,6 +38,7 @@ public class CreateStoryToBoardCommand extends BaseCommand {
 
         Board board = getTMSRepository().findBoardByName(boardName);
         Story story = getTMSRepository().createStory(title, description, priority, size);
+        getTMSRepository().addStory(story);
 
         getTMSRepository().addTaskToBoard(board, story);
 

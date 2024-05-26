@@ -21,13 +21,13 @@ public class ChangePriorityCommandTests {
     private Command changePriorityCommand;
 
     @BeforeEach
-    public void beforeEach(){
+    public void beforeEach() {
         repository = new TaskManagementSystemImpl();
         changePriorityCommand = new ChangePriorityCommand(repository);
     }
 
     @Test
-    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected(){
+    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected() {
         List<String> params = TestUtilities.getList(EXPECTED_PARAMETERS_COUNT - 1);
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -36,7 +36,7 @@ public class ChangePriorityCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_TaskIDIsNotANumber(){
+    public void execute_Should_ThrowException_When_TaskIDIsNotANumber() {
         List<String> params = List.of("INVALID ID", VALID_PRIORITY_CHANGE.toString());
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -45,7 +45,7 @@ public class ChangePriorityCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_PriorityIsInvalid(){
+    public void execute_Should_ThrowException_When_PriorityIsInvalid() {
         List<String> params = List.of("1", "INVALID PRIORITY");
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -54,7 +54,7 @@ public class ChangePriorityCommandTests {
     }
 
     @Test
-    public void should_ChangePriority_When_InputIsValid(){
+    public void should_ChangePriority_When_InputIsValid() {
         Bug bug = repository.createBug(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
@@ -62,8 +62,11 @@ public class ChangePriorityCommandTests {
                 VALID_SEVERITY,
                 VALID_STEPS_LIST
         );
+        repository.addBug(bug);
         List<String> params = List.of(String.valueOf(bug.getId()), VALID_PRIORITY_CHANGE.toString());
+
         changePriorityCommand.execute(params);
+
         Assertions.assertEquals(VALID_PRIORITY_CHANGE, bug.getPriority());
     }
 }

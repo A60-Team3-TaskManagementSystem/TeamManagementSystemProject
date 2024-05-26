@@ -24,8 +24,11 @@ public class BugImpl extends SpecificTaskImpl implements Bug {
         super(title, description, INITIAL_STATUS, priority);
         this.severity = severity;
         setSteps(steps);
+    }
 
-        addEventToHistory(new EventLogImpl(String.format("Task %s with ID%d created", title, getId())));
+    @Override
+    public String getTaskType() {
+        return getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 4);
     }
 
     @Override
@@ -56,7 +59,7 @@ public class BugImpl extends SpecificTaskImpl implements Bug {
                 super.toString(),
                 severity,
                 getAssignee(),
-                String.join(System.lineSeparator() + "  ", getSteps())).trim();
+                String.join(System.lineSeparator() + "    ", getSteps())).trim();
     }
 
     @Override
@@ -66,13 +69,8 @@ public class BugImpl extends SpecificTaskImpl implements Bug {
         }
     }
 
-    @Override
-    protected String getTaskType() {
-        return getClass().getSimpleName().substring(0, getClass().getSimpleName().length() - 4);
-    }
-
     private void setSteps(List<String> steps) {
-        if (steps.isEmpty()) {
+        if (steps == null || steps.isEmpty()) {
             throw new IllegalArgumentException(STEPS_EMPTY_ERR);
         }
 

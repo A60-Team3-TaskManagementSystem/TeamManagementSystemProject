@@ -26,26 +26,25 @@ public class ShowAllTeamBoardsCommand extends BaseCommand {
     }
 
     private String showAllTeamBoards(String teamName) {
+        if (getTMSRepository().getTeams().isEmpty()) return NO_TEAMS;
+
         Team team = getTMSRepository().findTeamByName(teamName);
 
         StringBuilder sb = new StringBuilder();
 
-        if (getTMSRepository().getTeams().isEmpty()) {
-            sb.append(NO_TEAMS);
-        } else {
-            sb.append(String.format("****TEAM %s****", team.getName()));
+        sb.append(String.format("****TEAM %s****", team.getName()));
 
-            if (team.getBoards().isEmpty()) {
-                sb.append(NO_BOARDS);
-            }
-
-            for (int i = 0; i < team.getBoards().size(); i++) {
-                sb.append(System.lineSeparator());
-                sb.append(i + 1);
-                sb.append(". ");
-                sb.append(team.getBoards().get(i).toString());
-            }
+        if (team.getBoards().isEmpty()) {
+            sb.append(NO_BOARDS);
         }
+
+        for (int i = 0; i < team.getBoards().size(); i++) {
+            sb.append(System.lineSeparator());
+            sb.append(i + 1);
+            sb.append(". ");
+            sb.append(team.getBoards().get(i).toString());
+        }
+
 
         return sb.toString().trim();
     }

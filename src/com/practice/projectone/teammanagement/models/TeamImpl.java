@@ -1,6 +1,5 @@
 package com.practice.projectone.teammanagement.models;
 
-import com.practice.projectone.teammanagement.exceptions.DuplicateEntityException;
 import com.practice.projectone.teammanagement.exceptions.ElementNotFoundException;
 import com.practice.projectone.teammanagement.models.contracts.Board;
 import com.practice.projectone.teammanagement.models.contracts.Person;
@@ -45,9 +44,6 @@ public class TeamImpl implements Team {
 
     @Override
     public void addMember(Person person) {
-        if (getMembers().contains(person)) {
-            throw new DuplicateEntityException(MEMBER_ALREADY_EXISTS);
-        }
         people.add(person);
     }
 

@@ -22,13 +22,13 @@ public class ChangeStatusCommandTests {
     private Command changeStatusCommand;
 
     @BeforeEach
-    public void beforeEach(){
+    public void beforeEach() {
         repository = new TaskManagementSystemImpl();
         changeStatusCommand = new ChangeStatusCommand(repository);
     }
 
     @Test
-    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected(){
+    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected() {
         List<String> params = TestUtilities.getList(EXPECTED_PARAMETERS_COUNT - 1);
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -37,7 +37,7 @@ public class ChangeStatusCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_TaskIDIsNotANumber(){
+    public void execute_Should_ThrowException_When_TaskIDIsNotANumber() {
         List<String> params = List.of("INVALID ID", VALID_STATUS_CHANGE.toString());
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -46,7 +46,7 @@ public class ChangeStatusCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_StatusIsInvalid(){
+    public void execute_Should_ThrowException_When_StatusIsInvalid() {
         List<String> params = List.of("1", "INVALID STATUS");
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -55,7 +55,7 @@ public class ChangeStatusCommandTests {
     }
 
     @Test
-    public void should_ChangeStatus_When_InputIsValid(){
+    public void should_ChangeStatus_When_InputIsValid() {
         Bug bug = repository.createBug(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
@@ -63,8 +63,11 @@ public class ChangeStatusCommandTests {
                 VALID_SEVERITY,
                 VALID_STEPS_LIST
         );
+        repository.addBug(bug);
         List<String> params = List.of(String.valueOf(bug.getId()), VALID_STATUS_CHANGE.toString());
+
         changeStatusCommand.execute(params);
+
         Assertions.assertEquals(VALID_STATUS_CHANGE, bug.getStatus());
     }
 }

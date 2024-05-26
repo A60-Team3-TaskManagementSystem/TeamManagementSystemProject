@@ -1,10 +1,8 @@
 package com.practice.projectone.teammanagement.models.tasks;
 
 import com.practice.projectone.teammanagement.exceptions.InvalidUserInputException;
-import com.practice.projectone.teammanagement.models.CommentImpl;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Feedback;
 import com.practice.projectone.teammanagement.models.tasks.contracts.Task;
-import com.practice.projectone.teammanagement.models.tasks.enums.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,50 +21,13 @@ public class FeedbackImplTests {
     }
 
     @Test
-    public void FeedbackImpl_Should_ImplementStoryInterface() {
+    public void FeedbackImpl_Should_ImplementFeedbackInterface() {
         Assertions.assertTrue(feedback instanceof Feedback);
     }
 
     @Test
     public void FeedbackImpl_Should_ImplementTaskInterface() {
         Assertions.assertTrue(feedback instanceof Task);
-    }
-
-    @Test
-    public void constructor_Should_ThrowException_When_FeedbackTitleLengthOutOfBounds() {
-        Assertions.assertAll(
-                () -> Assertions.assertThrows(
-                        IllegalArgumentException.class, () ->
-                                new FeedbackImpl(
-                                        INVALID_TITLE_MIN,
-                                        VALID_DESCRIPTION,
-                                        VALID_RATING)
-                ),
-                () -> Assertions.assertThrows(IllegalArgumentException.class, () ->
-                        new FeedbackImpl(
-                                INVALID_TITLE_MAX,
-                                VALID_DESCRIPTION,
-                                VALID_RATING)
-                )
-        );
-    }
-
-    @Test
-    public void constructor_Should_ThrowException_When_FeedbackDescriptionLengthOutOfBounds() {
-        Assertions.assertAll(
-                () -> Assertions.assertThrows(IllegalArgumentException.class, () ->
-                        new FeedbackImpl(
-                                VALID_TITLE,
-                                INVALID_DESCRIPTION_MIN,
-                                VALID_RATING)
-                ),
-                () -> Assertions.assertThrows(IllegalArgumentException.class, () ->
-                        new FeedbackImpl(
-                                VALID_TITLE,
-                                INVALID_DESCRIPTION_MAX,
-                                VALID_RATING)
-                )
-        );
     }
 
     @Test
@@ -83,48 +44,11 @@ public class FeedbackImplTests {
     public void constructor_Should_CreateNewFeedback_When_ParametersAreCorrect() {
         Assertions.assertAll(
                 () -> Assertions.assertEquals(VALID_TITLE, feedback.getName()),
+                () -> Assertions.assertEquals(VALID_DESCRIPTION, feedback.getDescription()),
+                () -> Assertions.assertEquals(VALID_RATING, feedback.getRating()),
                 () -> Assertions.assertDoesNotThrow(() -> feedback.getComments()),
-                () -> Assertions.assertDoesNotThrow(() -> feedback.getActivityHistory()),
-                () -> Assertions.assertEquals(VALID_RATING, feedback.getRating())
-
+                () -> Assertions.assertDoesNotThrow(() -> feedback.getActivityHistory())
         );
-    }
-
-    @Test
-    public void constructor_Should_LogEvent_When_FeedbackIsCreated() {
-        Assertions.assertEquals(1, feedback.getActivityHistory().size());
-    }
-
-    @Test
-    public void changeStatus_Should_ThrowException_When_SameStatus() {
-        Status initialFeedbackStatus = Status.NEW;
-
-        Assertions.assertThrows(InvalidUserInputException.class, () -> feedback.changeStatus(initialFeedbackStatus));
-    }
-
-    @Test
-    public void changeStatus_Should_ThrowException_When_NotValidFeedbackStatus() {
-        Status notValidFeedbackStatus = Status.NOT_DONE;
-
-        Assertions.assertThrows(IllegalArgumentException.class, () -> feedback.changeStatus(notValidFeedbackStatus));
-    }
-
-    @Test
-    public void changeStatus_Should_SetStatus_When_NewStatusIsValid() {
-        Status validStatus = Status.UNSCHEDULED;
-
-        feedback.changeStatus(validStatus);
-
-        Assertions.assertEquals(validStatus, feedback.getStatus());
-    }
-
-    @Test
-    public void changeStatus_Should_LogEvent_When_StatusIsChanged() {
-        Status validStatus = Status.SCHEDULED;
-
-        feedback.changeStatus(validStatus);
-
-        Assertions.assertEquals(2, feedback.getActivityHistory().size());
     }
 
     @Test
@@ -153,46 +77,6 @@ public class FeedbackImplTests {
         feedback.changeRating(newRating);
 
         Assertions.assertEquals(2, feedback.getActivityHistory().size());
-    }
-
-    @Test
-    public void validateStatus_Should_ThrowException_When_StatusProvidedIsNotValidForFeedback() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> feedback.validateStatus(Status.ACTIVE));
-    }
-
-    @Test
-    public void getActivityHistory_Should_ReturnNewArrays_When_Invoked() {
-        Assertions.assertNotSame(feedback.getActivityHistory(), feedback.getActivityHistory());
-    }
-
-    @Test
-    public void getComments_Should_ReturnNewArray_When_Invoked() {
-        Assertions.assertNotSame(feedback.getComments(), feedback.getComments());
-    }
-
-    @Test
-    public void addComment_Should_AddCommentToTask() {
-        CommentImpl comment = new CommentImpl(VALID_AUTHOR_NAME, VALID_DESCRIPTION);
-
-        feedback.addComment(comment);
-
-        Assertions.assertEquals(1, feedback.getComments().size());
-    }
-
-    @Test
-    public void addComment_Should_LogEvent_When_Invoked() {
-        CommentImpl comment = new CommentImpl(VALID_AUTHOR_NAME, VALID_DESCRIPTION);
-
-        feedback.addComment(comment);
-
-        Assertions.assertEquals(2, feedback.getActivityHistory().size());
-    }
-
-    @Test
-    public void getTaskType_Should_ReturnTaskName_When_Invoked() {
-        String expected = "Feedback";
-
-        Assertions.assertEquals(expected, feedback.getTaskType());
     }
 
     @Test

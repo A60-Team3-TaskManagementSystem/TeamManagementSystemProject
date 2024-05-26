@@ -14,17 +14,13 @@ public interface ActivityAble extends Nameable {
                 .toUpperCase();
 
         sb.append(String.format("****%s %s****", className, getName())).append(System.lineSeparator());
-        sb.append("--ACTIVITY HISTORY--").append(System.lineSeparator());
 
         List<EventLog> eventLogs = getActivityHistory();
 
-        if (eventLogs.isEmpty()) {
-            sb.append("--NO RECENT ACTIVITY--").append(System.lineSeparator());
-        } else {
-            eventLogs.forEach(eventLog -> sb.append(eventLog).append(System.lineSeparator()));
-            sb.append("--ACTIVITY HISTORY--").append(System.lineSeparator());
-        }
+        sb.append("--ACTIVITY HISTORY--").append(System.lineSeparator());
+        eventLogs.forEach(sb::append);
+        sb.append("--ACTIVITY HISTORY--").append(System.lineSeparator());
 
-        return sb.toString().trim();
-    };
+        return sb.toString();
+    }
 }

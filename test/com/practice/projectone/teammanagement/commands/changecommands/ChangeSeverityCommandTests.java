@@ -21,13 +21,13 @@ public class ChangeSeverityCommandTests {
     private Command changeSeverityCommand;
 
     @BeforeEach
-    public void beforeEach(){
+    public void beforeEach() {
         repository = new TaskManagementSystemImpl();
         changeSeverityCommand = new ChangeSeverityCommand(repository);
     }
 
     @Test
-    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected(){
+    public void execute_Should_ThrowException_When_ArgumentCountDifferentThanExpected() {
         List<String> params = TestUtilities.getList(EXPECTED_PARAMETERS_COUNT - 1);
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -36,7 +36,7 @@ public class ChangeSeverityCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_TaskIDIsNotANumber(){
+    public void execute_Should_ThrowException_When_TaskIDIsNotANumber() {
         List<String> params = List.of("INVALID ID", VALID_SEVERITY_CHANGE.toString());
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -45,7 +45,7 @@ public class ChangeSeverityCommandTests {
     }
 
     @Test
-    public void execute_Should_ThrowException_When_SeverityIsInvalid(){
+    public void execute_Should_ThrowException_When_SeverityIsInvalid() {
         List<String> params = List.of("1", "INVALID SEVERITY");
         Assertions.assertThrows(
                 IllegalArgumentException.class,
@@ -54,7 +54,7 @@ public class ChangeSeverityCommandTests {
     }
 
     @Test
-    public void should_ChangeSeverity_When_InputIsValid(){
+    public void should_ChangeSeverity_When_InputIsValid() {
         Bug bug = repository.createBug(
                 VALID_TITLE,
                 VALID_DESCRIPTION,
@@ -62,9 +62,11 @@ public class ChangeSeverityCommandTests {
                 VALID_SEVERITY,
                 VALID_STEPS_LIST
         );
-
+        repository.addBug(bug);
         List<String> params = List.of(String.valueOf(bug.getId()), VALID_SEVERITY_CHANGE.toString());
+
         changeSeverityCommand.execute(params);
+
         Assertions.assertEquals(VALID_SEVERITY_CHANGE, bug.getSeverity());
     }
 }
